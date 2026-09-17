@@ -23,7 +23,7 @@
 
 ```
 pip install -r requirements.txt
-uvicorn service.api:app --reload
+uvicorn infra.service.api:app --reload
 ```
 
 打开浏览器输入： `http://127.0.0.1:8000/`

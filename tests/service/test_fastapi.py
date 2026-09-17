@@ -27,7 +27,7 @@ if PROJECT_ROOT not in sys.path:
 # 2. 导入 FastAPI
 # ============================================================
 
-from docs.service.api import app
+from infra.service.api import app
 
 
 # ============================================================

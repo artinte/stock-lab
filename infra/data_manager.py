@@ -9,7 +9,7 @@ from infra.gateways.stock_data import StockDataGateway
 from infra.managers.stock_manager import StockManager
 from infra.managers.crypto_manager import CryptoManager
 from infra.managers.forex_manager import ForexManager
-from infra.services.industry_service import IndustryService
+from infra.service.industry_service import IndustryService
 
 
 class DataManager:

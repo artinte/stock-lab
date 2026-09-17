@@ -8,7 +8,7 @@ from typing import Any
 from fastapi import FastAPI, Query
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from docs.service.stock_financial_service import StockFinancialService
+from infra.service.stock_financial_service import StockFinancialService
 from infra.data_manager import DataManager
 from core.models.crypto.quote import CryptoQuote
 from core.models.crypto.kline import CryptoKline
@@ -109,7 +109,7 @@ app = FastAPI(
 # ============================================================
 
 # 项目根目录下的前端目录
-FRONTEND_DIR = Path("docs/stock_center")
+FRONTEND_DIR = Path("docs")
 
 
 # ============================================================
