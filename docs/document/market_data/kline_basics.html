@@ -1,0 +1,2835 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="什么是 K 线？理解 Open、High、Low、Close，以及一根 K 线如何由市场成交数据形成，并掌握 K 线实体、影线、时间周期与成交量等基础概念。">
+
+    <title>什么是 K 线？｜STOCK LAB</title>
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+</head>
+
+
+<body>
+
+    <main class="article-page">
+
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+
+            <article class="article-main">
+
+
+                <header class="article-header">
+
+
+                    <div class="article-eyebrow">
+                        LESSON 06 · MARKET DATA
+                    </div>
+
+
+                    <h1>
+                        什么是 K 线？
+                    </h1>
+
+
+                    <p class="article-lead">
+
+                        打开股票行情页面，
+                        最常见的图表之一就是 K 线图。
+
+                        但一根 K 线究竟是什么？
+
+                        它并不是一个神秘的图形，
+                        而是把一个时间周期内发生的大量价格变化，
+                        压缩成开盘价、最高价、最低价和收盘价四个核心数据。
+
+                        本篇将从 OHLC 出发，
+                        理解一根 K 线是如何形成的，
+                        以及实体、影线、时间周期和成交量分别代表什么。
+
+                    </p>
+
+
+                    <div class="article-meta">
+
+
+                        <span class="article-meta-item">
+                            第二阶段 · 历史行情与 K 线
+                        </span>
+
+
+                        <span class="article-meta-item">
+                            基础
+                        </span>
+
+
+                        <span class="article-meta-item">
+                            约 25 分钟
+                        </span>
+
+
+                        <span class="article-meta-item">
+                            STOCK LAB
+                        </span>
+
+
+                    </div>
+
+
+                </header>
+
+
+                <!-- ==================================================
+                     01
+                     ================================================== -->
+
+                <section class="article-section" id="what-is-kline">
+
+
+                    <div class="section-kicker">
+                        01 · WHAT IS KLINE
+                    </div>
+
+
+                    <h2>
+                        什么是 K 线？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>K 线（Candlestick）</strong>，
+                        是一种按照时间周期记录价格变化的方式。
+
+                    </p>
+
+
+                    <p>
+
+                        它最核心的思想非常简单：
+
+                        在一个确定的时间范围内，
+                        不需要把每一次价格变化全部画出来，
+                        而是用几个关键价格概括这一段时间发生的行情。
+
+                    </p>
+
+
+                    <p>
+
+                        对于一个时间周期，
+                        K 线通常记录四个核心价格：
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                O
+                            </div>
+
+
+                            <h3>
+                                Open
+                            </h3>
+
+
+                            <p>
+                                开盘价：这个时间周期开始时的价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                H
+                            </div>
+
+
+                            <h3>
+                                High
+                            </h3>
+
+
+                            <p>
+                                最高价：这个时间周期内出现的最高价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                L
+                            </div>
+
+
+                            <h3>
+                                Low
+                            </h3>
+
+
+                            <p>
+                                最低价：这个时间周期内出现的最低价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                C
+                            </div>
+
+
+                            <h3>
+                                Close
+                            </h3>
+
+
+                            <p>
+                                收盘价：这个时间周期结束时的价格。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        这四个字段合起来就是：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            OHLC
+                        </strong>
+                    </p>
+
+
+                    <div class="article-note">
+
+                        一根 K 线最核心的内容，
+                        就是一个时间周期中的 Open、High、Low、Close。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     02
+                     ================================================== -->
+
+                <section class="article-section" id="ohlc">
+
+
+                    <div class="section-kicker">
+                        02 · OHLC
+                    </div>
+
+
+                    <h2>
+                        Open、High、Low、Close 分别是什么？
+                    </h2>
+
+
+                    <p>
+
+                        OHLC 是理解 K 线最重要的一组概念。
+
+                        如果这四个字段没有理解，
+                        后面看到任何 K 线图都很容易只停留在“看图形”的层面。
+
+                    </p>
+
+
+                    <p>
+
+                        假设某只股票在一天中的行情如下：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        Open：100.00
+
+                        <br>
+
+                        High：105.00
+
+                        <br>
+
+                        Low：98.00
+
+                        <br>
+
+                        Close：103.00
+
+                    </div>
+
+
+                    <p>
+
+                        这意味着：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            这一天开始时，价格为 100.00。
+                        </li>
+
+                        <li class="checklist-item">
+                            当天最高曾达到 105.00。
+                        </li>
+
+                        <li class="checklist-item">
+                            当天最低曾达到 98.00。
+                        </li>
+
+                        <li class="checklist-item">
+                            当天结束时，价格为 103.00。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        我们并没有记录当天每一秒发生了什么，
+                        但通过这四个价格，
+                        已经可以对当天的价格范围和收盘位置形成一个基本认识。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     03
+                     ================================================== -->
+
+                <section class="article-section" id="open">
+
+
+                    <div class="section-kicker">
+                        03 · OPEN
+                    </div>
+
+
+                    <h2>
+                        什么是开盘价？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>Open</strong> 就是开盘价。
+
+                        它表示某一个 K 线周期开始时所对应的开盘价格。
+
+                    </p>
+
+
+                    <p>
+
+                        如果我们观察的是日线，
+                        那么 Open 通常对应当天交易开始阶段形成的开盘价格。
+
+                    </p>
+
+
+                    <p>
+
+                        如果观察的是 5 分钟 K 线，
+                        那么每一根 5 分钟 K 线也都有自己的 Open。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        09:30 ～ 09:35
+
+                        <br><br>
+
+                        Open = 100.00
+
+                    </div>
+
+
+                    <p>
+
+                        这里的 Open 描述的是这个 5 分钟周期开始时的价格，
+                        而不是整天的开盘价。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>重要：</strong>
+
+                        Open 的含义必须结合 K 线周期理解。
+
+                        “日线 Open”和“5 分钟线 Open”
+                        都是开盘价，但对应的时间范围不同。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     04
+                     ================================================== -->
+
+                <section class="article-section" id="high">
+
+
+                    <div class="section-kicker">
+                        04 · HIGH
+                    </div>
+
+
+                    <h2>
+                        什么是最高价？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>High</strong> 就是最高价。
+
+                        它表示一个 K 线周期内出现过的最高价格。
+
+                    </p>
+
+
+                    <p>
+
+                        例如某一天的价格依次经历：
+
+                    </p>
+
+
+                    <p>
+                        100 → 102 → 101 → 105 → 103
+                    </p>
+
+
+                    <p>
+
+                        那么这一天的 High 就是：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            105
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        High 只告诉我们：
+
+                        <strong>
+                            这个周期内最高曾经到达哪里。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        它并不告诉我们价格在最高价停留了多久，
+                        也不能单独说明当天最终收盘在哪里。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     05
+                     ================================================== -->
+
+                <section class="article-section" id="low">
+
+
+                    <div class="section-kicker">
+                        05 · LOW
+                    </div>
+
+
+                    <h2>
+                        什么是最低价？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>Low</strong> 就是最低价。
+
+                        它表示一个 K 线周期内出现过的最低价格。
+
+                    </p>
+
+
+                    <p>
+
+                        如果当天价格最低曾经到达 98，
+                        那么：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        Low = 98.00
+
+                    </div>
+
+
+                    <p>
+
+                        Low 和 High 一起，
+                        可以帮助我们确定这个时间周期中的价格范围。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        High = 105.00
+
+                        <br>
+
+                        Low = 98.00
+
+                        <br><br>
+
+                        价格范围 = 105.00 - 98.00 = 7.00
+
+                    </div>
+
+
+                    <p>
+
+                        这就是这个时间周期的价格波动范围。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     06
+                     ================================================== -->
+
+                <section class="article-section" id="close">
+
+
+                    <div class="section-kicker">
+                        06 · CLOSE
+                    </div>
+
+
+                    <h2>
+                        什么是收盘价？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>Close</strong> 就是收盘价。
+
+                        它表示这个 K 线周期结束时对应的价格。
+
+                    </p>
+
+
+                    <p>
+
+                        在日线中，
+                        Close 通常就是当天交易结束时的收盘价格。
+
+                    </p>
+
+
+                    <p>
+
+                        在分钟 K 线中，
+                        Close 则对应这一分钟、五分钟、
+                        十五分钟或者其他周期结束时的价格。
+
+                    </p>
+
+
+                    <p>
+
+                        例如一根 5 分钟 K 线：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        09:30 ～ 09:35
+
+                        <br><br>
+
+                        Open = 100.00
+
+                        <br>
+
+                        High = 102.00
+
+                        <br>
+
+                        Low = 99.50
+
+                        <br>
+
+                        Close = 101.50
+
+                    </div>
+
+
+                    <p>
+
+                        这意味着在这个 5 分钟周期结束时，
+                        最终价格记录为 101.50。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     07
+                     ================================================== -->
+
+                <section class="article-section" id="kline-formation">
+
+
+                    <div class="section-kicker">
+                        07 · KLINE FORMATION
+                    </div>
+
+
+                    <h2>
+                        一根 K 线是如何形成的？
+                    </h2>
+
+
+                    <p>
+
+                        理解 K 线最重要的方法，
+                        不是先记住各种形态，
+                        而是理解它背后的数据形成过程。
+
+                    </p>
+
+
+                    <p>
+
+                        假设我们观察一只股票的 5 分钟行情。
+
+                        在这 5 分钟内，
+                        市场不断产生新的成交价格。
+
+                    </p>
+
+
+                    <p>
+                        100.00 → 100.50 → 101.00 → 99.80 → 100.80 → 101.50
+                    </p>
+
+
+                    <p>
+
+                        到这个 5 分钟周期结束时，
+                        系统可以从这一组成交数据中提取：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            第一笔有效价格 → Open。
+                        </li>
+
+                        <li class="checklist-item">
+                            所有价格中的最大值 → High。
+                        </li>
+
+                        <li class="checklist-item">
+                            所有价格中的最小值 → Low。
+                        </li>
+
+                        <li class="checklist-item">
+                            最后一笔有效价格 → Close。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        于是：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        多笔市场成交
+
+                        <br>
+
+                        ↓
+
+                        <br>
+
+                        按时间划分周期
+
+                        <br>
+
+                        ↓
+
+                        <br>
+
+                        提取 Open / High / Low / Close
+
+                        <br>
+
+                        ↓
+
+                        <br>
+
+                        形成一根 K 线
+
+                    </div>
+
+
+                    <p>
+
+                        这就是 K 线最基础的形成过程。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     08
+                     ================================================== -->
+
+                <section class="article-section" id="body">
+
+
+                    <div class="section-kicker">
+                        08 · BODY
+                    </div>
+
+
+                    <h2>
+                        什么是 K 线实体？
+                    </h2>
+
+
+                    <p>
+
+                        K 线中最明显的部分通常叫做：
+
+                        <strong>实体（Body）</strong>。
+
+                    </p>
+
+
+                    <p>
+
+                        它表示：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            Open 与 Close 之间的价格区间。
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        因此，实体大小可以理解为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        实体范围 = Open 与 Close 之间的价格差
+
+                    </div>
+
+
+                    <p>
+
+                        如果：
+
+                    </p>
+
+
+                    <p>
+                        Close > Open
+                    </p>
+
+
+                    <p>
+
+                        那么这个周期最终价格高于开盘价格。
+
+                    </p>
+
+
+                    <p>
+
+                        如果：
+
+                    </p>
+
+
+                    <p>
+                        Close < Open </p>
+
+
+                            <p>
+
+                                那么这个周期最终价格低于开盘价格。
+
+                            </p>
+
+
+                            <p>
+
+                                至于具体图表中使用什么颜色表示上涨或下跌，
+                                属于前端展示规则，不是 OHLC 数据本身的一部分。
+
+                            </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     09
+                     ================================================== -->
+
+                <section class="article-section" id="upper-lower-shadow">
+
+
+                    <div class="section-kicker">
+                        09 · SHADOW
+                    </div>
+
+
+                    <h2>
+                        什么是 K 线上影线和下影线？
+                    </h2>
+
+
+                    <p>
+
+                        除了实体之外，
+                        K 线通常还会出现上下延伸的线段，
+                        它们称为：
+
+                        <strong>影线（Shadow）</strong>。
+
+                    </p>
+
+
+                    <p>
+
+                        上方的部分叫：
+
+                        <strong>上影线</strong>。
+
+                    </p>
+
+
+                    <p>
+
+                        下方的部分叫：
+
+                        <strong>下影线</strong>。
+
+                    </p>
+
+
+                    <p>
+
+                        它们分别帮助我们表达：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            上影线连接实体与这个周期的最高价。
+                        </li>
+
+                        <li class="checklist-item">
+                            下影线连接实体与这个周期的最低价。
+                        </li>
+
+                        <li class="checklist-item">
+                            实体反映 Open 与 Close 的区间。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        所以，一根 K 线实际上是在视觉上同时表达：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            Open + High + Low + Close
+                        </strong>
+
+                        <br><br>
+
+                        实体：Open ↔ Close
+
+                        <br>
+
+                        上影线：实体 ↔ High
+
+                        <br>
+
+                        下影线：Low ↔ 实体
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     10
+                     ================================================== -->
+
+                <section class="article-section" id="price-range">
+
+
+                    <div class="section-kicker">
+                        10 · PRICE RANGE
+                    </div>
+
+
+                    <h2>
+                        K 线如何表示价格范围？
+                    </h2>
+
+
+                    <p>
+
+                        High 和 Low 共同决定了一根 K 线覆盖的价格范围。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        High = 105
+
+                        <br>
+
+                        Low = 98
+
+                    </div>
+
+
+                    <p>
+
+                        那么这一根 K 线覆盖的价格范围就是：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            105 - 98 = 7
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        如果 Open 和 Close 非常接近，
+                        但 High 和 Low 差距很大，
+                        那么 K 线可能表现为较小实体、较长影线。
+
+                    </p>
+
+
+                    <p>
+
+                        这说明：
+
+                        <strong>
+                            价格在这个周期内曾经发生比较大的波动，
+                            但最终收盘位置又回到了比较接近开盘价的位置。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        这里只是在解释数据结构，
+                        并不意味着这种形态本身自动对应某一种未来走势。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     11
+                     ================================================== -->
+
+                <section class="article-section" id="kline-period">
+
+
+                    <div class="section-kicker">
+                        11 · KLINE PERIOD
+                    </div>
+
+
+                    <h2>
+                        K 线为什么一定要有时间周期？
+                    </h2>
+
+
+                    <p>
+
+                        一根 K 线不能脱离时间周期单独理解。
+
+                    </p>
+
+
+                    <p>
+
+                        同一只股票，
+                        可以按照不同的时间长度生成不同的 K 线。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                1M
+                            </div>
+
+
+                            <h3>
+                                1 分钟
+                            </h3>
+
+
+                            <p>
+                                每根 K 线描述约 1 分钟的价格变化。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                5M
+                            </div>
+
+
+                            <h3>
+                                5 分钟
+                            </h3>
+
+
+                            <p>
+                                每根 K 线描述约 5 分钟的价格变化。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                1D
+                            </div>
+
+
+                            <h3>
+                                日线
+                            </h3>
+
+
+                            <p>
+                                每根 K 线描述一个交易日。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        因此：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            K 线 = OHLC + 时间周期
+                        </strong>
+
+                    </div>
+
+
+                    <p>
+
+                        时间周期改变，
+                        K 线所描述的市场行为也会改变。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     12
+                     ================================================== -->
+
+                <section class="article-section" id="same-day-different-kline">
+
+
+                    <div class="section-kicker">
+                        12 · SAME DAY DIFFERENT KLINE
+                    </div>
+
+
+                    <h2>
+                        同一天为什么可以有很多根 K 线？
+                    </h2>
+
+
+                    <p>
+
+                        因为 K 线不是只能按照“天”来划分。
+
+                    </p>
+
+
+                    <p>
+
+                        如果使用 5 分钟周期，
+                        一个交易日可以产生很多根 5 分钟 K 线。
+
+                    </p>
+
+
+                    <p>
+
+                        如果使用 60 分钟周期，
+                        同一个交易日的 K 线数量就会减少。
+
+                    </p>
+
+
+                    <p>
+
+                        如果使用日线，
+                        一个交易日通常对应一根日 K。
+
+                    </p>
+
+
+                    <p>
+
+                        所以：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        1 分钟 K 线
+
+                        <br>
+
+                        5 分钟 K 线
+
+                        <br>
+
+                        15 分钟 K 线
+
+                        <br>
+
+                        30 分钟 K 线
+
+                        <br>
+
+                        60 分钟 K 线
+
+                        <br>
+
+                        日线
+
+                        <br>
+
+                        周线
+
+                        <br>
+
+                        月线
+
+                    </div>
+
+
+                    <p>
+
+                        本质上都是对市场价格数据采用不同时间粒度进行聚合。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     13
+                     ================================================== -->
+
+                <section class="article-section" id="kline-volume">
+
+
+                    <div class="section-kicker">
+                        13 · KLINE VOLUME
+                    </div>
+
+
+                    <h2>
+                        K 线为什么经常和成交量放在一起？
+                    </h2>
+
+
+                    <p>
+
+                        K 线主要描述价格变化，
+                        而成交量描述这个时间周期内的成交规模。
+
+                    </p>
+
+
+                    <p>
+
+                        因此行情页面经常把：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            K 线 + 成交量
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        放在一起展示。
+
+                    </p>
+
+
+                    <p>
+
+                        例如一根日 K 可以有：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        Open：100
+
+                        <br>
+
+                        High：105
+
+                        <br>
+
+                        Low：98
+
+                        <br>
+
+                        Close：103
+
+                        <br>
+
+                        Volume：500000
+
+                    </div>
+
+
+                    <p>
+
+                        前四个字段描述价格，
+                        Volume 描述这个交易日的成交量。
+
+                    </p>
+
+
+                    <p>
+
+                        需要注意：
+
+                        <strong>
+                            成交量并不是 OHLC 的一部分。
+                        </strong>
+
+                        它是与 K 线时间周期对应的另一类行情数据。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     14
+                     ================================================== -->
+
+                <section class="article-section" id="kline-and-tick">
+
+
+                    <div class="section-kicker">
+                        14 · KLINE AND TICK
+                    </div>
+
+
+                    <h2>
+                        K 线和 Tick 数据有什么区别？
+                    </h2>
+
+
+                    <p>
+
+                        在更底层的行情系统中，
+                        市场会不断产生更加细粒度的数据。
+
+                    </p>
+
+
+                    <p>
+
+                        例如某个时间段内可能产生大量成交记录：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        10:00:01 → 100.10
+
+                        <br>
+
+                        10:00:02 → 100.20
+
+                        <br>
+
+                        10:00:03 → 100.15
+
+                        <br>
+
+                        10:00:04 → 100.30
+
+                        <br>
+
+                        10:00:05 → 100.25
+
+                    </div>
+
+
+                    <p>
+
+                        如果把这些更细粒度的成交数据按照一个时间周期进行聚合，
+                        就可以得到对应的 OHLC 数据。
+
+                    </p>
+
+
+                    <p>
+
+                        因此可以粗略理解为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        更细粒度的市场数据
+
+                        <br>
+
+                        ↓
+
+                        <br>
+
+                        按时间周期聚合
+
+                        <br>
+
+                        ↓
+
+                        <br>
+
+                        OHLC K 线
+
+                    </div>
+
+
+                    <p>
+
+                        后面的课程会进一步讨论 Tick、
+                        分钟行情以及不同周期的数据结构。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     15
+                     ================================================== -->
+
+                <section class="article-section" id="kline-data-model">
+
+
+                    <div class="section-kicker">
+                        15 · KLINE DATA MODEL
+                    </div>
+
+
+                    <h2>
+                        K 线在数据系统中是什么？
+                    </h2>
+
+
+                    <p>
+
+                        从程序和数据模型的角度看，
+                        K 线其实就是一条结构化的数据记录。
+
+                    </p>
+
+
+                    <p>
+
+                        一个基础的 K 线对象通常至少需要：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            <strong>symbol</strong>：证券代码。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>timestamp</strong>：K 线对应的时间。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>open</strong>：开盘价。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>high</strong>：最高价。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>low</strong>：最低价。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>close</strong>：收盘价。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>volume</strong>：成交量。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>amount</strong>：成交额。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        如果再考虑不同 K 线周期，
+                        通常还需要知道：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        interval = 1m / 5m / 15m / 30m / 60m / 1d / 1w / 1M
+
+                    </div>
+
+
+                    <p>
+
+                        这也是行情系统中 K 线数据模型的基础。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     16
+                     ================================================== -->
+
+                <section class="article-section" id="kline-integrity">
+
+
+                    <div class="section-kicker">
+                        16 · KLINE INTEGRITY
+                    </div>
+
+
+                    <h2>
+                        一根 K 线的数据应该满足什么关系？
+                    </h2>
+
+
+                    <p>
+
+                        一根正常的 K 线，
+                        四个价格之间应该满足基本的数据关系。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        High ≥ Open
+
+                        <br>
+
+                        High ≥ Close
+
+                        <br>
+
+                        High ≥ Low
+
+                        <br><br>
+
+                        Low ≤ Open
+
+                        <br>
+
+                        Low ≤ Close
+
+                        <br>
+
+                        Low ≤ High
+
+                    </div>
+
+
+                    <p>
+
+                        换句话说：
+
+                        <strong>
+                            High 应该是这个周期内最高的价格，
+                            Low 应该是这个周期内最低的价格。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        如果一个数据源返回：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        Open = 100
+
+                        <br>
+
+                        High = 98
+
+                    </div>
+
+
+                    <p>
+
+                        那么这条记录显然存在数据异常，
+                        因为最高价不应该低于开盘价。
+
+                    </p>
+
+
+                    <p>
+
+                        因此在构建行情系统时，
+                        K 线数据通常需要经过基本的数据校验。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     17
+                     ================================================== -->
+
+                <section class="article-section" id="kline-time">
+
+
+                    <div class="section-kicker">
+                        17 · KLINE TIME
+                    </div>
+
+
+                    <h2>
+                        K 线的时间应该如何理解？
+                    </h2>
+
+
+                    <p>
+
+                        K 线时间是初学者非常容易混淆的地方。
+
+                    </p>
+
+
+                    <p>
+
+                        一根 K 线代表的是一个时间区间，
+                        但数据接口中通常只会保存一个时间字段。
+
+                    </p>
+
+
+                    <p>
+
+                        例如一根 5 分钟 K 线可能对应：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        10:00:00 ～ 10:05:00
+
+                    </div>
+
+
+                    <p>
+
+                        那么接口可能使用：
+
+                    </p>
+
+
+                    <p>
+                        10:00
+                    </p>
+
+
+                    <p>
+
+                        或：
+
+                    </p>
+
+
+                    <p>
+                        10:05
+                    </p>
+
+
+                    <p>
+
+                        来代表这一根 K 线。
+
+                    </p>
+
+
+                    <p>
+
+                        不同数据源可能存在不同约定。
+
+                        因此，在使用 K 线 API 时，
+                        一定要确认时间字段代表的是：
+
+                        <strong>
+                            周期开始时间、周期结束时间，还是其他时间定义。
+                        </strong>
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     18
+                     ================================================== -->
+
+                <section class="article-section" id="kline-display">
+
+
+                    <div class="section-kicker">
+                        18 · KLINE DISPLAY
+                    </div>
+
+
+                    <h2>
+                        为什么同一份 K 线数据可以画出不同的图？
+                    </h2>
+
+
+                    <p>
+
+                        因为 K 线数据本身和图表展示并不是同一个概念。
+
+                    </p>
+
+
+                    <p>
+
+                        数据层可能只是：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        timestamp
+
+                        <br>
+
+                        open
+
+                        <br>
+
+                        high
+
+                        <br>
+
+                        low
+
+                        <br>
+
+                        close
+
+                        <br>
+
+                        volume
+
+                    </div>
+
+
+                    <p>
+
+                        前端则可以根据这些数据，
+                        绘制成不同样式的 K 线图。
+
+                    </p>
+
+
+                    <p>
+
+                        因此：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            K 线颜色属于展示方式。
+                        </li>
+
+                        <li class="checklist-item">
+                            实体宽度属于展示方式。
+                        </li>
+
+                        <li class="checklist-item">
+                            影线样式属于展示方式。
+                        </li>
+
+                        <li class="checklist-item">
+                            网格线属于展示方式。
+                        </li>
+
+                        <li class="checklist-item">
+                            坐标轴属于展示方式。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        真正的基础行情数据仍然是 OHLC 以及对应的时间信息。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     19
+                     ================================================== -->
+
+                <section class="article-section" id="kline-vs-price">
+
+
+                    <div class="section-kicker">
+                        19 · KLINE VS PRICE
+                    </div>
+
+
+                    <h2>
+                        K 线和单个价格有什么区别？
+                    </h2>
+
+
+                    <p>
+
+                        一个单独的价格只能告诉我们：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            某一个时刻或某一次成交的价格是多少。
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        而一根 K 线则可以描述一个时间周期中的价格范围。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                单个价格
+                            </h3>
+
+
+                            <p>
+                                描述某个时间点或某次成交对应的价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                K 线
+                            </h3>
+
+
+                            <p>
+                                描述一个时间周期中的开高低收。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                时间序列
+                            </h3>
+
+
+                            <p>
+                                将多根 K 线连接起来，形成连续的历史价格数据。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        所以 K 线的价值并不只是“画出来好看”，
+                        而是把大量价格变化压缩成了一种容易存储、
+                        查询、比较和可视化的数据结构。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     20
+                     ================================================== -->
+
+                <section class="article-section" id="common-mistakes">
+
+
+                    <div class="section-kicker">
+                        20 · COMMON MISTAKES
+                    </div>
+
+
+                    <h2>
+                        K 线学习中的常见误区
+                    </h2>
+
+
+                    <p>
+
+                        刚开始接触 K 线时，
+                        很容易出现几个典型误区。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                只看颜色
+                            </h3>
+
+
+                            <p>
+                                K 线颜色只是视觉表达，核心仍然是 Open、High、Low、Close。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                忽略时间周期
+                            </h3>
+
+
+                            <p>
+                                同样的 OHLC 数据，放在不同周期中代表完全不同的时间范围。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                一看到形态就下结论
+                            </h3>
+
+
+                            <p>
+                                K 线首先是一种数据表达方式，形态分析需要更多数据和上下文。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     21
+                     ================================================== -->
+
+                <section class="article-section" id="how-to-read-kline">
+
+
+                    <div class="section-kicker">
+                        21 · HOW TO READ KLINE
+                    </div>
+
+
+                    <h2>
+                        如何阅读一根 K 线？
+                    </h2>
+
+
+                    <p>
+
+                        如果现在给你一根 K 线，
+                        不需要急着判断涨跌趋势，
+                        可以先按照下面的顺序阅读。
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+
+                            <strong>第一步：确认时间周期。</strong>
+
+                            先知道这是一根 1 分钟、5 分钟、日线还是其他周期 K 线。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第二步：看 Open。</strong>
+
+                            找到这个周期开始时的价格。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第三步：看 High。</strong>
+
+                            找到这个周期曾经到达的最高价格。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第四步：看 Low。</strong>
+
+                            找到这个周期曾经到达的最低价格。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第五步：看 Close。</strong>
+
+                            找到这个周期结束时的价格。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第六步：再看成交量。</strong>
+
+                            了解这个时间周期内对应的成交规模。
+
+                        </li>
+
+                    </ul>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            先读数据，再读图形。
+                        </strong>
+
+                        这是理解 K 线最稳妥的方式。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     22
+                     ================================================== -->
+
+                <section class="article-section" id="kline-data-meaning">
+
+
+                    <div class="section-kicker">
+                        22 · KLINE DATA MEANING
+                    </div>
+
+
+                    <h2>
+                        一根 K 线真正记录了什么？
+                    </h2>
+
+
+                    <p>
+
+                        从数据角度看，
+                        一根 K 线实际上是在回答四个问题：
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                O
+                            </div>
+
+
+                            <h3>
+                                从哪里开始？
+                            </h3>
+
+
+                            <p>
+                                Open 告诉我们这个周期开始时的价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                H
+                            </div>
+
+
+                            <h3>
+                                最高到哪里？
+                            </h3>
+
+
+                            <p>
+                                High 告诉我们这个周期内的最高价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                L
+                            </div>
+
+
+                            <h3>
+                                最低到哪里？
+                            </h3>
+
+
+                            <p>
+                                Low 告诉我们这个周期内的最低价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                C
+                            </div>
+
+
+                            <h3>
+                                最后在哪里？
+                            </h3>
+
+
+                            <p>
+                                Close 告诉我们这个周期结束时的价格。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        所以：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            K 线 = 一个时间周期内价格变化的高度概括
+                        </strong>
+
+                    </div>
+
+
+                    <p>
+
+                        当大量 K 线按照时间顺序排列起来，
+                        就形成了我们熟悉的股票 K 线图。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     23
+                     ================================================== -->
+
+                <section class="article-section" id="lesson-summary">
+
+
+                    <div class="section-kicker">
+                        23 · LESSON SUMMARY
+                    </div>
+
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+
+                    <p>
+
+                        K 线并不是一种复杂的图形，
+                        它首先是一种非常实用的行情数据表达方式。
+
+                    </p>
+
+
+                    <p>
+
+                        一根基础 K 线最核心的数据就是：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            Open · High · Low · Close
+                        </strong>
+
+                    </div>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            <strong>Open</strong> 表示周期开始时的价格。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>High</strong> 表示周期内最高价格。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>Low</strong> 表示周期内最低价格。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>Close</strong> 表示周期结束时的价格。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>实体</strong>表示 Open 与 Close 之间的价格区间。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>影线</strong>连接实体与 High、Low。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>时间周期</strong>决定一根 K 线究竟描述多长时间。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>成交量</strong>可以与 K 线对应，用来描述同一周期内的成交规模。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        到这里，
+                        我们已经从历史行情进一步理解了 K 线的基本数据结构。
+
+                        下一步需要解决一个更实际的问题：
+
+                        <strong>
+                            同一只股票为什么可以同时拥有 1 分钟、5 分钟、15 分钟、日线、周线等不同 K 线？
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        这就进入下一篇：
+
+                        <strong>
+                            K 线周期与时间粒度。
+                        </strong>
+
+                    </p>
+
+
+                    <div class="article-next">
+
+
+                        <div>
+
+                            <div class="section-kicker">
+                                NEXT LESSON
+                            </div>
+
+
+                            <h3>
+                                LESSON 07 · K 线周期与时间粒度
+                            </h3>
+
+
+                            <p>
+                                理解 1 分钟、5 分钟、15 分钟、60 分钟、日线、周线与月线之间的区别。
+                            </p>
+
+                        </div>
+
+
+                        <a class="lesson-link" href="./07_kline_periods.html">
+                            下一篇 →
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </article>
+
+
+            <!-- ======================================================
+                 右侧目录
+                 ====================================================== -->
+
+            <aside class="article-toc">
+
+
+                <div class="toc-label">
+                    CONTENTS
+                </div>
+
+
+                <div class="toc-title">
+                    什么是 K 线？
+                </div>
+
+
+                <ul class="toc-list">
+
+
+                    <li>
+                        <a href="#what-is-kline">
+                            什么是 K 线？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#ohlc">
+                            Open、High、Low、Close 分别是什么？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#open">
+                            什么是开盘价？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#high">
+                            什么是最高价？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#low">
+                            什么是最低价？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#close">
+                            什么是收盘价？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-formation">
+                            一根 K 线是如何形成的？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#body">
+                            什么是 K 线实体？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#upper-lower-shadow">
+                            什么是 K 线上影线和下影线？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#price-range">
+                            K 线如何表示价格范围？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-period">
+                            K 线为什么一定要有时间周期？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#same-day-different-kline">
+                            同一天为什么可以有很多根 K 线？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-volume">
+                            K 线为什么经常和成交量放在一起？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-and-tick">
+                            K 线和 Tick 数据有什么区别？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-data-model">
+                            K 线在数据系统中是什么？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-integrity">
+                            一根 K 线的数据应该满足什么关系？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-time">
+                            K 线的时间应该如何理解？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-display">
+                            为什么同一份 K 线数据可以画出不同的图？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-vs-price">
+                            K 线和单个价格有什么区别？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#common-mistakes">
+                            K 线学习中的常见误区
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#how-to-read-kline">
+                            如何阅读一根 K 线？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#kline-data-meaning">
+                            一根 K 线真正记录了什么？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#lesson-summary">
+                            本篇总结
+                        </a>
+                    </li>
+
+
+                </ul>
+
+
+                <div class="toc-footer">
+
+
+                    <a class="lesson-link" href="./index.html">
+                        ← 返回课程总览
+                    </a>
+
+
+                    <br>
+
+
+                    STOCK LAB
+
+
+                    <br>
+
+
+                    股票研究与投资学习
+
+
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+        <footer class="page-footer">
+
+            STOCK LAB · 股票研究中心
+
+        </footer>
+
+
+    </main>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const tocLinks =
+                document.querySelectorAll(".toc-list a");
+
+            const sections = [];
+
+
+            tocLinks.forEach(link => {
+
+                const id =
+                    link.getAttribute("href");
+
+
+                if (!id || !id.startsWith("#")) {
+                    return;
+                }
+
+
+                const section =
+                    document.querySelector(id);
+
+
+                if (section) {
+
+                    sections.push({
+
+                        element: section,
+
+                        link: link
+
+                    });
+
+                }
+
+            });
+
+
+            if (!sections.length) {
+                return;
+            }
+
+
+            const observer =
+                new IntersectionObserver(
+
+                    entries => {
+
+                        entries.forEach(entry => {
+
+                            if (!entry.isIntersecting) {
+                                return;
+                            }
+
+
+                            sections.forEach(item => {
+
+                                item.link.classList.remove("active");
+
+                            });
+
+
+                            const current =
+                                sections.find(
+
+                                    item =>
+                                        item.element === entry.target
+
+                                );
+
+
+                            if (current) {
+
+                                current.link.classList.add("active");
+
+                            }
+
+                        });
+
+                    },
+
+                    {
+
+                        root: null,
+
+                        rootMargin:
+                            "-15% 0px -65% 0px",
+
+                        threshold: 0
+
+                    }
+
+                );
+
+
+            sections.forEach(item => {
+
+                observer.observe(item.element);
+
+            });
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

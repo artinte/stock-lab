@@ -1,0 +1,2600 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="什么是历史行情？理解实时行情与历史行情的区别，以及如何按照交易日期保存、查询股票历史价格、成交量与成交额等历史数据。">
+
+    <title>什么是历史行情？｜STOCK LAB</title>
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+</head>
+
+
+<body>
+
+    <main class="article-page">
+
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+
+            <article class="article-main">
+
+
+                <header class="article-header">
+
+
+                    <div class="article-eyebrow">
+                        LESSON 05 · MARKET DATA
+                    </div>
+
+
+                    <h1>
+                        什么是历史行情？
+                    </h1>
+
+
+                    <p class="article-lead">
+
+                        实时行情告诉我们股票“现在发生了什么”，
+                        而历史行情则告诉我们“过去发生了什么”。
+
+                        当我们希望查看一只股票过去某一天的价格、
+                        某一段时间的成交量，
+                        或者研究过去数年的价格变化时，
+                        就需要使用历史行情数据。
+
+                        本篇将从时间维度理解历史行情，
+                        建立交易日期、历史价格、历史成交和时间序列等基础概念，
+                        并进一步理解历史行情应该如何保存和查询。
+
+                    </p>
+
+
+                    <div class="article-meta">
+
+
+                        <span class="article-meta-item">
+                            第二阶段 · 历史行情与 K 线
+                        </span>
+
+
+                        <span class="article-meta-item">
+                            基础
+                        </span>
+
+
+                        <span class="article-meta-item">
+                            约 20 分钟
+                        </span>
+
+
+                        <span class="article-meta-item">
+                            STOCK LAB
+                        </span>
+
+
+                    </div>
+
+
+                </header>
+
+
+                <!-- ==================================================
+                     01
+                     ================================================== -->
+
+                <section class="article-section" id="what-is-historical-data">
+
+
+                    <div class="section-kicker">
+                        01 · WHAT IS HISTORICAL DATA
+                    </div>
+
+
+                    <h2>
+                        什么是历史行情？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>历史行情</strong>，
+                        可以简单理解为已经发生过的股票市场行情数据。
+
+                    </p>
+
+
+                    <p>
+
+                        如果实时行情描述的是：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            “现在这只股票多少钱？”
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        那么历史行情描述的就是：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            “过去某个时间，这只股票是什么价格、发生了多少成交？”
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        例如，我们可能希望知道：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            某只股票 2025 年 6 月 18 日的收盘价是多少？
+                        </li>
+
+                        <li class="checklist-item">
+                            过去一个月每天的最高价和最低价是多少？
+                        </li>
+
+                        <li class="checklist-item">
+                            某一年每天的成交量如何变化？
+                        </li>
+
+                        <li class="checklist-item">
+                            某个历史区间内累计成交额是多少？
+                        </li>
+
+                        <li class="checklist-item">
+                            一只股票过去几年价格经历了怎样的变化？
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        这些问题都属于历史行情数据的应用范围。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>简单理解：</strong>
+
+                        实时行情关注“现在”，
+                        历史行情关注“过去”。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     02
+                     ================================================== -->
+
+                <section class="article-section" id="realtime-vs-history">
+
+
+                    <div class="section-kicker">
+                        02 · REALTIME VS HISTORY
+                    </div>
+
+
+                    <h2>
+                        实时行情与历史行情有什么区别？
+                    </h2>
+
+
+                    <p>
+
+                        实时行情和历史行情并不是两套完全无关的数据。
+
+                        从某种角度看，
+                        实时行情其实是在不断产生新的市场数据，
+                        而这些已经发生的数据经过整理、确认和保存，
+                        就可以成为历史行情的一部分。
+
+                    </p>
+
+
+                    <p>
+
+                        可以把它理解成：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            实时行情 → 成交发生 → 数据记录 → 历史行情
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        两者最大的区别在于时间位置。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                实时行情
+                            </h3>
+
+
+                            <p>
+                                关注当前市场正在发生的价格与成交变化。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                历史行情
+                            </h3>
+
+
+                            <p>
+                                关注已经发生并被记录下来的价格与成交数据。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                共同基础
+                            </h3>
+
+
+                            <p>
+                                两者最终都来源于市场中的交易与行情事件。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     03
+                     ================================================== -->
+
+                <section class="article-section" id="time-dimension">
+
+
+                    <div class="section-kicker">
+                        03 · TIME DIMENSION
+                    </div>
+
+
+                    <h2>
+                        为什么历史行情一定要有时间？
+                    </h2>
+
+
+                    <p>
+
+                        历史行情最重要的特征之一，就是它必须具有明确的时间维度。
+
+                    </p>
+
+
+                    <p>
+
+                        如果只保存：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            价格 = 100.25
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        那么这条数据几乎没有办法作为历史行情使用。
+
+                        我们至少需要知道：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            这是什么股票？
+                        </li>
+
+                        <li class="checklist-item">
+                            这个价格发生在什么时候？
+                        </li>
+
+                        <li class="checklist-item">
+                            这是哪个交易日？
+                        </li>
+
+                        <li class="checklist-item">
+                            这是开盘价、收盘价还是其他价格？
+                        </li>
+
+                        <li class="checklist-item">
+                            数据属于哪个时间周期？
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        因此，一条完整的历史行情记录，
+                        通常至少需要同时包含：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            标的 + 时间 + 行情数据
+                        </strong>
+
+                        <br><br>
+
+                        例如：
+
+                        <br>
+
+                        600519.SH
+
+                        <br>
+
+                        2026-09-18
+
+                        <br>
+
+                        收盘价：……
+
+                    </div>
+
+
+                    <p>
+
+                        时间不是历史行情的附属信息，
+                        而是历史行情能够成立的基础。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     04
+                     ================================================== -->
+
+                <section class="article-section" id="trading-date">
+
+
+                    <div class="section-kicker">
+                        04 · TRADING DATE
+                    </div>
+
+
+                    <h2>
+                        什么是交易日期？
+                    </h2>
+
+
+                    <p>
+
+                        在股票历史数据中，
+                        经常会看到一个非常重要的字段：
+
+                        <strong>交易日期（Trading Date）</strong>。
+
+                    </p>
+
+
+                    <p>
+
+                        它表示这条行情数据对应的市场交易日期。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            symbol：600519.SH
+                        </strong>
+
+                        <br>
+
+                        trading_date：2026-09-18
+
+                        <br>
+
+                        close：……
+
+                    </div>
+
+
+                    <p>
+
+                        这里的交易日期并不只是普通的自然日期。
+
+                        它与交易所的交易日历有关。
+
+                    </p>
+
+
+                    <p>
+
+                        如果某一天市场休市，
+                        那么通常不会存在对应的正常日线成交记录。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，查询历史行情时，
+                        “日期范围”实际上应该理解为：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            某个交易日期范围。
+                        </strong>
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     05
+                     ================================================== -->
+
+                <section class="article-section" id="historical-price">
+
+
+                    <div class="section-kicker">
+                        05 · HISTORICAL PRICE
+                    </div>
+
+
+                    <h2>
+                        什么是历史价格？
+                    </h2>
+
+
+                    <p>
+
+                        历史价格就是过去某个时间点或某个交易周期内形成的价格数据。
+
+                    </p>
+
+
+                    <p>
+
+                        最常见的日线行情中，
+                        通常可以看到：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            <strong>开盘价</strong>：该交易周期开始时形成的价格。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>最高价</strong>：该交易周期内出现的最高价格。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>最低价</strong>：该交易周期内出现的最低价格。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>收盘价</strong>：该交易周期结束时形成的价格。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        这四个价格经常被称为：
+
+                        <strong>OHLC</strong>。
+
+                    </p>
+
+
+                    <p>
+
+                        它们是后续学习 K 线最重要的基础。
+
+                        下一篇课程会专门讨论 K 线，
+                        因此这里先建立概念，
+                        不急着深入 K 线形态和分析方法。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     06
+                     ================================================== -->
+
+                <section class="article-section" id="historical-volume">
+
+
+                    <div class="section-kicker">
+                        06 · HISTORICAL VOLUME
+                    </div>
+
+
+                    <h2>
+                        什么是历史成交？
+                    </h2>
+
+
+                    <p>
+
+                        历史行情不只有价格。
+
+                        与价格同时记录的，
+                        还有市场成交情况。
+
+                    </p>
+
+
+                    <p>
+
+                        最常见的成交字段包括：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            <strong>成交量</strong>：一定时间内形成的成交数量。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>成交额</strong>：一定时间内形成的成交金额。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>换手率</strong>：成交量相对于流通股本等基础数据计算得到的指标。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        例如一条日线数据可能同时包含：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        交易日期：2026-09-18
+
+                        <br>
+
+                        开盘价：……
+
+                        <br>
+
+                        最高价：……
+
+                        <br>
+
+                        最低价：……
+
+                        <br>
+
+                        收盘价：……
+
+                        <br>
+
+                        成交量：……
+
+                        <br>
+
+                        成交额：……
+
+                    </div>
+
+
+                    <p>
+
+                        这样一条记录就不仅告诉我们价格是多少，
+                        还告诉我们当天发生了多少交易。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     07
+                     ================================================== -->
+
+                <section class="article-section" id="daily-data">
+
+
+                    <div class="section-kicker">
+                        07 · DAILY DATA
+                    </div>
+
+
+                    <h2>
+                        什么是日线数据？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>日线</strong>，
+                        是按照一个交易日对行情进行汇总形成的数据。
+
+                    </p>
+
+
+                    <p>
+
+                        如果一只股票在一天中发生了大量成交，
+                        我们没有必要在普通日线页面中展示每一笔成交。
+
+                        可以把当天的市场活动汇总成一条记录。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            2026-09-18
+                        </strong>
+
+                        <br><br>
+
+                        Open：100.00
+
+                        <br>
+
+                        High：103.50
+
+                        <br>
+
+                        Low：99.20
+
+                        <br>
+
+                        Close：102.80
+
+                        <br>
+
+                        Volume：……
+
+                        <br>
+
+                        Amount：……
+
+                    </div>
+
+
+                    <p>
+
+                        这样，一天的数据就被压缩成一条结构化记录。
+
+                    </p>
+
+
+                    <p>
+
+                        日线数据是股票研究中最常见的历史行情形式之一，
+                        也是后续技术分析、量化分析和回测的重要基础。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     08
+                     ================================================== -->
+
+                <section class="article-section" id="time-series">
+
+
+                    <div class="section-kicker">
+                        08 · TIME SERIES
+                    </div>
+
+
+                    <h2>
+                        什么是行情时间序列？
+                    </h2>
+
+
+                    <p>
+
+                        当我们把同一只股票多个交易日的历史行情按照时间顺序排列，
+                        就形成了一组非常典型的<strong>时间序列数据</strong>。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        2026-09-14 → 收盘价……
+
+                        <br>
+
+                        2026-09-15 → 收盘价……
+
+                        <br>
+
+                        2026-09-16 → 收盘价……
+
+                        <br>
+
+                        2026-09-17 → 收盘价……
+
+                        <br>
+
+                        2026-09-18 → 收盘价……
+
+                    </div>
+
+
+                    <p>
+
+                        每一个日期对应一条行情记录，
+                        多条记录按照时间先后连接起来，
+                        就构成了股票价格的历史轨迹。
+
+                    </p>
+
+
+                    <p>
+
+                        这就是为什么股票行情数据特别适合使用
+                        <strong>时间序列</strong>的方式进行组织。
+
+                    </p>
+
+
+                    <p>
+
+                        后续我们学习技术指标、趋势分析、
+                        收益率计算以及量化回测时，
+                        本质上都需要在这种时间序列上进行计算。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     09
+                     ================================================== -->
+
+                <section class="article-section" id="date-range">
+
+
+                    <div class="section-kicker">
+                        09 · DATE RANGE
+                    </div>
+
+
+                    <h2>
+                        如何查询一段历史行情？
+                    </h2>
+
+
+                    <p>
+
+                        实际使用历史行情时，
+                        很少只查询一个日期。
+
+                        更常见的是查询一个时间范围。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            查询 2026-01-01 到 2026-06-30 的历史行情。
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        一个典型的查询条件可以包括：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            股票代码。
+                        </li>
+
+                        <li class="checklist-item">
+                            开始日期。
+                        </li>
+
+                        <li class="checklist-item">
+                            结束日期。
+                        </li>
+
+                        <li class="checklist-item">
+                            数据周期。
+                        </li>
+
+                        <li class="checklist-item">
+                            是否使用复权价格。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        最终返回的结果通常是一组按照时间排序的历史记录。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            symbol + start_date + end_date + interval
+                        </strong>
+
+                        <br><br>
+
+                        这会成为后续行情 API 设计中非常常见的一种查询模式。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     10
+                     ================================================== -->
+
+                <section class="article-section" id="historical-order">
+
+
+                    <div class="section-kicker">
+                        10 · HISTORICAL ORDER
+                    </div>
+
+
+                    <h2>
+                        为什么历史行情通常需要按照时间排序？
+                    </h2>
+
+
+                    <p>
+
+                        历史行情本身具有明显的时间先后关系。
+
+                        因此，在读取历史数据时，
+                        通常需要明确数据的排序方向。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                升序
+                            </h3>
+
+
+                            <p>
+                                从较早的交易日开始，逐渐排列到最新交易日。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                降序
+                            </h3>
+
+
+                            <p>
+                                从最新交易日开始，逐渐排列到更早的交易日。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                明确规则
+                            </h3>
+
+
+                            <p>
+                                API 和数据模型最好明确规定默认排序方式。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        对数据分析来说，
+                        时间顺序尤其重要。
+
+                        如果数据顺序错误，
+                        收益率、移动平均线、
+                        技术指标甚至回测结果都可能出现问题。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     11
+                     ================================================== -->
+
+                <section class="article-section" id="missing-data">
+
+
+                    <div class="section-kicker">
+                        11 · MISSING DATA
+                    </div>
+
+
+                    <h2>
+                        历史行情会不会缺数据？
+                    </h2>
+
+
+                    <p>
+
+                        会。
+
+                        历史行情并不意味着每一个自然日都有一条数据。
+
+                    </p>
+
+
+                    <p>
+
+                        最常见的原因包括：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            当天不是交易日。
+                        </li>
+
+                        <li class="checklist-item">
+                            股票处于停牌状态。
+                        </li>
+
+                        <li class="checklist-item">
+                            数据源本身存在缺失。
+                        </li>
+
+                        <li class="checklist-item">
+                            某些证券在特定历史阶段尚未上市。
+                        </li>
+
+                        <li class="checklist-item">
+                            数据清洗或接口转换过程中出现问题。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        因此，如果查询：
+
+                    </p>
+
+
+                    <p>
+                        2026-01-01 ～ 2026-01-31
+                    </p>
+
+
+                    <p>
+
+                        返回的记录数量并不一定等于 31 条。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>不要把自然日数量直接当成行情记录数量。</strong>
+
+                        历史行情应该按照交易日来理解。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     12
+                     ================================================== -->
+
+                <section class="article-section" id="suspension-history">
+
+
+                    <div class="section-kicker">
+                        12 · SUSPENSION HISTORY
+                    </div>
+
+
+                    <h2>
+                        停牌期间的历史行情怎么办？
+                    </h2>
+
+
+                    <p>
+
+                        这是历史数据中特别容易被忽略的问题。
+
+                    </p>
+
+
+                    <p>
+
+                        如果一只股票在某段时间处于停牌状态，
+                        那么这段时间可能没有正常的成交价格。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，数据系统不能为了让日期连续，
+                        就随意把前一天的收盘价复制到每一个停牌日期。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        09-01：有成交
+
+                        <br>
+
+                        09-02：有成交
+
+                        <br>
+
+                        09-03：停牌
+
+                        <br>
+
+                        09-04：停牌
+
+                        <br>
+
+                        09-05：复牌
+
+                    </div>
+
+
+                    <p>
+
+                        这里的 09-03 和 09-04
+                        不能简单理解为“这两天的收盘价与 09-02 完全相同”。
+
+                    </p>
+
+
+                    <p>
+
+                        正确做法应该保留交易状态和数据缺失语义，
+                        让使用数据的人能够知道：
+
+                        <strong>
+                            这段时间没有正常交易成交。
+                        </strong>
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     13
+                     ================================================== -->
+
+                <section class="article-section" id="historical-storage">
+
+
+                    <div class="section-kicker">
+                        13 · HISTORICAL STORAGE
+                    </div>
+
+
+                    <h2>
+                        历史行情应该如何保存？
+                    </h2>
+
+
+                    <p>
+
+                        如果我们开始构建自己的行情数据系统，
+                        一个非常自然的问题就是：
+
+                        <strong>
+                            这些历史数据应该怎么存？
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        最基础的思路是：
+
+                        每一条历史行情记录都对应一个明确的证券和时间。
+
+                    </p>
+
+
+                    <p>
+
+                        例如可以抽象成：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        symbol
+
+                        <br>
+
+                        trading_date
+
+                        <br>
+
+                        open
+
+                        <br>
+
+                        high
+
+                        <br>
+
+                        low
+
+                        <br>
+
+                        close
+
+                        <br>
+
+                        volume
+
+                        <br>
+
+                        amount
+
+                    </div>
+
+
+                    <p>
+
+                        多条记录组合起来，
+                        就可以形成完整的历史行情表。
+
+                    </p>
+
+
+                    <p>
+
+                        在实际系统中，
+                        还可能增加：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            数据来源。
+                        </li>
+
+                        <li class="checklist-item">
+                            数据更新时间。
+                        </li>
+
+                        <li class="checklist-item">
+                            数据周期。
+                        </li>
+
+                        <li class="checklist-item">
+                            复权类型。
+                        </li>
+
+                        <li class="checklist-item">
+                            数据版本或更新时间。
+                        </li>
+
+                    </ul>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     14
+                     ================================================== -->
+
+                <section class="article-section" id="historical-query">
+
+
+                    <div class="section-kicker">
+                        14 · HISTORICAL QUERY
+                    </div>
+
+
+                    <h2>
+                        历史行情最常见的查询方式
+                    </h2>
+
+
+                    <p>
+
+                        当历史数据保存下来之后，
+                        最常见的使用方式就是查询。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                查询单日
+                            </h3>
+
+
+                            <p>
+                                查看某只股票某一个交易日的行情。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                查询区间
+                            </h3>
+
+
+                            <p>
+                                查看开始日期到结束日期之间的完整历史行情。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                查询最近数据
+                            </h3>
+
+
+                            <p>
+                                获取最近若干个交易日的行情记录。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        在股票研究系统中，
+                        “查询某只股票一段时间的历史行情”
+                        是最基础也最常用的数据请求之一。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     15
+                     ================================================== -->
+
+                <section class="article-section" id="historical-data-source">
+
+
+                    <div class="section-kicker">
+                        15 · HISTORICAL DATA SOURCE
+                    </div>
+
+
+                    <h2>
+                        历史行情从哪里来？
+                    </h2>
+
+
+                    <p>
+
+                        历史行情并不是凭空产生的。
+
+                        它通常来自交易所、券商、专业数据服务商、
+                        金融数据平台或者其他合法的数据接口。
+
+                    </p>
+
+
+                    <p>
+
+                        不同数据源在以下方面可能存在差异：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            数据覆盖范围不同。
+                        </li>
+
+                        <li class="checklist-item">
+                            历史数据长度不同。
+                        </li>
+
+                        <li class="checklist-item">
+                            字段定义可能不同。
+                        </li>
+
+                        <li class="checklist-item">
+                            更新时间可能不同。
+                        </li>
+
+                        <li class="checklist-item">
+                            复权数据处理方式可能不同。
+                        </li>
+
+                        <li class="checklist-item">
+                            数据质量和缺失情况可能不同。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        所以在实际构建行情系统时，
+                        不能只考虑“有没有数据”，
+                        还需要考虑数据的来源、定义和质量。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            同一个字段名称，不一定意味着所有数据源的定义完全相同。
+                        </strong>
+
+                        数据接入时需要进行统一和标准化。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     16
+                     ================================================== -->
+
+                <section class="article-section" id="historical-consistency">
+
+
+                    <div class="section-kicker">
+                        16 · HISTORICAL CONSISTENCY
+                    </div>
+
+
+                    <h2>
+                        为什么历史行情需要保持一致性？
+                    </h2>
+
+
+                    <p>
+
+                        历史数据最大的价值之一，
+                        就是可以进行长期比较。
+
+                    </p>
+
+
+                    <p>
+
+                        如果同一只股票在不同日期的数据定义完全不同，
+                        那么历史数据就很难用于分析。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            股票代码格式需要尽可能统一。
+                        </li>
+
+                        <li class="checklist-item">
+                            日期格式需要统一。
+                        </li>
+
+                        <li class="checklist-item">
+                            OHLC 字段定义需要统一。
+                        </li>
+
+                        <li class="checklist-item">
+                            成交量和成交额单位需要明确。
+                        </li>
+
+                        <li class="checklist-item">
+                            复权与不复权数据需要明确区分。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        这也是为什么专业行情系统通常会设计统一的数据模型，
+                        而不是把不同数据源返回的数据原样混在一起。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     17
+                     ================================================== -->
+
+                <section class="article-section" id="historical-data-and-analysis">
+
+
+                    <div class="section-kicker">
+                        17 · DATA AND ANALYSIS
+                    </div>
+
+
+                    <h2>
+                        历史行情能用来做什么？
+                    </h2>
+
+
+                    <p>
+
+                        历史行情是股票研究中非常重要的数据基础。
+
+                        有了历史数据之后，
+                        我们才能对过去的市场表现进行系统分析。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                趋势研究
+                            </h3>
+
+
+                            <p>
+                                观察价格在不同时间阶段中的变化。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                技术分析
+                            </h3>
+
+
+                            <p>
+                                基于历史价格和成交数据计算技术指标。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                量化研究
+                            </h3>
+
+
+                            <p>
+                                使用历史数据进行策略研究、回测和统计分析。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        需要注意的是，
+                        历史数据只能告诉我们过去发生了什么。
+
+                        它本身并不等于未来结果。
+
+                    </p>
+
+
+                    <p>
+
+                        数据分析的意义在于帮助我们建立可验证的研究过程，
+                        而不是把历史数据直接当成未来的结论。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     18
+                     ================================================== -->
+
+                <section class="article-section" id="historical-data-api">
+
+
+                    <div class="section-kicker">
+                        18 · HISTORICAL DATA API
+                    </div>
+
+
+                    <h2>
+                        历史行情在 API 中应该如何表达？
+                    </h2>
+
+
+                    <p>
+
+                        如果要把历史行情接入一个股票研究系统，
+                        一个常见的 API 思路就是：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            股票代码
+                        </strong>
+
+                        <br>
+
+                        symbol
+
+                        <br><br>
+
+                        <strong>
+                            开始时间
+                        </strong>
+
+                        <br>
+
+                        start_time
+
+                        <br><br>
+
+                        <strong>
+                            结束时间
+                        </strong>
+
+                        <br>
+
+                        end_time
+
+                        <br><br>
+
+                        <strong>
+                            数据周期
+                        </strong>
+
+                        <br>
+
+                        interval
+
+                    </div>
+
+
+                    <p>
+
+                        例如用户可以请求：
+
+                    </p>
+
+
+                    <p>
+                        某只股票 + 某个日期范围 + 日线数据
+                    </p>
+
+
+                    <p>
+
+                        系统则返回按照时间排列的一组历史行情记录。
+
+                    </p>
+
+
+                    <p>
+
+                        这种接口设计不仅可以用于网页展示，
+                        也可以服务于后续的技术分析、
+                        数据可视化和量化研究。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     19
+                     ================================================== -->
+
+                <section class="article-section" id="common-mistakes">
+
+
+                    <div class="section-kicker">
+                        19 · COMMON MISTAKES
+                    </div>
+
+
+                    <h2>
+                        历史行情中的常见误区
+                    </h2>
+
+
+                    <p>
+
+                        学习历史行情时，
+                        以下几个问题尤其值得注意。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                自然日等于交易日
+                            </h3>
+
+
+                            <p>
+                                实际行情数据应该根据交易日历理解，而不是简单按照自然日补齐。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                没有价格就是数据坏了
+                            </h3>
+
+
+                            <p>
+                                停牌、未上市或非交易日都可能导致没有正常行情记录。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                所有历史价格都一样
+                            </h3>
+
+
+                            <p>
+                                不同数据源、复权方式和字段定义可能造成价格数据差异。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     20
+                     ================================================== -->
+
+                <section class="article-section" id="how-to-read-history">
+
+
+                    <div class="section-kicker">
+                        20 · HOW TO READ HISTORY
+                    </div>
+
+
+                    <h2>
+                        如何阅读一份历史行情？
+                    </h2>
+
+
+                    <p>
+
+                        当你拿到一份股票历史行情数据时，
+                        可以按照下面的顺序进行检查。
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+
+                            <strong>第一步：确认股票。</strong>
+
+                            确认 symbol 是否对应正确的证券。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第二步：确认时间。</strong>
+
+                            确认数据对应的交易日期和时间范围。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第三步：确认周期。</strong>
+
+                            判断这是日线、分钟线还是其他周期数据。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第四步：确认价格。</strong>
+
+                            查看开盘、最高、最低和收盘价格。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第五步：确认成交。</strong>
+
+                            查看成交量、成交额等字段。
+
+                        </li>
+
+
+                        <li class="checklist-item">
+
+                            <strong>第六步：确认数据口径。</strong>
+
+                            判断是否复权、单位是什么、数据来自哪里。
+
+                        </li>
+
+                    </ul>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            先确认数据是什么，再开始分析数据。
+                        </strong>
+
+                        这是处理历史行情时非常重要的习惯。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     21
+                     ================================================== -->
+
+                <section class="article-section" id="historical-data-value">
+
+
+                    <div class="section-kicker">
+                        21 · HISTORICAL DATA VALUE
+                    </div>
+
+
+                    <h2>
+                        历史行情真正记录的是什么？
+                    </h2>
+
+
+                    <p>
+
+                        从更底层的角度看，
+                        历史行情其实是在记录：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            市场在过去某个时间发生过什么。
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        价格记录了价格变化，
+
+                        成交量记录了成交数量，
+
+                        成交额记录了成交规模，
+
+                        时间记录了这些事件发生的顺序。
+
+                    </p>
+
+
+                    <p>
+
+                        当这些数据按照时间组织起来之后，
+                        我们就获得了一个可以被查询、
+                        统计、分析和可视化的市场历史。
+
+                    </p>
+
+
+                    <p>
+
+                        所以，历史行情并不仅仅是一张“过去的价格表”。
+
+                        它实际上是股票市场过去交易活动的一种结构化记录。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     22
+                     ================================================== -->
+
+                <section class="article-section" id="lesson-summary">
+
+
+                    <div class="section-kicker">
+                        22 · LESSON SUMMARY
+                    </div>
+
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+
+                    <p>
+
+                        历史行情是理解股票市场时间维度的基础。
+
+                        与实时行情相比，
+                        它最大的特点是：
+
+                        <strong>
+                            数据已经发生，并按照时间被记录下来。
+                        </strong>
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            <strong>实时行情</strong>主要关注当前市场正在发生的变化。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>历史行情</strong>记录已经发生的价格和成交。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>交易日期</strong>是历史行情的重要时间索引。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>OHLC</strong>构成常见历史价格数据的核心。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>成交量和成交额</strong>描述历史交易活动。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>时间序列</strong>让多日行情能够按照时间连接起来。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>数据口径</strong>决定不同历史数据能否被正确比较。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        到这里，我们已经完成了从实时行情到历史行情的过渡。
+
+                        下一步，需要进一步理解：
+
+                        <strong>
+                            一天的价格和成交数据究竟是怎样被压缩成一根 K 线的？
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        这将进入下一篇课程。
+
+                    </p>
+
+
+                    <div class="article-next">
+
+
+                        <div>
+
+                            <div class="section-kicker">
+                                NEXT LESSON
+                            </div>
+
+
+                            <h3>
+                                LESSON 06 · 什么是 K 线？
+                            </h3>
+
+
+                            <p>
+                                从开盘价、最高价、最低价和收盘价开始，理解 K 线是如何描述一个交易周期的。
+                            </p>
+
+                        </div>
+
+
+                        <a class="lesson-link" href="./06_kline_basics.html">
+                            下一篇 →
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </article>
+
+
+            <!-- ======================================================
+                 右侧目录
+                 ====================================================== -->
+
+            <aside class="article-toc">
+
+
+                <div class="toc-label">
+                    CONTENTS
+                </div>
+
+
+                <div class="toc-title">
+                    什么是历史行情？
+                </div>
+
+
+                <ul class="toc-list">
+
+
+                    <li>
+                        <a href="#what-is-historical-data">
+                            什么是历史行情？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#realtime-vs-history">
+                            实时行情与历史行情有什么区别？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#time-dimension">
+                            为什么历史行情一定要有时间？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#trading-date">
+                            什么是交易日期？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-price">
+                            什么是历史价格？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-volume">
+                            什么是历史成交？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#daily-data">
+                            什么是日线数据？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#time-series">
+                            什么是行情时间序列？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#date-range">
+                            如何查询一段历史行情？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-order">
+                            为什么历史行情通常需要按照时间排序？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#missing-data">
+                            历史行情会不会缺数据？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#suspension-history">
+                            停牌期间的历史行情怎么办？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-storage">
+                            历史行情应该如何保存？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-query">
+                            历史行情最常见的查询方式
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-data-source">
+                            历史行情从哪里来？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-consistency">
+                            为什么历史行情需要保持一致性？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-data-and-analysis">
+                            历史行情能用来做什么？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-data-api">
+                            历史行情在 API 中应该如何表达？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#common-mistakes">
+                            历史行情中的常见误区
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#how-to-read-history">
+                            如何阅读一份历史行情？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#historical-data-value">
+                            历史行情真正记录的是什么？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#lesson-summary">
+                            本篇总结
+                        </a>
+                    </li>
+
+
+                </ul>
+
+
+                <div class="toc-footer">
+
+
+                    <a class="lesson-link" href="./index.html">
+                        ← 返回课程总览
+                    </a>
+
+
+                    <br>
+
+
+                    STOCK LAB
+
+
+                    <br>
+
+
+                    股票研究与投资学习
+
+
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+        <footer class="page-footer">
+
+            STOCK LAB · 股票研究中心
+
+        </footer>
+
+
+    </main>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const tocLinks =
+                document.querySelectorAll(".toc-list a");
+
+            const sections = [];
+
+
+            tocLinks.forEach(link => {
+
+                const id =
+                    link.getAttribute("href");
+
+
+                if (!id || !id.startsWith("#")) {
+                    return;
+                }
+
+
+                const section =
+                    document.querySelector(id);
+
+
+                if (section) {
+
+                    sections.push({
+
+                        element: section,
+
+                        link: link
+
+                    });
+
+                }
+
+            });
+
+
+            if (!sections.length) {
+                return;
+            }
+
+
+            const observer =
+                new IntersectionObserver(
+
+                    entries => {
+
+                        entries.forEach(entry => {
+
+                            if (!entry.isIntersecting) {
+                                return;
+                            }
+
+
+                            sections.forEach(item => {
+
+                                item.link.classList.remove("active");
+
+                            });
+
+
+                            const current =
+                                sections.find(
+
+                                    item =>
+                                        item.element === entry.target
+
+                                );
+
+
+                            if (current) {
+
+                                current.link.classList.add("active");
+
+                            }
+
+                        });
+
+                    },
+
+                    {
+
+                        root: null,
+
+                        rootMargin:
+                            "-15% 0px -65% 0px",
+
+                        threshold: 0
+
+                    }
+
+                );
+
+
+            sections.forEach(item => {
+
+                observer.observe(item.element);
+
+            });
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

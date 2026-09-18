@@ -1,0 +1,2285 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="股票交易状态：理解股票开市、停牌、复牌、集合竞价、连续交易、非交易时间等状态，以及交易状态如何影响行情数据的有效性与股票研究。">
+
+    <title>股票交易状态｜STOCK LAB</title>
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+</head>
+
+
+<body>
+
+    <main class="article-page">
+
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+
+            <article class="article-main">
+
+
+                <header class="article-header">
+
+
+                    <div class="article-eyebrow">
+                        LESSON 04 · MARKET DATA
+                    </div>
+
+
+                    <h1>
+                        股票交易状态
+                    </h1>
+
+
+                    <p class="article-lead">
+
+                        一只股票的行情数据，并不是任何时候都处于同一种状态。
+
+                        市场可能正在开盘交易，也可能处于集合竞价、午间休市、
+                        收盘、临时停牌、长期停牌或者复牌后的交易阶段。
+
+                        因此，看到一组价格和成交数据之前，
+                        首先需要知道这只股票当前是否处于正常交易状态。
+
+                        本篇将从交易时间、开市、停牌、复牌以及非交易时间等方面，
+                        建立对股票交易状态的完整认识。
+
+                    </p>
+
+
+                    <div class="article-meta">
+
+
+                        <span class="article-meta-item">
+                            第一阶段 · 认识行情数据
+                        </span>
+
+
+                        <span class="article-meta-item">
+                            基础
+                        </span>
+
+
+                        <span class="article-meta-item">
+                            约 20 分钟
+                        </span>
+
+
+                        <span class="article-meta-item">
+                            STOCK LAB
+                        </span>
+
+
+                    </div>
+
+
+                </header>
+
+
+                <!-- ==================================================
+                     01
+                     ================================================== -->
+
+                <section class="article-section" id="what-is-trading-status">
+
+
+                    <div class="section-kicker">
+                        01 · WHAT IS TRADING STATUS
+                    </div>
+
+
+                    <h2>
+                        什么是股票交易状态？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>交易状态</strong>，可以简单理解为：
+                        一只证券在当前时间点处于什么交易阶段，
+                        以及投资者是否能够按照正常市场规则进行买卖。
+
+                    </p>
+
+
+                    <p>
+
+                        对行情系统来说，交易状态是非常重要的基础信息。
+
+                        因为同样是一个“最新价”，
+                        如果股票正在连续交易，那么这个价格可能刚刚发生变化；
+
+                        如果股票已经收盘，那么最新价可能只是当天最后一次成交价格；
+
+                        如果股票正在停牌，那么价格可能长时间保持不变，
+                        但这并不代表市场认为它的价值没有发生变化。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>核心概念：</strong>
+
+                        行情数据不能脱离交易状态单独理解。
+                        “价格没有变化”和“市场没有交易”是两个不同的概念。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     02
+                     ================================================== -->
+
+                <section class="article-section" id="trading-day">
+
+
+                    <div class="section-kicker">
+                        02 · TRADING DAY
+                    </div>
+
+
+                    <h2>
+                        什么是交易日？
+                    </h2>
+
+
+                    <p>
+
+                        股票市场并不是每天都开放。
+
+                        一般来说，交易所会按照交易日历安排市场交易，
+                        周末、法定节假日以及交易所规定的其他休市日期，
+                        通常不会进行正常股票交易。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，在行情系统中，
+                        “今天”并不一定意味着“今天有股票交易”。
+
+                        例如一个自然日可能是周末，
+                        那么即使系统正在运行，也不会产生新的股票成交数据。
+
+                    </p>
+
+
+                    <p>
+
+                        这也是为什么行情数据系统通常需要维护
+                        <strong>交易日历（Trading Calendar）</strong>。
+
+                        程序不能简单地使用：
+
+                    </p>
+
+
+                    <p>
+                        今天是不是星期一到星期五？
+                    </p>
+
+
+                    <p>
+
+                        来判断市场是否开市。
+
+                        实际交易日还需要考虑节假日、调休以及交易所自身的交易安排。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>数据系统中的一个重要区别：</strong>
+
+                        自然日是时间概念，交易日是市场运行概念。
+                        两者不能简单画等号。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     03
+                     ================================================== -->
+
+                <section class="article-section" id="trading-session">
+
+
+                    <div class="section-kicker">
+                        03 · TRADING SESSION
+                    </div>
+
+
+                    <h2>
+                        股票一天是怎么交易的？
+                    </h2>
+
+
+                    <p>
+
+                        股票交易并不是从零点开始一直持续到二十四点。
+
+                        对于大多数传统股票市场而言，
+                        一个交易日通常由多个不同阶段组成。
+
+                    </p>
+
+
+                    <p>
+
+                        可以把一天的市场状态理解成：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            开盘前 → 集合竞价 → 连续交易 → 午间休市 → 连续交易 → 收盘
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        不同市场、不同证券以及不同交易制度，
+                        具体时间安排可能存在差异。
+
+                        因此，在程序设计中不应该把某一个市场的时间规则
+                        写死成所有市场都适用的规则。
+
+                    </p>
+
+
+                    <p>
+
+                        对于行情系统而言，
+                        更重要的是知道当前市场处于哪一个状态，
+                        而不是仅仅知道当前时间是多少。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     04
+                     ================================================== -->
+
+                <section class="article-section" id="pre-market">
+
+
+                    <div class="section-kicker">
+                        04 · PRE MARKET
+                    </div>
+
+
+                    <h2>
+                        开盘前是什么状态？
+                    </h2>
+
+
+                    <p>
+
+                        开盘前，股票市场尚未进入正常的连续交易阶段。
+
+                        但这并不意味着市场完全没有任何信息产生。
+
+                    </p>
+
+
+                    <p>
+
+                        在某些交易阶段，
+                        市场可能已经开始接受委托并形成买卖双方的报价。
+
+                        这些信息与正式成交后的行情数据并不完全相同。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，一个行情页面如果显示：
+
+                        <strong>未开盘</strong>、
+
+                        <strong>盘前</strong>、
+
+                        <strong>竞价中</strong>
+
+                        等状态，用户需要知道：
+                        当前页面中的部分价格可能属于竞价阶段信息，
+                        而不是普通连续交易中的最新成交。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>注意：</strong>
+
+                        “有报价”不等于“已经发生正常成交”。
+                        行情系统需要区分委托、报价和成交等不同数据。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     05
+                     ================================================== -->
+
+                <section class="article-section" id="auction">
+
+
+                    <div class="section-kicker">
+                        05 · AUCTION
+                    </div>
+
+
+                    <h2>
+                        什么是集合竞价？
+                    </h2>
+
+
+                    <p>
+
+                        集合竞价是一种重要的交易方式。
+
+                        它并不是按照每一笔订单到达的顺序，
+                        立即进行连续撮合，
+                        而是在特定时间段内集中收集买卖申报，
+                        按照交易规则形成相应的成交价格。
+
+                    </p>
+
+
+                    <p>
+
+                        对普通行情用户而言，
+                        集合竞价最容易产生的误解是：
+
+                        “屏幕上已经出现价格，
+                        所以这就是正常交易中的最新价。”
+
+                    </p>
+
+
+                    <p>
+
+                        实际上，竞价阶段与连续交易阶段的市场状态并不相同。
+
+                        因此行情系统通常会把不同阶段进行区分。
+
+                    </p>
+
+
+                    <p>
+
+                        后面的课程还会进一步讨论集合竞价的具体机制，
+                        本篇只需要先建立一个基本认识：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>先记住：</strong>
+
+                        集合竞价属于交易过程中的特定阶段，
+                        不能简单按照连续交易阶段的逻辑理解所有字段。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     06
+                     ================================================== -->
+
+                <section class="article-section" id="continuous-trading">
+
+
+                    <div class="section-kicker">
+                        06 · CONTINUOUS TRADING
+                    </div>
+
+
+                    <h2>
+                        什么是连续交易？
+                    </h2>
+
+
+                    <p>
+
+                        连续交易是大家最熟悉的股票交易阶段。
+
+                        在这个阶段，
+                        市场持续接收买卖委托，
+                        符合撮合条件的订单按照交易规则不断成交。
+
+                    </p>
+
+
+                    <p>
+
+                        当股票处于正常连续交易状态时，
+                        行情页面中的：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            <strong>最新价</strong>可以随着成交不断变化。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>涨跌</strong>会根据最新成交价格重新计算。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>涨跌幅</strong>也会随价格变化更新。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>成交量</strong>会随着新的成交不断增加。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>成交额</strong>也会随着成交不断累计。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        这也是实时行情系统最主要的数据更新阶段。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     07
+                     ================================================== -->
+
+                <section class="article-section" id="midday-break">
+
+
+                    <div class="section-kicker">
+                        07 · MIDDAY BREAK
+                    </div>
+
+
+                    <h2>
+                        午间休市是什么？
+                    </h2>
+
+
+                    <p>
+
+                        部分股票市场的交易日会存在午间休市。
+
+                        在这个时间段，
+                        市场暂时停止正常连续交易，
+                        但交易日并没有结束。
+
+                    </p>
+
+
+                    <p>
+
+                        这时候最容易出现一个数据理解问题：
+
+                        <strong>
+                            为什么行情不动了？
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        原因并不一定是行情系统出了问题，
+                        也可能只是市场当前处于休市状态。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，一个可靠的行情页面应该能够让用户区分：
+
+                        <strong>数据没有更新</strong>
+
+                        与
+
+                        <strong>市场没有交易</strong>。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        如果页面能够明确显示“休市中”“午间休市”等状态，
+                        用户就不需要仅仅通过价格是否变化来猜测市场状态。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     08
+                     ================================================== -->
+
+                <section class="article-section" id="closed">
+
+
+                    <div class="section-kicker">
+                        08 · CLOSED
+                    </div>
+
+
+                    <h2>
+                        收盘后是什么状态？
+                    </h2>
+
+
+                    <p>
+
+                        当当天正常交易结束后，
+                        市场进入收盘状态。
+
+                    </p>
+
+
+                    <p>
+
+                        此时行情页面通常仍然会展示大量数据：
+
+                        最新价、涨跌、涨跌幅、成交量、成交额、
+                        换手率以及各种估值指标。
+
+                    </p>
+
+
+                    <p>
+
+                        但这些数据的含义已经发生变化。
+
+                        例如收盘后的“最新价”，
+                        通常可以理解为当天最后形成的成交价格，
+                        而不是“此时此刻正在发生的成交价格”。
+
+                    </p>
+
+
+                    <p>
+
+                        因此：
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                最新价
+                            </h3>
+
+
+                            <p>
+                                收盘后通常代表当天最后的有效成交价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                成交量
+                            </h3>
+
+
+                            <p>
+                                通常代表当天已经累计形成的成交量。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                涨跌幅
+                            </h3>
+
+
+                            <p>
+                                通常反映当天收盘价格相对于基准价格的变化。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     09
+                     ================================================== -->
+
+                <section class="article-section" id="suspension">
+
+
+                    <div class="section-kicker">
+                        09 · SUSPENSION
+                    </div>
+
+
+                    <h2>
+                        什么是停牌？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>停牌</strong>是指证券在特定情况下，
+                        按照交易所或相关规则暂时停止交易。
+
+                    </p>
+
+
+                    <p>
+
+                        停牌期间，
+                        投资者通常无法像正常交易状态下一样进行该证券的普通买卖成交。
+
+                    </p>
+
+
+                    <p>
+
+                        停牌可能与公司公告、重大事项、
+                        信息披露、监管安排或者其他交易所规定的情形有关。
+
+                        具体原因需要结合证券公告和交易所相关信息进行判断。
+
+                    </p>
+
+
+                    <p>
+
+                        对行情系统来说，
+                        停牌是一个非常重要的状态。
+
+                        因为如果程序只看价格，
+                        很容易把停牌股票误认为“价格非常稳定”。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>这是一个非常重要的区别：</strong>
+
+                        停牌期间价格长时间不变，
+                        并不意味着市场在持续以这个价格交易。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     10
+                     ================================================== -->
+
+                <section class="article-section" id="suspension-data">
+
+
+                    <div class="section-kicker">
+                        10 · SUSPENSION DATA
+                    </div>
+
+
+                    <h2>
+                        停牌时行情数据会怎样？
+                    </h2>
+
+
+                    <p>
+
+                        停牌后，行情页面中已经存在的数据并不会凭空消失。
+
+                        系统可能仍然展示停牌前的最新价格、
+                        前收价格、历史成交量等信息。
+
+                    </p>
+
+
+                    <p>
+
+                        但这些字段必须结合当前交易状态理解。
+
+                        例如：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            最新价可能仍然是停牌前最后一次成交价格。
+                        </li>
+
+                        <li class="checklist-item">
+                            成交量不会因为时间流逝而自动增加。
+                        </li>
+
+                        <li class="checklist-item">
+                            成交额不会因为停牌时间变长而自动增加。
+                        </li>
+
+                        <li class="checklist-item">
+                            页面上的价格不代表当前时刻正在发生新的成交。
+                        </li>
+
+                        <li class="checklist-item">
+                            某些实时字段可能为空、保持上一状态或由数据源特殊标记。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        不同数据供应商对于停牌状态的字段定义和返回方式可能有所区别。
+
+                        因此，在构建数据系统时，
+                        不能假设所有数据源都会以完全相同的方式表示停牌。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     11
+                     ================================================== -->
+
+                <section class="article-section" id="resumption">
+
+
+                    <div class="section-kicker">
+                        11 · RESUMPTION
+                    </div>
+
+
+                    <h2>
+                        什么是复牌？
+                    </h2>
+
+
+                    <p>
+
+                        <strong>复牌</strong>可以理解为：
+                        证券在此前暂停交易后，重新恢复交易。
+
+                    </p>
+
+
+                    <p>
+
+                        复牌意味着股票重新进入可以产生正常交易成交的状态，
+                        但复牌后的具体交易安排仍然需要根据相关规则和公告判断。
+
+                    </p>
+
+
+                    <p>
+
+                        对行情数据系统而言，
+                        复牌是一个重要的状态切换点。
+
+                        在复牌之前，
+                        系统可能长时间没有新的成交数据；
+
+                        复牌之后，
+                        新的成交、价格和成交量又可能开始产生。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>状态变化：</strong>
+
+                        停牌 → 复牌 → 重新产生交易数据。
+
+                        因此，交易状态本身也是行情数据的重要组成部分。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     12
+                     ================================================== -->
+
+                <section class="article-section" id="normal-trading">
+
+
+                    <div class="section-kicker">
+                        12 · NORMAL TRADING
+                    </div>
+
+
+                    <h2>
+                        什么是正常交易状态？
+                    </h2>
+
+
+                    <p>
+
+                        在行情系统中，
+                        “正常交易”通常可以理解为证券当前处于允许正常交易、
+                        并且市场正在对应交易阶段运行的状态。
+
+                    </p>
+
+
+                    <p>
+
+                        需要注意的是：
+
+                        <strong>
+                            正常交易
+                        </strong>
+
+                        和
+
+                        <strong>
+                            市场开市
+                        </strong>
+
+                        不是完全相同的概念。
+
+                    </p>
+
+
+                    <p>
+
+                        市场可能已经进入交易日，
+                        但当前具体时刻仍处于开盘前、竞价阶段或午间休市。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，更完整的行情系统通常需要同时考虑：
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                证券状态
+                            </h3>
+
+
+                            <p>
+                                这只证券本身是否处于正常交易、停牌等状态。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                市场状态
+                            </h3>
+
+
+                            <p>
+                                当前交易所整体是否处于交易时间。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                交易阶段
+                            </h3>
+
+
+                            <p>
+                                当前究竟处于竞价、连续交易、休市还是收盘。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     13
+                     ================================================== -->
+
+                <section class="article-section" id="non-trading-time">
+
+
+                    <div class="section-kicker">
+                        13 · NON TRADING TIME
+                    </div>
+
+
+                    <h2>
+                        什么是非交易时间？
+                    </h2>
+
+
+                    <p>
+
+                        非交易时间就是市场当前没有进行正常股票交易的时间。
+
+                        它可能包括：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            交易日开盘前。
+                        </li>
+
+                        <li class="checklist-item">
+                            午间休市期间。
+                        </li>
+
+                        <li class="checklist-item">
+                            当日收盘后。
+                        </li>
+
+                        <li class="checklist-item">
+                            周末等非交易日。
+                        </li>
+
+                        <li class="checklist-item">
+                            法定节假日或交易所规定的休市日期。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        非交易时间并不意味着行情页面必须“没有数据”。
+
+                        恰恰相反，
+                        一个成熟的行情页面通常仍然需要展示最近一次有效行情，
+                        同时明确告诉用户当前市场状态。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            价格：100.25
+                        </strong>
+
+                        <br>
+
+                        市场状态：已收盘
+
+                        <br>
+
+                        最后更新：今日收盘
+
+                    </div>
+
+
+                    <p>
+
+                        这样的展示方式比单纯显示“100.25”更加完整。
+
+                        因为用户不仅知道价格是多少，
+                        还知道这个价格属于什么时间和市场状态。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     14
+                     ================================================== -->
+
+                <section class="article-section" id="stale-data">
+
+
+                    <div class="section-kicker">
+                        14 · STALE DATA
+                    </div>
+
+
+                    <h2>
+                        为什么行情数据可能“看起来没更新”？
+                    </h2>
+
+
+                    <p>
+
+                        当用户发现某只股票的价格长时间没有变化时，
+                        第一反应往往是：
+
+                        “是不是接口坏了？”
+
+                    </p>
+
+
+                    <p>
+
+                        但实际上至少存在几种不同的可能：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            市场当前处于非交易时间。
+                        </li>
+
+                        <li class="checklist-item">
+                            股票当前处于停牌状态。
+                        </li>
+
+                        <li class="checklist-item">
+                            股票暂时没有产生新的成交。
+                        </li>
+
+                        <li class="checklist-item">
+                            数据源更新存在延迟。
+                        </li>
+
+                        <li class="checklist-item">
+                            网络或数据接口出现异常。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        这几种情况的处理方式完全不同。
+
+                        因此，一个好的行情系统不能简单地用：
+
+                    </p>
+
+
+                    <p>
+                        “数据多久没变化？”
+                    </p>
+
+
+                    <p>
+
+                        来判断行情是否异常。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>数据没有变化 ≠ 数据没有意义 ≠ 接口发生故障。</strong>
+
+                        判断数据是否有效，必须结合交易状态、更新时间和数据源状态。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     15
+                     ================================================== -->
+
+                <section class="article-section" id="quote-time">
+
+
+                    <div class="section-kicker">
+                        15 · QUOTE TIME
+                    </div>
+
+
+                    <h2>
+                        为什么行情一定要有更新时间？
+                    </h2>
+
+
+                    <p>
+
+                        任何实时行情数据都应该尽可能明确自己的时间信息。
+
+                        一个价格如果没有时间，
+                        很难准确判断它到底代表什么。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <p>
+                        最新价 = 100.50
+                    </p>
+
+
+                    <p>
+
+                        仅仅看到这个数字，
+                        我们不知道它是刚刚成交的，
+                        还是十分钟前成交的，
+                        或者是昨天收盘时留下来的。
+
+                    </p>
+
+
+                    <p>
+
+                        如果增加时间信息：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            最新价：100.50
+                        </strong>
+
+                        <br>
+
+                        更新时间：09:42:18
+
+                        <br>
+
+                        状态：交易中
+
+                    </div>
+
+
+                    <p>
+
+                        这组信息的含义就清晰得多。
+
+                    </p>
+
+
+                    <p>
+
+                        所以在行情系统中，
+                        <strong>价格 + 时间 + 交易状态</strong>
+                        是非常重要的一组基础信息。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     16
+                     ================================================== -->
+
+                <section class="article-section" id="status-and-fields">
+
+
+                    <div class="section-kicker">
+                        16 · STATUS AND FIELDS
+                    </div>
+
+
+                    <h2>
+                        交易状态如何影响行情字段？
+                    </h2>
+
+
+                    <p>
+
+                        交易状态并不是一个独立存在的标签。
+
+                        它会直接影响我们对其他行情字段的解释。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                最新价
+                            </h3>
+
+
+                            <p>
+                                需要结合最后成交时间判断是否为当前交易中的价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                成交量
+                            </h3>
+
+
+                            <p>
+                                需要判断当前是否仍处于成交数据持续产生的阶段。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                涨跌幅
+                            </h3>
+
+
+                            <p>
+                                需要明确计算基准以及当前价格所属的交易阶段。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        这说明：
+
+                        <strong>
+                            行情字段之间不是孤立的。
+                        </strong>
+
+                        交易状态会成为解释其他数据的重要上下文。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     17
+                     ================================================== -->
+
+                <section class="article-section" id="market-status-model">
+
+
+                    <div class="section-kicker">
+                        17 · MARKET STATUS MODEL
+                    </div>
+
+
+                    <h2>
+                        如何设计一个行情状态模型？
+                    </h2>
+
+
+                    <p>
+
+                        如果开始自己构建行情系统，
+                        不建议只保存一个简单的：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            is_trading = true / false
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        因为实际市场状态通常比“交易 / 不交易”更加丰富。
+
+                    </p>
+
+
+                    <p>
+
+                        一个行情系统至少可以从几个维度考虑：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            <strong>market</strong>：属于哪个市场。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>trading_date</strong>：当前交易日。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>status</strong>：当前市场或证券状态。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>session</strong>：当前交易阶段。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>timestamp</strong>：行情更新时间。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>is_trading</strong>：是否处于可交易阶段。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        例如可以形成类似这样的逻辑：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            市场：A 股
+                        </strong>
+
+                        <br>
+
+                        交易日：2026-09-18
+
+                        <br>
+
+                        状态：交易中
+
+                        <br>
+
+                        阶段：连续交易
+
+                        <br>
+
+                        更新时间：10:32:15
+
+                    </div>
+
+
+                    <p>
+
+                        这种结构比单独保存一个价格字段更加适合后续的数据处理、
+                        API 返回以及前端展示。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     18
+                     ================================================== -->
+
+                <section class="article-section" id="how-to-read-status">
+
+
+                    <div class="section-kicker">
+                        18 · HOW TO READ STATUS
+                    </div>
+
+
+                    <h2>
+                        如何阅读行情页面上的交易状态？
+                    </h2>
+
+
+                    <p>
+
+                        当你打开一只股票的行情页面时，
+                        可以按照下面的顺序快速判断当前数据。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                先看市场
+                            </h3>
+
+
+                            <p>
+                                确认这只证券属于哪个市场以及对应的交易规则。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                再看状态
+                            </h3>
+
+
+                            <p>
+                                判断当前是交易中、休市、停牌还是其他状态。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                最后看价格
+                            </h3>
+
+
+                            <p>
+                                在确认状态之后，再解释最新价、涨跌和成交数据。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        这个顺序非常重要。
+
+                        如果一上来只盯着价格，
+                        很容易忽略价格背后的交易状态。
+
+                    </p>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     19
+                     ================================================== -->
+
+                <section class="article-section" id="common-mistakes">
+
+
+                    <div class="section-kicker">
+                        19 · COMMON MISTAKES
+                    </div>
+
+
+                    <h2>
+                        常见的交易状态误区
+                    </h2>
+
+
+                    <p>
+
+                        初学行情数据时，
+                        以下几个错误非常常见。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                价格不变就是没行情
+                            </h3>
+
+
+                            <p>
+                                可能只是市场处于休市、收盘或者股票停牌状态。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                有价格就是正在交易
+                            </h3>
+
+
+                            <p>
+                                页面可以展示历史或最近一次有效价格，并不代表正在产生新成交。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                星期一到星期五都开市
+                            </h3>
+
+
+                            <p>
+                                实际交易还受到交易日历、节假日和市场规则影响。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     20
+                     ================================================== -->
+
+                <section class="article-section" id="data-validity">
+
+
+                    <div class="section-kicker">
+                        20 · DATA VALIDITY
+                    </div>
+
+
+                    <h2>
+                        为什么不能简单地认为行情数据永远有效？
+                    </h2>
+
+
+                    <p>
+
+                        这是本篇最重要的结论之一。
+
+                    </p>
+
+
+                    <p>
+
+                        一个数据源返回了：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            price = 100.25
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        并不意味着：
+
+                    </p>
+
+
+                    <p>
+                        <strong>
+                            “100.25 就是当前市场正在交易的价格。”
+                        </strong>
+                    </p>
+
+
+                    <p>
+
+                        我们还需要知道：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            这个价格什么时候产生？
+                        </li>
+
+                        <li class="checklist-item">
+                            当前市场是否处于交易时间？
+                        </li>
+
+                        <li class="checklist-item">
+                            当前证券是否处于停牌状态？
+                        </li>
+
+                        <li class="checklist-item">
+                            数据源是否存在延迟？
+                        </li>
+
+                        <li class="checklist-item">
+                            这个价格是最新成交、收盘价还是其他类型的价格？
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        只有把这些上下文信息结合起来，
+                        才能正确理解一条行情数据。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            行情数据 = 数值 + 时间 + 状态 + 数据来源
+                        </strong>
+
+                        <br><br>
+
+                        这也是从“看行情”走向“理解行情数据系统”的重要一步。
+
+                    </div>
+
+
+                </section>
+
+
+                <!-- ==================================================
+                     21
+                     ================================================== -->
+
+                <section class="article-section" id="lesson-summary">
+
+
+                    <div class="section-kicker">
+                        21 · LESSON SUMMARY
+                    </div>
+
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+
+                    <p>
+
+                        股票行情并不是一组永远实时变化的数字。
+
+                        在理解行情之前，
+                        首先需要知道市场和证券当前处于什么状态。
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+                        <li class="checklist-item">
+                            <strong>交易日</strong>决定市场今天是否安排交易。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>交易阶段</strong>决定当前处于竞价、连续交易、休市还是收盘。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>停牌</strong>意味着证券暂时停止正常交易。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>复牌</strong>意味着证券重新进入交易过程。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>更新时间</strong>帮助判断价格数据的新旧程度。
+                        </li>
+
+                        <li class="checklist-item">
+                            <strong>交易状态</strong>是理解其他行情字段的重要上下文。
+                        </li>
+
+                    </ul>
+
+
+                    <p>
+
+                        到这里，你已经完成了行情数据入门阶段最重要的一组基础概念：
+
+                        从第一篇认识“行情数据是什么”，
+                        到第二篇理解“实时行情是什么”，
+                        再到第三篇拆解“行情字段”，
+                        最后通过本篇理解“这些数据在什么交易状态下产生”。
+
+                    </p>
+
+
+                    <p>
+
+                        接下来，我们将从当前行情进一步走向历史行情，
+                        开始理解股票过去的价格和成交数据是如何被记录、
+                        保存以及组织起来的。
+
+                    </p>
+
+
+                    <div class="article-next">
+
+
+                        <div>
+
+                            <div class="section-kicker">
+                                NEXT LESSON
+                            </div>
+
+                            <h3>
+                                LESSON 05 · 什么是历史行情数据？
+                            </h3>
+
+                            <p>
+                                从实时行情走向历史数据，理解 K 线、日线以及历史价格序列。
+                            </p>
+
+                        </div>
+
+
+                        <a class="lesson-link" href="./05_historical_data.html">
+                            下一篇 →
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+
+            </article>
+
+
+            <!-- ======================================================
+                 右侧目录
+                 ====================================================== -->
+
+            <aside class="article-toc">
+
+
+                <div class="toc-label">
+                    CONTENTS
+                </div>
+
+
+                <div class="toc-title">
+                    股票交易状态
+                </div>
+
+
+                <ul class="toc-list">
+
+
+                    <li>
+                        <a href="#what-is-trading-status">
+                            什么是股票交易状态？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#trading-day">
+                            什么是交易日？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#trading-session">
+                            股票一天是怎么交易的？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#pre-market">
+                            开盘前是什么状态？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#auction">
+                            什么是集合竞价？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#continuous-trading">
+                            什么是连续交易？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#midday-break">
+                            午间休市是什么？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#closed">
+                            收盘后是什么状态？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#suspension">
+                            什么是停牌？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#suspension-data">
+                            停牌时行情数据会怎样？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#resumption">
+                            什么是复牌？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#normal-trading">
+                            什么是正常交易状态？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#non-trading-time">
+                            什么是非交易时间？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#stale-data">
+                            为什么行情数据可能“看起来没更新”？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#quote-time">
+                            为什么行情一定要有更新时间？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#status-and-fields">
+                            交易状态如何影响行情字段？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#market-status-model">
+                            如何设计一个行情状态模型？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#how-to-read-status">
+                            如何阅读行情页面上的交易状态？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#common-mistakes">
+                            常见的交易状态误区
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#data-validity">
+                            为什么不能简单地认为行情数据永远有效？
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a href="#lesson-summary">
+                            本篇总结
+                        </a>
+                    </li>
+
+
+                </ul>
+
+
+                <div class="toc-footer">
+
+
+                    <a class="lesson-link" href="./index.html">
+                        ← 返回课程总览
+                    </a>
+
+
+                    <br>
+
+
+                    STOCK LAB
+
+
+                    <br>
+
+
+                    股票研究与投资学习
+
+
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+        <footer class="page-footer">
+
+            STOCK LAB · 股票研究中心
+
+        </footer>
+
+
+    </main>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const tocLinks =
+                document.querySelectorAll(".toc-list a");
+
+            const sections = [];
+
+
+            tocLinks.forEach(link => {
+
+                const id =
+                    link.getAttribute("href");
+
+
+                if (!id || !id.startsWith("#")) {
+                    return;
+                }
+
+
+                const section =
+                    document.querySelector(id);
+
+
+                if (section) {
+
+                    sections.push({
+
+                        element: section,
+
+                        link: link
+
+                    });
+
+                }
+
+            });
+
+
+            if (!sections.length) {
+                return;
+            }
+
+
+            const observer =
+                new IntersectionObserver(
+
+                    entries => {
+
+                        entries.forEach(entry => {
+
+                            if (!entry.isIntersecting) {
+                                return;
+                            }
+
+
+                            sections.forEach(item => {
+
+                                item.link.classList.remove("active");
+
+                            });
+
+
+                            const current =
+                                sections.find(
+
+                                    item =>
+                                        item.element === entry.target
+
+                                );
+
+
+                            if (current) {
+
+                                current.link.classList.add("active");
+
+                            }
+
+                        });
+
+                    },
+
+                    {
+
+                        root: null,
+
+                        rootMargin:
+                            "-15% 0px -65% 0px",
+
+                        threshold: 0
+
+                    }
+
+                );
+
+
+            sections.forEach(item => {
+
+                observer.observe(item.element);
+
+            });
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>
