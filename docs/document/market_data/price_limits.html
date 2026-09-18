@@ -1,0 +1,1837 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>
+        涨停、跌停与价格限制 - STOCK LAB
+    </title>
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+</head>
+
+
+<body>
+
+
+    <main class="article-page">
+
+
+        <!-- 返回课程目录 -->
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+
+            <!-- =========================================================
+             文章主体
+        ========================================================== -->
+
+            <article class="article-main">
+
+
+                <!-- =====================================================
+                 文章头部
+            ====================================================== -->
+
+                <header class="article-header">
+
+
+                    <div class="article-eyebrow">
+                        DATA · MARKET DATA · LESSON 10
+                    </div>
+
+
+                    <h1>
+                        涨停、跌停与价格限制
+                    </h1>
+
+
+                    <p class="article-lead">
+
+                        股票价格并不是在任何情况下都可以无限上涨或下跌。
+                        本篇从涨停、跌停和价格限制出发，
+                        理解股票价格变化的边界，以及这些限制如何进入行情数据。
+
+                    </p>
+
+
+                    <div class="article-meta">
+
+                        <span>
+                            行情数据
+                        </span>
+
+                        <span>
+                            基础
+                        </span>
+
+                        <span>
+                            约 25 分钟
+                        </span>
+
+                    </div>
+
+
+                </header>
+
+
+                <!-- =====================================================
+                 01
+            ====================================================== -->
+
+                <section class="article-section" id="what-is-price-limit">
+
+                    <div class="section-kicker">
+                        01
+                    </div>
+
+
+                    <h2>
+                        什么是价格限制？
+                    </h2>
+
+
+                    <p>
+                        价格限制是交易市场对股票价格在一定交易周期内
+                        最大上涨幅度和最大下跌幅度设置的规则。
+                    </p>
+
+
+                    <p>
+                        简单来说，就是规定：
+                        <strong>这一交易周期内，价格最多可以涨到哪里，最多可以跌到哪里。</strong>
+                    </p>
+
+
+                    <p>
+                        因此，当股票价格达到规定的上限时，
+                        通常称为<strong>涨停</strong>；
+                        当价格达到规定的下限时，
+                        通常称为<strong>跌停</strong>。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>核心概念：</strong>
+
+                        价格限制关注的不是股票价值，
+                        而是某一个交易周期内允许出现的价格变化范围。
+
+                    </div>
+
+                </section>
+
+
+                <!-- =====================================================
+                 02
+            ====================================================== -->
+
+                <section class="article-section" id="what-is-limit-up">
+
+                    <div class="section-kicker">
+                        02
+                    </div>
+
+
+                    <h2>
+                        什么是涨停？
+                    </h2>
+
+
+                    <p>
+                        当股票价格上涨到交易规则允许的当日价格上限时，
+                        就可以称为达到涨停价。
+                    </p>
+
+
+                    <p>
+                        例如，一只股票前一交易日的参考价格为
+                        <strong>10.00 元</strong>，
+                        假设适用的价格涨幅限制为
+                        <strong>10%</strong>。
+                    </p>
+
+
+                    <p>
+                        那么理论上的涨停价格为：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>10.00 × (1 + 10%) = 11.00 元</strong>
+
+                    </div>
+
+
+                    <p>
+                        当股票价格达到相应的价格上限后，
+                        就不能继续按照更高的价格成交。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 03
+            ====================================================== -->
+
+                <section class="article-section" id="what-is-limit-down">
+
+                    <div class="section-kicker">
+                        03
+                    </div>
+
+
+                    <h2>
+                        什么是跌停？
+                    </h2>
+
+
+                    <p>
+                        当股票价格下跌到交易规则允许的当日价格下限时，
+                        就可以称为达到跌停价。
+                    </p>
+
+
+                    <p>
+                        例如参考价格为
+                        <strong>10.00 元</strong>，
+                        假设价格跌幅限制为
+                        <strong>10%</strong>。
+                    </p>
+
+
+                    <p>
+                        那么理论上的跌停价格为：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>10.00 × (1 - 10%) = 9.00 元</strong>
+
+                    </div>
+
+
+                    <p>
+                        这意味着，在适用该规则的情况下，
+                        当日交易价格不能继续向下突破相应的价格限制。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 04
+            ====================================================== -->
+
+                <section class="article-section" id="limit-price">
+
+                    <div class="section-kicker">
+                        04
+                    </div>
+
+
+                    <h2>
+                        什么是涨停价和跌停价？
+                    </h2>
+
+
+                    <p>
+                        <strong>涨停价</strong>和
+                        <strong>跌停价</strong>
+                        是价格限制规则计算出来的两个边界价格。
+                    </p>
+
+
+                    <p>
+                        可以把它们理解成当天价格区间的两个边界：
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                ↑
+                            </div>
+
+                            <h3>
+                                涨停价
+                            </h3>
+
+                            <p>
+                                当日允许达到的价格上限。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                ↓
+                            </div>
+
+                            <h3>
+                                跌停价
+                            </h3>
+
+                            <p>
+                                当日允许达到的价格下限。
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+                        因此，在行情数据中，
+                        涨停价和跌停价通常属于非常重要的参考字段。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 05
+            ====================================================== -->
+
+                <section class="article-section" id="reference-price">
+
+                    <div class="section-kicker">
+                        05
+                    </div>
+
+
+                    <h2>
+                        涨停价和跌停价是根据什么计算的？
+                    </h2>
+
+
+                    <p>
+                        价格限制通常需要一个参考价格作为计算基础。
+                    </p>
+
+
+                    <p>
+                        对于普通股票行情来说，
+                        这个参考价格通常与前一交易日的收盘价格有关。
+                    </p>
+
+
+                    <p>
+                        在最简单的情况下，可以抽象为：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            涨停价 = 参考价格 ×（1 + 涨幅限制）
+                        </strong>
+
+                        <br><br>
+
+                        <strong>
+                            跌停价 = 参考价格 ×（1 - 跌幅限制）
+                        </strong>
+
+                    </div>
+
+
+                    <p>
+                        但实际市场并不是所有证券、
+                        所有交易阶段都采用完全相同的限制规则。
+                    </p>
+
+
+                    <p>
+                        因此，数据系统不能简单地认为：
+                        <strong>所有股票永远都是 ±10%。</strong>
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 06
+            ====================================================== -->
+
+                <section class="article-section" id="limit-percent">
+
+                    <div class="section-kicker">
+                        06
+                    </div>
+
+
+                    <h2>
+                        什么是涨跌幅限制？
+                    </h2>
+
+
+                    <p>
+                        涨跌幅限制表示一个交易周期内，
+                        价格相对于参考价格允许变化的最大比例。
+                    </p>
+
+
+                    <p>
+                        例如限制为
+                        <strong>10%</strong>，
+                        可以理解为价格变化范围大致为：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            -10% ≤ 价格变化幅度 ≤ +10%
+                        </strong>
+
+                    </div>
+
+
+                    <p>
+                        注意这里说的是<strong>价格变化的限制范围</strong>，
+                        而不是说股票每天一定会上涨或下跌 10%。
+                    </p>
+
+
+                    <p>
+                        股票可能上涨 2%、上涨 5%，
+                        也可能下跌 3%，
+                        甚至可能完全没有涨跌。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 07
+            ====================================================== -->
+
+                <section class="article-section" id="limit-not-target">
+
+                    <div class="section-kicker">
+                        07
+                    </div>
+
+
+                    <h2>
+                        涨停不是上涨目标
+                    </h2>
+
+
+                    <p>
+                        这是学习价格限制时非常容易出现的误解。
+                    </p>
+
+
+                    <p>
+                        涨停价表示的是<strong>允许达到的价格上限</strong>，
+                        而不是市场认为股票应该达到的价格。
+                    </p>
+
+
+                    <p>
+                        例如：
+                    </p>
+
+
+                    <div class="checklist">
+
+
+                        <div class="checklist-item">
+                            ✓ 涨停价是规则计算出的价格边界
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 股票可以低于涨停价交易
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 股票达到涨停价并不代表当天成交量为零
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 涨停价不代表股票的内在价值
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- =====================================================
+                 08
+            ====================================================== -->
+
+                <section class="article-section" id="limit-not-trading-stop">
+
+                    <div class="section-kicker">
+                        08
+                    </div>
+
+
+                    <h2>
+                        涨停是不是停止交易？
+                    </h2>
+
+
+                    <p>
+                        <strong>涨停并不等于股票停止交易。</strong>
+                    </p>
+
+
+                    <p>
+                        达到涨停价格后，
+                        市场仍然可能存在买卖委托，
+                        也可能继续发生成交。
+                    </p>
+
+
+                    <p>
+                        真正需要区分的是：
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <h3>
+                                价格限制
+                            </h3>
+
+                            <p>
+                                限制成交价格能够达到的范围。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <h3>
+                                交易状态
+                            </h3>
+
+                            <p>
+                                描述证券当前是否处于可交易状态。
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+                        这两个概念在行情系统中应该分别建模，
+                        不应该混为一谈。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 09
+            ====================================================== -->
+
+                <section class="article-section" id="limit-up-and-volume">
+
+                    <div class="section-kicker">
+                        09
+                    </div>
+
+
+                    <h2>
+                        涨停价和成交量有什么关系？
+                    </h2>
+
+
+                    <p>
+                        涨停价格描述的是价格边界，
+                        成交量描述的是实际成交数量。
+                    </p>
+
+
+                    <p>
+                        因此：
+                    </p>
+
+
+                    <div class="checklist">
+
+
+                        <div class="checklist-item">
+                            ✓ 涨停价 ≠ 成交量
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 达到涨停价 ≠ 没有成交
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 涨停价格只能说明价格达到上限
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 成交量仍然需要从成交数据中获得
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+                        这也是为什么行情页面通常会同时展示
+                        最新价、涨停价、跌停价、成交量和成交额。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 10
+            ====================================================== -->
+
+                <section class="article-section" id="limit-price-example">
+
+                    <div class="section-kicker">
+                        10
+                    </div>
+
+
+                    <h2>
+                        用一个例子理解价格限制
+                    </h2>
+
+
+                    <p>
+                        假设某股票前一交易日收盘价为
+                        <strong>20.00 元</strong>，
+                        当前适用的价格涨跌幅限制为
+                        <strong>10%</strong>。
+                    </p>
+
+
+                    <p>
+                        那么：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        参考价格 = 20.00 元
+
+                        <br><br>
+
+                        涨停价格 = 20.00 × 1.10 = 22.00 元
+
+                        <br><br>
+
+                        跌停价格 = 20.00 × 0.90 = 18.00 元
+
+                    </div>
+
+
+                    <p>
+                        因此，在这个简化例子中，
+                        当日价格限制区间就是
+                        <strong>18.00 ～ 22.00 元</strong>。
+                    </p>
+
+
+                    <p>
+                        这只是为了理解价格限制的基本计算逻辑，
+                        实际交易还需要考虑证券类型、
+                        交易制度、价格最小变动单位以及具体规则。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 11
+            ====================================================== -->
+
+                <section class="article-section" id="tick-size">
+
+                    <div class="section-kicker">
+                        11
+                    </div>
+
+
+                    <h2>
+                        为什么计算出来的价格还需要处理？
+                    </h2>
+
+
+                    <p>
+                        因为交易价格并不是可以无限精确地取任意小数。
+                    </p>
+
+
+                    <p>
+                        市场通常存在规定的
+                        <strong>最小价格变动单位</strong>，
+                        也就是常说的价格最小变动档位。
+                    </p>
+
+
+                    <p>
+                        因此，涨停价和跌停价在计算后，
+                        还需要按照相应市场规则进行价格处理。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            价格限制计算 ≠ 简单数学乘法
+                        </strong>
+
+                        <br><br>
+
+                        实际系统还需要考虑价格精度、
+                        最小变动单位以及具体交易规则。
+
+                    </div>
+
+                </section>
+
+
+                <!-- =====================================================
+                 12
+            ====================================================== -->
+
+                <section class="article-section" id="different-markets">
+
+                    <div class="section-kicker">
+                        12
+                    </div>
+
+
+                    <h2>
+                        不同市场的价格限制可能不同
+                    </h2>
+
+
+                    <p>
+                        股票行情数据不能简单套用一套固定的涨跌幅规则。
+                    </p>
+
+
+                    <p>
+                        不同交易所、不同证券类型、
+                        不同上市阶段以及不同交易制度，
+                        都可能对应不同的价格限制规则。
+                    </p>
+
+
+                    <p>
+                        因此在设计行情数据系统时，
+                        更合理的思路是：
+                    </p>
+
+
+                    <div class="checklist">
+
+
+                        <div class="checklist-item">
+                            ✓ 把价格限制作为规则，而不是写死的常数
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 根据证券类型识别适用制度
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 根据交易状态判断当前规则
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 从可靠行情源获取最终涨停价和跌停价
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- =====================================================
+                 13
+            ====================================================== -->
+
+                <section class="article-section" id="special-status">
+
+                    <div class="section-kicker">
+                        13
+                    </div>
+
+
+                    <h2>
+                        特殊交易状态下为什么可能不同？
+                    </h2>
+
+
+                    <p>
+                        某些证券可能处于特殊交易状态，
+                        其价格限制规则与普通股票并不完全相同。
+                    </p>
+
+
+                    <p>
+                        例如股票可能经历上市初期、
+                        特殊处理状态或者其他特殊交易安排。
+                    </p>
+
+
+                    <p>
+                        这意味着：
+                        <strong>
+                            看到一只股票的名称或代码，
+                            不能仅凭经验判断它当天一定适用多少涨跌幅限制。
+                        </strong>
+                    </p>
+
+
+                    <div class="article-note">
+
+                        对数据系统而言，
+                        <strong>证券状态和交易规则本身也是行情数据的重要上下文。</strong>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =====================================================
+                 14
+            ====================================================== -->
+
+                <section class="article-section" id="limit-up-limit-down">
+
+                    <div class="section-kicker">
+                        14
+                    </div>
+
+
+                    <h2>
+                        涨停和跌停与最新价有什么关系？
+                    </h2>
+
+
+                    <p>
+                        最新价表示当前最近一笔成交对应的价格，
+                        而涨停价和跌停价表示允许价格变化的边界。
+                    </p>
+
+
+                    <p>
+                        三者属于不同的数据概念。
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                LAST
+                            </div>
+
+                            <h3>
+                                最新价
+                            </h3>
+
+                            <p>
+                                当前最近成交价格。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                HIGH
+                            </div>
+
+                            <h3>
+                                涨停价
+                            </h3>
+
+                            <p>
+                                规则允许的价格上限。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                LOW
+                            </div>
+
+                            <h3>
+                                跌停价
+                            </h3>
+
+                            <p>
+                                规则允许的价格下限。
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+                        因此，行情页面可以通过比较最新价与涨停价、
+                        跌停价之间的关系，
+                        判断当前价格距离价格边界还有多远。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 15
+            ====================================================== -->
+
+                <section class="article-section" id="high-low-limit">
+
+                    <div class="section-kicker">
+                        15
+                    </div>
+
+
+                    <h2>
+                        涨停价和跌停价与最高价、最低价有什么区别？
+                    </h2>
+
+
+                    <p>
+                        这是另一个非常重要的区别。
+                    </p>
+
+
+                    <p>
+                        <strong>最高价</strong>和
+                        <strong>最低价</strong>
+                        是实际发生过的成交价格范围。
+                    </p>
+
+
+                    <p>
+                        而<strong>涨停价</strong>和
+                        <strong>跌停价</strong>
+                        是规则允许的价格边界。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            最高价 / 最低价 → 市场实际成交结果
+                        </strong>
+
+                        <br><br>
+
+                        <strong>
+                            涨停价 / 跌停价 → 市场规则形成的价格边界
+                        </strong>
+
+                    </div>
+
+
+                    <p>
+                        例如某股票涨停价为 11.00 元，
+                        但当天最高实际成交价格只有 10.80 元，
+                        那么最高价就是 10.80 元，
+                        而不是 11.00 元。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 16
+            ====================================================== -->
+
+                <section class="article-section" id="limit-and-change">
+
+                    <div class="section-kicker">
+                        16
+                    </div>
+
+
+                    <h2>
+                        涨停价和涨跌幅有什么区别？
+                    </h2>
+
+
+                    <p>
+                        涨停幅度是一个<strong>比例</strong>，
+                        涨停价是一个<strong>具体价格</strong>。
+                    </p>
+
+
+                    <p>
+                        例如：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        涨跌幅限制：10%
+
+                        <br><br>
+
+                        参考价格：20.00 元
+
+                        <br><br>
+
+                        涨停价：22.00 元
+
+                    </div>
+
+
+                    <p>
+                        因此，涨跌幅限制是规则参数，
+                        而涨停价、跌停价是结合参考价格计算之后得到的具体结果。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 17
+            ====================================================== -->
+
+                <section class="article-section" id="limit-fields">
+
+                    <div class="section-kicker">
+                        17
+                    </div>
+
+
+                    <h2>
+                        行情接口中的价格限制字段
+                    </h2>
+
+
+                    <p>
+                        在股票行情接口中，
+                        通常可以看到与价格限制相关的字段。
+                    </p>
+
+
+                    <div class="checklist">
+
+
+                        <div class="checklist-item">
+                            ✓ 最新价 last
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 昨收 prev_close
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 涨停价 limit_up
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 跌停价 limit_down
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 涨跌额 change
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 涨跌幅 change_percent
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+                        不同数据源的字段名称可能不同，
+                        但它们表达的核心概念通常是类似的。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 18
+            ====================================================== -->
+
+                <section class="article-section" id="calculate-limit">
+
+                    <div class="section-kicker">
+                        18
+                    </div>
+
+
+                    <h2>
+                        涨停价和跌停价应该由谁计算？
+                    </h2>
+
+
+                    <p>
+                        这是构建行情系统时非常实际的问题。
+                    </p>
+
+
+                    <p>
+                        如果数据源已经提供了经过交易规则处理后的
+                        涨停价和跌停价，
+                        通常应该优先使用数据源提供的结果。
+                    </p>
+
+
+                    <p>
+                        因为数据源可能已经考虑了：
+                        证券类型、交易状态、价格精度、
+                        特殊规则以及其他市场制度。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            推荐原则：
+                        </strong>
+
+                        <br><br>
+
+                        数据源提供最终字段 → 优先使用
+
+                        <br>
+
+                        数据源只提供基础字段 → 再根据明确规则计算
+
+                    </div>
+
+
+                    <p>
+                        不建议在系统中直接写死
+                        “所有股票涨跌幅都是 10%”。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 19
+            ====================================================== -->
+
+                <section class="article-section" id="data-validation">
+
+                    <div class="section-kicker">
+                        19
+                    </div>
+
+
+                    <h2>
+                        如何检查价格限制数据是否合理？
+                    </h2>
+
+
+                    <p>
+                        在数据清洗和数据验证阶段，
+                        可以进行一些基本的一致性检查。
+                    </p>
+
+
+                    <div class="checklist">
+
+
+                        <div class="checklist-item">
+                            ✓ 涨停价通常不应低于跌停价
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 最新价应处于允许的价格范围附近或范围之内
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 涨停价、跌停价的精度应符合市场价格规则
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 参考价格应与对应交易日保持一致
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 特殊交易状态不能直接套用普通规则
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+                        这些检查不能替代交易所规则，
+                        但可以帮助发现接口数据中的明显异常。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 20
+            ====================================================== -->
+
+                <section class="article-section" id="common-mistakes">
+
+                    <div class="section-kicker">
+                        20
+                    </div>
+
+
+                    <h2>
+                        价格限制学习中的常见误区
+                    </h2>
+
+
+                    <div class="checklist">
+
+
+                        <div class="checklist-item">
+                            ✕ 涨停就是停止交易
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✕ 涨停价就是当天最高价
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✕ 跌停价就是当天最低价
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✕ 所有股票永远都是 ±10%
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✕ 涨停代表股票一定具有某种价值
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✕ 涨跌幅限制和实际涨跌幅是同一个字段
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+                        这些概念必须拆开理解。
+                        价格限制描述的是<strong>规则边界</strong>，
+                        而实际涨跌描述的是<strong>市场成交结果</strong>。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 21
+            ====================================================== -->
+
+                <section class="article-section" id="read-limit-data">
+
+                    <div class="section-kicker">
+                        21
+                    </div>
+
+
+                    <h2>
+                        如何阅读一张带有涨跌停信息的行情？
+                    </h2>
+
+
+                    <p>
+                        可以按照下面的顺序阅读：
+                    </p>
+
+
+                    <div class="checklist">
+
+
+                        <div class="checklist-item">
+                            01 · 先看昨收，确定参考价格
+                        </div>
+
+
+                        <div class="checklist-item">
+                            02 · 再看涨停价和跌停价，确定价格边界
+                        </div>
+
+
+                        <div class="checklist-item">
+                            03 · 再看最新价，确定当前市场价格
+                        </div>
+
+
+                        <div class="checklist-item">
+                            04 · 查看最高价和最低价，了解当天实际价格范围
+                        </div>
+
+
+                        <div class="checklist-item">
+                            05 · 最后结合成交量、成交额理解实际交易情况
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+                        这样就可以把
+                        <strong>参考价格 → 价格边界 → 当前价格 → 实际成交范围</strong>
+                        串起来理解。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 22
+            ====================================================== -->
+
+                <section class="article-section" id="price-limit-system">
+
+                    <div class="section-kicker">
+                        22
+                    </div>
+
+
+                    <h2>
+                        价格限制在行情系统中的位置
+                    </h2>
+
+
+                    <p>
+                        从整个行情数据系统来看，
+                        价格限制并不是一个孤立字段。
+                    </p>
+
+
+                    <p>
+                        它与昨收、最新价、最高价、最低价、
+                        涨跌额、涨跌幅等字段共同构成一组价格信息。
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <h3>
+                                参考
+                            </h3>
+
+                            <p>
+                                昨收等参考价格。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <h3>
+                                边界
+                            </h3>
+
+                            <p>
+                                涨停价与跌停价。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+                            <h3>
+                                结果
+                            </h3>
+
+                            <p>
+                                最新价、最高价、最低价。
+                            </p>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+                        当这些字段能够保持一致时，
+                        行情页面、K 线图和量化程序才能建立在可靠的数据基础上。
+                    </p>
+
+                </section>
+
+
+                <!-- =====================================================
+                 23
+            ====================================================== -->
+
+                <section class="article-section" id="summary">
+
+                    <div class="section-kicker">
+                        23
+                    </div>
+
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+
+                    <p>
+                        涨停和跌停本质上都是
+                        <strong>价格限制规则在市场中的表现</strong>。
+                    </p>
+
+
+                    <div class="checklist">
+
+
+                        <div class="checklist-item">
+                            ✓ 价格限制定义了价格变化的边界
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 涨停价是允许达到的价格上限
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 跌停价是允许达到的价格下限
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 涨跌幅限制是规则比例，涨停价和跌停价是具体价格
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 最高价和最低价是实际成交结果，不等同于涨停价和跌停价
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 不同证券和交易制度可能存在不同价格限制
+                        </div>
+
+
+                        <div class="checklist-item">
+                            ✓ 行情系统应把价格限制与交易状态、价格字段分开建模
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="article-next">
+
+                        <div>
+
+                            <span class="article-next-label">
+                                NEXT LESSON
+                            </span>
+
+                            <strong>
+                                成交量、成交额与换手率
+                            </strong>
+
+                        </div>
+
+
+                        <a class="lesson-link" href="./11_volume_amount_turnover.html">
+                            下一篇 →
+                        </a>
+
+                    </div>
+
+
+                </section>
+
+
+            </article>
+
+
+            <!-- =========================================================
+             右侧目录
+        ========================================================== -->
+
+            <aside class="article-toc">
+
+
+                <div class="toc-label">
+                    LESSON 10
+                </div>
+
+
+                <div class="toc-title">
+                    涨停、跌停与价格限制
+                </div>
+
+
+                <nav class="toc-list">
+
+
+                    <a href="#what-is-price-limit">
+                        什么是价格限制？
+                    </a>
+
+
+                    <a href="#what-is-limit-up">
+                        什么是涨停？
+                    </a>
+
+
+                    <a href="#what-is-limit-down">
+                        什么是跌停？
+                    </a>
+
+
+                    <a href="#limit-price">
+                        什么是涨停价和跌停价？
+                    </a>
+
+
+                    <a href="#reference-price">
+                        涨停价和跌停价是根据什么计算的？
+                    </a>
+
+
+                    <a href="#limit-percent">
+                        什么是涨跌幅限制？
+                    </a>
+
+
+                    <a href="#limit-not-target">
+                        涨停不是上涨目标
+                    </a>
+
+
+                    <a href="#limit-not-trading-stop">
+                        涨停是不是停止交易？
+                    </a>
+
+
+                    <a href="#limit-up-and-volume">
+                        涨停价和成交量有什么关系？
+                    </a>
+
+
+                    <a href="#limit-price-example">
+                        用一个例子理解价格限制
+                    </a>
+
+
+                    <a href="#tick-size">
+                        为什么计算出来的价格还需要处理？
+                    </a>
+
+
+                    <a href="#different-markets">
+                        不同市场的价格限制可能不同
+                    </a>
+
+
+                    <a href="#special-status">
+                        特殊交易状态下为什么可能不同？
+                    </a>
+
+
+                    <a href="#limit-up-limit-down">
+                        涨停和跌停与最新价有什么关系？
+                    </a>
+
+
+                    <a href="#high-low-limit">
+                        涨停价和跌停价与最高价、最低价有什么区别？
+                    </a>
+
+
+                    <a href="#limit-and-change">
+                        涨停价和涨跌幅有什么区别？
+                    </a>
+
+
+                    <a href="#limit-fields">
+                        行情接口中的价格限制字段
+                    </a>
+
+
+                    <a href="#calculate-limit">
+                        涨停价和跌停价应该由谁计算？
+                    </a>
+
+
+                    <a href="#data-validation">
+                        如何检查价格限制数据是否合理？
+                    </a>
+
+
+                    <a href="#common-mistakes">
+                        价格限制学习中的常见误区
+                    </a>
+
+
+                    <a href="#read-limit-data">
+                        如何阅读一张带有涨跌停信息的行情？
+                    </a>
+
+
+                    <a href="#price-limit-system">
+                        价格限制在行情系统中的位置
+                    </a>
+
+
+                    <a href="#summary">
+                        本篇总结
+                    </a>
+
+
+                </nav>
+
+
+                <div class="toc-footer">
+                    DATA · MARKET DATA
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+        <!-- =========================================================
+         页面底部
+    ========================================================== -->
+
+        <footer class="page-footer">
+            STOCK LAB · MARKET DATA
+        </footer>
+
+
+    </main>
+
+
+    <!-- =============================================================
+     目录滚动高亮
+============================================================== -->
+
+    <script>
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            () => {
+
+
+                const tocLinks =
+                    document.querySelectorAll(
+                        ".toc-list a"
+                    );
+
+
+                const sections = [];
+
+
+                tocLinks.forEach(
+                    link => {
+
+
+                        const id =
+                            link.getAttribute("href");
+
+
+                        if (
+                            !id ||
+                            !id.startsWith("#")
+                        ) {
+                            return;
+                        }
+
+
+                        const section =
+                            document.querySelector(id);
+
+
+                        if (section) {
+
+                            sections.push({
+                                element: section,
+                                link: link
+                            });
+
+                        }
+
+                    }
+                );
+
+
+                if (!sections.length) {
+                    return;
+                }
+
+
+                const observer =
+                    new IntersectionObserver(
+                        entries => {
+
+
+                            entries.forEach(
+                                entry => {
+
+
+                                    if (
+                                        !entry.isIntersecting
+                                    ) {
+                                        return;
+                                    }
+
+
+                                    sections.forEach(
+                                        item => {
+
+                                            item.link.classList.remove(
+                                                "active"
+                                            );
+
+                                        }
+                                    );
+
+
+                                    const current =
+                                        sections.find(
+                                            item =>
+                                                item.element ===
+                                                entry.target
+                                        );
+
+
+                                    if (current) {
+
+                                        current.link.classList.add(
+                                            "active"
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+                        },
+                        {
+                            root: null,
+                            rootMargin:
+                                "-15% 0px -65% 0px",
+                            threshold: 0
+                        }
+                    );
+
+
+                sections.forEach(
+                    item => {
+
+                        observer.observe(
+                            item.element
+                        );
+
+                    }
+                );
+
+
+            }
+        );
+
+    </script>
+
+
+</body>
+
+</html>

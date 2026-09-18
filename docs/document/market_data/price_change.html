@@ -1,0 +1,2211 @@
+<!doctype html>
+
+<html lang="zh-CN">
+
+
+<head>
+
+
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>股票价格、涨跌与涨跌幅 - STOCK LAB</title>
+
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+
+</head>
+
+
+<body>
+
+
+    <main class="article-page">
+
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+
+            <article class="article-main">
+
+
+                <header class="article-header">
+
+
+                    <div class="article-eyebrow">
+                        DATA · MARKET DATA · LESSON 09
+                    </div>
+
+
+                    <h1>
+                        股票价格、涨跌与涨跌幅
+                    </h1>
+
+
+                    <p class="article-lead">
+
+                        理解昨收、最新价、涨跌额与涨跌幅之间的关系，
+                        看懂股票价格是如何计算和表达变化的。
+
+                    </p>
+
+
+                    <div class="article-meta">
+
+                        <span>
+                            行情数据
+                        </span>
+
+                        <span>
+                            基础
+                        </span>
+
+                        <span>
+                            约 20 分钟
+                        </span>
+
+                    </div>
+
+
+                </header>
+
+
+
+                <!-- 01 -->
+
+                <section class="article-section" id="price-change">
+
+
+                    <div class="section-kicker">
+                        01
+                    </div>
+
+
+                    <h2>
+                        什么是股票价格变化？
+                    </h2>
+
+
+                    <p>
+
+                        股票价格并不是一个固定不变的数字。
+
+                        在交易过程中，
+                        买卖双方不断提交订单并发生交易，
+                        最新成交价格也会随之变化。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，当我们打开股票行情页面时，
+                        经常会看到：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        最新价<br>
+                        涨跌额<br>
+                        涨跌幅
+
+                    </div>
+
+
+                    <p>
+
+                        这三个字段实际上是在从不同角度描述同一件事情：
+
+                        <strong>
+                            当前价格相对于基准价格发生了多大的变化。
+                        </strong>
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 02 -->
+
+                <section class="article-section" id="latest-price">
+
+
+                    <div class="section-kicker">
+                        02
+                    </div>
+
+
+                    <h2>
+                        什么是最新价？
+                    </h2>
+
+
+                    <p>
+
+                        最新价，也叫现价或 Last Price，
+                        通常表示当前行情中最近一笔有效成交对应的价格。
+
+                    </p>
+
+
+                    <p>
+
+                        例如某只股票当前显示：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        最新价：168.50
+
+                    </div>
+
+
+                    <p>
+
+                        这意味着当前行情系统记录到的最新成交价格为 168.50。
+
+                    </p>
+
+
+                    <p>
+
+                        需要注意的是，
+                        <strong>
+                            最新价不是开盘价，也不是当天最高价或最低价。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        随着新的成交不断发生，
+                        最新价也可能不断变化。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 03 -->
+
+                <section class="article-section" id="previous-close">
+
+
+                    <div class="section-kicker">
+                        03
+                    </div>
+
+
+                    <h2>
+                        什么是昨收？
+                    </h2>
+
+
+                    <p>
+
+                        昨收，也就是 Previous Close，
+                        通常表示前一个交易日的收盘价格。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        前一个交易日收盘价：165.00
+
+                    </div>
+
+
+                    <p>
+
+                        那么今天的行情页面通常会以 165.00
+                        作为计算当日涨跌的重要参考基准。
+
+                    </p>
+
+
+                    <p>
+
+                        需要注意，“昨收”中的“昨”并不一定意味着自然日意义上的昨天。
+
+                    </p>
+
+
+                    <p>
+
+                        如果今天是星期一，
+                        那么上一交易日可能是星期五。
+
+                    </p>
+
+
+                    <p>
+
+                        因此更准确的理解是：
+
+                        <strong>
+                            昨收 = 上一个交易日的收盘价。
+                        </strong>
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 04 -->
+
+                <section class="article-section" id="change">
+
+
+                    <div class="section-kicker">
+                        04
+                    </div>
+
+
+                    <h2>
+                        什么是涨跌额？
+                    </h2>
+
+
+                    <p>
+
+                        涨跌额表示最新价格相对于参考价格
+                        发生了多少绝对价格变化。
+
+                    </p>
+
+
+                    <p>
+
+                        在常见的股票行情场景中，
+                        当日涨跌额通常可以理解为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        涨跌额 = 最新价 − 昨收
+
+                    </div>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        昨收 = 165.00<br>
+                        最新价 = 168.50<br><br>
+
+                        涨跌额 = 168.50 − 165.00<br>
+                        涨跌额 = 3.50
+
+                    </div>
+
+
+                    <p>
+
+                        因此，这只股票当前相对于上一交易日收盘价上涨了 3.50。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 05 -->
+
+                <section class="article-section" id="change-percent">
+
+
+                    <div class="section-kicker">
+                        05
+                    </div>
+
+
+                    <h2>
+                        什么是涨跌幅？
+                    </h2>
+
+
+                    <p>
+
+                        涨跌额告诉我们价格变化了多少元，
+                        而涨跌幅告诉我们：
+
+                        <strong>
+                            这个变化相对于基准价格占多大比例。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        常见计算方式为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        涨跌幅 = （最新价 − 昨收） ÷ 昨收 × 100%
+
+                    </div>
+
+
+                    <p>
+
+                        继续使用前面的例子：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        昨收 = 165.00<br>
+                        最新价 = 168.50<br><br>
+
+                        涨跌幅<br>
+                        = （168.50 − 165.00）÷ 165.00 × 100%<br>
+                        ≈ 2.12%
+
+                    </div>
+
+
+                    <p>
+
+                        因此：
+
+                        <strong>
+                            涨跌额是绝对变化，涨跌幅是相对变化。
+                        </strong>
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 06 -->
+
+                <section class="article-section" id="change-relation">
+
+
+                    <div class="section-kicker">
+                        06
+                    </div>
+
+
+                    <h2>
+                        涨跌额和涨跌幅有什么关系？
+                    </h2>
+
+
+                    <p>
+
+                        两者描述的是同一次价格变化，
+                        只是表达方式不同。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                ¥
+                            </div>
+
+
+                            <h3>
+                                涨跌额
+                            </h3>
+
+
+                            <p>
+                                表示价格实际变化了多少。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                %
+                            </div>
+
+
+                            <h3>
+                                涨跌幅
+                            </h3>
+
+
+                            <p>
+                                表示价格变化相对于昨收的比例。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        因此，两只股票即使上涨相同的金额，
+                        涨跌幅也可能完全不同。
+
+                    </p>
+
+
+                    <p>
+
+                        例如一只 10 元股票上涨 1 元，
+                        与一只 100 元股票上涨 1 元，
+                        它们的涨跌额相同，但涨跌幅不同。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 07 -->
+
+                <section class="article-section" id="absolute-relative">
+
+
+                    <div class="section-kicker">
+                        07
+                    </div>
+
+
+                    <h2>
+                        什么是绝对价格变化和相对价格变化？
+                    </h2>
+
+
+                    <p>
+
+                        涨跌额属于绝对价格变化。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        100 元 → 105 元<br>
+                        变化 +5 元
+
+                    </div>
+
+
+                    <p>
+
+                        涨跌幅属于相对价格变化：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        5 ÷ 100 × 100% = 5%
+
+                    </div>
+
+
+                    <p>
+
+                        两种表达方式都很重要。
+
+                    </p>
+
+
+                    <p>
+
+                        绝对变化适合描述实际价格差，
+                        相对变化则更适合比较不同价格水平的股票。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 08 -->
+
+                <section class="article-section" id="open-vs-close">
+
+
+                    <div class="section-kicker">
+                        08
+                    </div>
+
+
+                    <h2>
+                        最新价和开盘价有什么区别？
+                    </h2>
+
+
+                    <p>
+
+                        最新价和开盘价都属于当天行情中的价格，
+                        但它们代表的时间位置不同。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        开盘价<br>
+                        ↓<br>
+                        当日交易开始阶段的价格<br><br>
+
+                        最新价<br>
+                        ↓<br>
+                        当前最近一笔有效成交价格
+
+                    </div>
+
+
+                    <p>
+
+                        因此，开盘价在一个交易日中通常确定后不会随着后续成交重新定义，
+                        而最新价可能随着交易持续不断变化。
+
+                    </p>
+
+
+                    <p>
+
+                        这也是为什么行情页面通常会同时展示
+                        开盘价和最新价。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 09 -->
+
+                <section class="article-section" id="high-low">
+
+
+                    <div class="section-kicker">
+                        09
+                    </div>
+
+
+                    <h2>
+                        最高价和最低价与涨跌有什么关系？
+                    </h2>
+
+
+                    <p>
+
+                        最高价和最低价描述的是当前统计区间内
+                        价格曾经达到过的最高和最低水平。
+
+                    </p>
+
+
+                    <p>
+
+                        在日内行情中，可以理解为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        最高价 = 当日截至当前时点的最高价格<br>
+                        最低价 = 当日截至当前时点的最低价格
+
+                    </div>
+
+
+                    <p>
+
+                        因此，最新价通常位于当前最高价和最低价之间：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        最低价 ≤ 最新价 ≤ 最高价
+
+                    </div>
+
+
+                    <p>
+
+                        但在数据异常、字段定义不同或不同统计区间混用时，
+                        需要进一步检查数据来源和时间范围。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 10 -->
+
+                <section class="article-section" id="positive-negative">
+
+
+                    <div class="section-kicker">
+                        10
+                    </div>
+
+
+                    <h2>
+                        上涨和下跌是如何表示的？
+                    </h2>
+
+
+                    <p>
+
+                        如果最新价高于昨收，
+                        通常表示股票相对于上一交易日收盘价上涨。
+
+                    </p>
+
+
+                    <p>
+
+                        如果最新价低于昨收，
+                        则表示股票相对于上一交易日收盘价下跌。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                ↑
+                            </div>
+
+
+                            <h3>
+                                上涨
+                            </h3>
+
+
+                            <p>
+                                最新价 ＞ 昨收。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                ↓
+                            </div>
+
+
+                            <h3>
+                                下跌
+                            </h3>
+
+
+                            <p>
+                                最新价 ＜ 昨收。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                =
+                            </div>
+
+
+                            <h3>
+                                平盘
+                            </h3>
+
+
+                            <p>
+                                最新价 = 昨收。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- 11 -->
+
+                <section class="article-section" id="zero-change">
+
+
+                    <div class="section-kicker">
+                        11
+                    </div>
+
+
+                    <h2>
+                        什么是平盘？
+                    </h2>
+
+
+                    <p>
+
+                        如果最新价与昨收相同，
+                        那么涨跌额为 0，
+                        涨跌幅也为 0%。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        最新价 = 昨收<br>
+                        ↓<br>
+                        涨跌额 = 0<br>
+                        ↓<br>
+                        涨跌幅 = 0%
+
+                    </div>
+
+
+                    <p>
+
+                        平盘并不意味着当天完全没有发生价格波动。
+
+                    </p>
+
+
+                    <p>
+
+                        例如某只股票当天曾经上涨，
+                        后来又回到昨收价格，
+                        当前最新价仍然可能显示为平盘。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 12 -->
+
+                <section class="article-section" id="change-example">
+
+
+                    <div class="section-kicker">
+                        12
+                    </div>
+
+
+                    <h2>
+                        用一个完整例子理解涨跌
+                    </h2>
+
+
+                    <p>
+
+                        假设某只股票：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        昨收：100.00<br>
+                        开盘：101.00<br>
+                        最高：105.00<br>
+                        最低：99.50<br>
+                        最新：103.00
+
+                    </div>
+
+
+                    <p>
+
+                        那么当前涨跌额为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        103.00 − 100.00 = +3.00
+
+                    </div>
+
+
+                    <p>
+
+                        涨跌幅为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        3.00 ÷ 100.00 × 100% = +3.00%
+
+                    </div>
+
+
+                    <p>
+
+                        因此当前行情可以概括为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        最新价：103.00<br>
+                        涨跌额：3.00<br>
+                        涨跌幅：3.00%
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- 13 -->
+
+                <section class="article-section" id="why-yesterday-close">
+
+
+                    <div class="section-kicker">
+                        13
+                    </div>
+
+
+                    <h2>
+                        为什么通常使用昨收计算涨跌幅？
+                    </h2>
+
+
+                    <p>
+
+                        因为股票每天都会形成一个新的交易日，
+                        需要一个统一的参考价格来描述当天相对于前一个交易日的变化。
+
+                    </p>
+
+
+                    <p>
+
+                        上一个交易日的收盘价具有明确的时间边界，
+                        因此通常被用作当天涨跌的参考基准。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        上一个交易日收盘<br>
+                        ↓<br>
+                        新交易日开始<br>
+                        ↓<br>
+                        当前最新价<br>
+                        ↓<br>
+                        计算涨跌和涨跌幅
+
+                    </div>
+
+
+                    <p>
+
+                        这样可以让不同股票、
+                        不同交易日之间的价格变化拥有相对统一的表达方式。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 14 -->
+
+                <section class="article-section" id="not-open">
+
+
+                    <div class="section-kicker">
+                        14
+                    </div>
+
+
+                    <h2>
+                        涨跌幅为什么不是用开盘价计算？
+                    </h2>
+
+
+                    <p>
+
+                        因为常见的“当日涨跌幅”定义，
+                        是比较当前价格与上一交易日收盘价格的变化。
+
+                    </p>
+
+
+                    <p>
+
+                        如果使用开盘价作为基准，
+                        得到的其实是另一种指标：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        （最新价 − 开盘价）÷ 开盘价
+
+                    </div>
+
+
+                    <p>
+
+                        它描述的是：
+
+                        <strong>
+                            从今天开盘到当前价格发生了多大变化。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        这和常见行情页面中的“涨跌幅”
+                        并不是同一个概念。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 15 -->
+
+                <section class="article-section" id="change-time">
+
+
+                    <div class="section-kicker">
+                        15
+                    </div>
+
+
+                    <h2>
+                        涨跌幅为什么会不断变化？
+                    </h2>
+
+
+                    <p>
+
+                        因为交易时间内最新价会不断变化。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        最新价变化<br>
+                        ↓<br>
+                        涨跌额变化<br>
+                        ↓<br>
+                        涨跌幅变化
+
+                    </div>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        昨收 = 100<br><br>
+
+                        最新价 101 → 涨跌幅 1%<br>
+                        最新价 102 → 涨跌幅 2%<br>
+                        最新价 99 → 涨跌幅 -1%
+
+                    </div>
+
+
+                    <p>
+
+                        因此实时行情页面中的涨跌幅，
+                        本质上也是一个随着最新价变化而实时更新的计算字段。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 16 -->
+
+                <section class="article-section" id="limit">
+
+
+                    <div class="section-kicker">
+                        16
+                    </div>
+
+
+                    <h2>
+                        涨跌幅和涨跌停有什么关系？
+                    </h2>
+
+
+                    <p>
+
+                        涨跌幅描述价格相对于参考价格的变化比例，
+                        而涨跌停则涉及交易规则对价格变化范围的限制。
+
+                    </p>
+
+
+                    <p>
+
+                        两者概念不同，但在行情页面中经常同时出现。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        昨收<br>
+                        ↓<br>
+                        交易规则计算允许的价格范围<br>
+                        ↓<br>
+                        涨停价 / 跌停价
+
+                    </div>
+
+
+                    <p>
+
+                        不同市场、股票类别和交易制度可能存在不同规则。
+
+                    </p>
+
+
+                    <p>
+
+                        因此不能简单认为所有股票都有完全相同的涨跌幅限制。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 17 -->
+
+                <section class="article-section" id="data-fields">
+
+
+                    <div class="section-kicker">
+                        17
+                    </div>
+
+
+                    <h2>
+                        行情接口中的价格变化字段
+                    </h2>
+
+
+                    <p>
+
+                        在股票行情系统中，
+                        这些概念通常会对应明确的数据字段。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        last<br>
+                        → 最新价<br><br>
+
+                        prev_close<br>
+                        → 昨收<br><br>
+
+                        change<br>
+                        → 涨跌额<br><br>
+
+                        change_percent<br>
+                        → 涨跌幅
+
+                    </div>
+
+
+                    <p>
+
+                        例如，一个统一行情模型可能包含：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        last = 103.00<br>
+                        prev_close = 100.00<br>
+                        change = 3.00<br>
+                        change_percent = 3.00
+
+                    </div>
+
+
+                    <p>
+
+                        这样前端页面就可以直接使用统一字段，
+                        而不需要了解底层数据源使用什么字段名称。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 18 -->
+
+                <section class="article-section" id="derive">
+
+
+                    <div class="section-kicker">
+                        18
+                    </div>
+
+
+                    <h2>
+                        涨跌和涨跌幅应该由谁计算？
+                    </h2>
+
+
+                    <p>
+
+                        在行情系统中，
+                        一个重要问题是：
+
+                        <strong>
+                            哪一层负责计算这些派生字段？
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        如果数据源已经提供最新价、昨收、涨跌和涨跌幅，
+                        系统可以根据统一模型直接使用或进行校验。
+
+                    </p>
+
+
+                    <p>
+
+                        如果数据源只提供最新价和昨收，
+                        那么系统也可以在标准化过程中计算：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        change = last − prev_close<br><br>
+
+                        change_percent<br>
+                        = change ÷ prev_close × 100%
+
+                    </div>
+
+
+                    <p>
+
+                        对统一行情系统来说，
+                        更重要的是保证最终暴露给上层的数据定义一致。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 19 -->
+
+                <section class="article-section" id="rounding">
+
+
+                    <div class="section-kicker">
+                        19
+                    </div>
+
+
+                    <h2>
+                        为什么计算结果有时会出现小数差异？
+                    </h2>
+
+
+                    <p>
+
+                        在实际行情数据中，
+                        涨跌幅可能涉及价格精度、
+                        计算精度和展示精度。
+
+                    </p>
+
+
+                    <p>
+
+                        例如实际计算结果可能是：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        2.123456789%
+
+                    </div>
+
+
+                    <p>
+
+                        但行情页面可能只展示：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        2.12%
+
+                    </div>
+
+
+                    <p>
+
+                        这并不一定表示原始数据不同，
+                        可能只是显示时进行了四舍五入。
+
+                    </p>
+
+
+                    <p>
+
+                        因此在数据系统中，
+                        应该区分：
+
+                        <strong>
+                            原始计算值与页面展示值。
+                        </strong>
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 20 -->
+
+                <section class="article-section" id="zero-divisor">
+
+
+                    <div class="section-kicker">
+                        20
+                    </div>
+
+
+                    <h2>
+                        计算涨跌幅时需要注意什么？
+                    </h2>
+
+
+                    <p>
+
+                        最基本的问题是参考价格不能直接作为普通数字处理而不做校验。
+
+                    </p>
+
+
+                    <p>
+
+                        例如计算：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        涨跌幅 = 涨跌额 ÷ 昨收
+
+                    </div>
+
+
+                    <p>
+
+                        如果昨收缺失或者为 0，
+                        就不能直接进行正常的百分比计算。
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            检查昨收是否存在
+                        </li>
+
+
+                        <li class="checklist-item">
+                            检查昨收是否为有效数值
+                        </li>
+
+
+                        <li class="checklist-item">
+                            确认价格单位和精度
+                        </li>
+
+
+                        <li class="checklist-item">
+                            统一涨跌幅的单位
+                        </li>
+
+
+                        <li class="checklist-item">
+                            区分原始值与展示值
+                        </li>
+
+
+                    </ul>
+
+
+                </section>
+
+
+
+                <!-- 21 -->
+
+                <section class="article-section" id="common-mistakes">
+
+
+                    <div class="section-kicker">
+                        21
+                    </div>
+
+
+                    <h2>
+                        股票价格与涨跌学习中的常见误区
+                    </h2>
+
+
+                    <h3>
+                        误区一：把最新价当成涨跌幅
+                    </h3>
+
+
+                    <p>
+
+                        最新价是价格本身，
+                        涨跌幅是相对于参考价格计算出来的比例。
+
+                    </p>
+
+
+                    <h3>
+                        误区二：认为涨跌额越大，涨跌幅一定越大
+                    </h3>
+
+
+                    <p>
+
+                        涨跌幅还取决于昨收。
+
+                        不同价格水平的股票不能只通过涨跌额进行比较。
+
+                    </p>
+
+
+                    <h3>
+                        误区三：认为昨收就是自然日的昨天收盘
+                    </h3>
+
+
+                    <p>
+
+                        更准确的定义是上一个交易日的收盘价。
+
+                    </p>
+
+
+                    <h3>
+                        误区四：用开盘价代替昨收计算当日涨跌幅
+                    </h3>
+
+
+                    <p>
+
+                        这样得到的是相对于开盘价的变化，
+                        不一定是行情页面定义的当日涨跌幅。
+
+                    </p>
+
+
+                    <h3>
+                        误区五：忽略数据精度
+                    </h3>
+
+
+                    <p>
+
+                        原始价格和页面展示价格可能存在不同的小数位，
+                        不能因为显示值不同就直接判断数据错误。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 22 -->
+
+                <section class="article-section" id="read-quote">
+
+
+                    <div class="section-kicker">
+                        22
+                    </div>
+
+
+                    <h2>
+                        如何阅读一张股票价格行情？
+                    </h2>
+
+
+                    <p>
+
+                        当看到一张股票行情页面时，
+                        可以按照以下顺序理解。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                最新价
+                            </h3>
+
+
+                            <p>
+                                当前最近一笔有效成交对应的价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                昨收
+                            </h3>
+
+
+                            <p>
+                                上一个交易日的收盘价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                涨跌额
+                            </h3>
+
+
+                            <p>
+                                最新价相对于昨收的绝对变化。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+
+                            <h3>
+                                涨跌幅
+                            </h3>
+
+
+                            <p>
+                                最新价相对于昨收的百分比变化。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        掌握这几个字段之后，
+                        一张基础股票行情卡片中的核心价格信息就基本能够读懂。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 23 -->
+
+                <section class="article-section" id="system-relation">
+
+
+                    <div class="section-kicker">
+                        23
+                    </div>
+
+
+                    <h2>
+                        价格字段之间有什么关系？
+                    </h2>
+
+
+                    <p>
+
+                        从数据模型的角度，
+                        这些字段并不是互相独立的。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        prev_close<br>
+                        ↓<br>
+                        last − prev_close<br>
+                        ↓<br>
+                        change<br>
+                        ↓<br>
+                        change ÷ prev_close<br>
+                        ↓<br>
+                        change_percent
+
+                    </div>
+
+
+                    <p>
+
+                        因此：
+
+                        <strong>
+                            昨收是参考基准，最新价是当前状态，
+                            涨跌和涨跌幅则是由两者关系产生的派生信息。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        理解这种关系，
+                        对后续设计统一 Quote 数据模型非常重要。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 24 -->
+
+                <section class="article-section" id="summary">
+
+
+                    <div class="section-kicker">
+                        24
+                    </div>
+
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+
+                    <p>
+
+                        股票价格变化最核心的几个字段，
+                        可以围绕“最新价”和“昨收”来理解。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                最新价
+                            </h3>
+
+
+                            <p>
+                                当前最近一笔有效成交对应的价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                昨收
+                            </h3>
+
+
+                            <p>
+                                上一个交易日的收盘价格。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                涨跌
+                            </h3>
+
+
+                            <p>
+                                最新价与昨收之间的绝对价格差。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+
+                            <h3>
+                                涨跌幅
+                            </h3>
+
+
+                            <p>
+                                最新价与昨收之间的相对变化比例。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        最重要的关系可以记住：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            涨跌额 = 最新价 − 昨收
+                        </strong>
+
+                        <br><br>
+
+                        <strong>
+                            涨跌幅 = （最新价 − 昨收）÷ 昨收 × 100%
+                        </strong>
+
+                    </div>
+
+
+                    <p>
+
+                        下一篇将继续研究价格变化的边界，
+                        进入涨停价、跌停价以及价格限制机制。
+
+                    </p>
+
+
+                    <div class="article-next">
+
+
+                        <div class="article-next-label">
+                            NEXT LESSON
+                        </div>
+
+
+                        <h3>
+                            LESSON 10 · 涨跌停与价格限制
+                        </h3>
+
+
+                        <p>
+                            理解股票价格为什么存在涨跌幅限制，以及涨停价和跌停价如何形成。
+                        </p>
+
+
+                        <a class="lesson-link" href="./10_price_limits.html">
+                            继续学习 →
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+            </article>
+
+
+
+            <aside class="article-toc">
+
+
+                <div class="toc-label">
+                    LESSON 09
+                </div>
+
+
+                <div class="toc-title">
+                    股票价格、涨跌与涨跌幅
+                </div>
+
+
+                <nav class="toc-list">
+
+
+                    <a href="#price-change">
+                        什么是股票价格变化？
+                    </a>
+
+
+                    <a href="#latest-price">
+                        什么是最新价？
+                    </a>
+
+
+                    <a href="#previous-close">
+                        什么是昨收？
+                    </a>
+
+
+                    <a href="#change">
+                        什么是涨跌额？
+                    </a>
+
+
+                    <a href="#change-percent">
+                        什么是涨跌幅？
+                    </a>
+
+
+                    <a href="#change-relation">
+                        涨跌额和涨跌幅有什么关系？
+                    </a>
+
+
+                    <a href="#absolute-relative">
+                        什么是绝对价格变化和相对价格变化？
+                    </a>
+
+
+                    <a href="#open-vs-close">
+                        最新价和开盘价有什么区别？
+                    </a>
+
+
+                    <a href="#high-low">
+                        最高价和最低价与涨跌有什么关系？
+                    </a>
+
+
+                    <a href="#positive-negative">
+                        上涨和下跌是如何表示的？
+                    </a>
+
+
+                    <a href="#zero-change">
+                        什么是平盘？
+                    </a>
+
+
+                    <a href="#change-example">
+                        用一个完整例子理解涨跌
+                    </a>
+
+
+                    <a href="#why-yesterday-close">
+                        为什么通常使用昨收计算涨跌幅？
+                    </a>
+
+
+                    <a href="#not-open">
+                        涨跌幅为什么不是用开盘价计算？
+                    </a>
+
+
+                    <a href="#change-time">
+                        涨跌幅为什么会不断变化？
+                    </a>
+
+
+                    <a href="#limit">
+                        涨跌幅和涨跌停有什么关系？
+                    </a>
+
+
+                    <a href="#data-fields">
+                        行情接口中的价格变化字段
+                    </a>
+
+
+                    <a href="#derive">
+                        涨跌和涨跌幅应该由谁计算？
+                    </a>
+
+
+                    <a href="#rounding">
+                        为什么计算结果有时会出现小数差异？
+                    </a>
+
+
+                    <a href="#zero-divisor">
+                        计算涨跌幅时需要注意什么？
+                    </a>
+
+
+                    <a href="#common-mistakes">
+                        股票价格与涨跌学习中的常见误区
+                    </a>
+
+
+                    <a href="#read-quote">
+                        如何阅读一张股票价格行情？
+                    </a>
+
+
+                    <a href="#system-relation">
+                        价格字段之间有什么关系？
+                    </a>
+
+
+                    <a href="#summary">
+                        本篇总结
+                    </a>
+
+
+                </nav>
+
+
+                <div class="toc-footer">
+                    DATA · MARKET DATA
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+
+        <footer class="page-footer">
+
+            STOCK LAB · MARKET DATA
+
+        </footer>
+
+
+    </main>
+
+
+
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+
+            const tocLinks =
+                document.querySelectorAll(".toc-list a");
+
+
+            const sections = [];
+
+
+            tocLinks.forEach(link => {
+
+
+                const id =
+                    link.getAttribute("href");
+
+
+                if (!id || !id.startsWith("#")) {
+                    return;
+                }
+
+
+                const section =
+                    document.querySelector(id);
+
+
+                if (section) {
+
+
+                    sections.push({
+                        element: section,
+                        link: link
+                    });
+
+                }
+
+
+            });
+
+
+            if (!sections.length) {
+                return;
+            }
+
+
+            const observer =
+                new IntersectionObserver(
+
+
+                    entries => {
+
+
+                        entries.forEach(entry => {
+
+
+                            if (!entry.isIntersecting) {
+                                return;
+                            }
+
+
+                            sections.forEach(item => {
+
+
+                                item.link.classList.remove(
+                                    "active"
+                                );
+
+                            });
+
+
+                            const current =
+                                sections.find(
+                                    item =>
+                                        item.element ===
+                                        entry.target
+                                );
+
+
+                            if (current) {
+
+
+                                current.link.classList.add(
+                                    "active"
+                                );
+
+                            }
+
+
+                        });
+
+
+                    },
+
+
+                    {
+                        root: null,
+                        rootMargin:
+                            "-15% 0px -65% 0px",
+                        threshold: 0
+                    }
+
+
+                );
+
+
+            sections.forEach(item => {
+
+
+                observer.observe(
+                    item.element
+                );
+
+            });
+
+
+        });
+
+
+    </script>
+
+
+</body>
+
+
+</html>
