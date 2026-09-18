@@ -1,0 +1,2324 @@
+<!doctype html>
+
+<html lang="zh-CN">
+
+
+<head>
+
+
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>K 线周期 - STOCK LAB</title>
+
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+
+</head>
+
+
+<body>
+
+
+    <main class="article-page">
+
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+
+            <article class="article-main">
+
+
+                <header class="article-header">
+
+
+                    <div class="article-eyebrow">
+                        DATA · MARKET DATA · LESSON 07
+                    </div>
+
+
+                    <h1>
+                        K 线周期
+                    </h1>
+
+
+                    <p class="article-lead">
+
+                        理解 1 分钟、5 分钟、15 分钟、
+                        30 分钟、60 分钟、日线、周线和月线，
+                        以及不同时间粒度之间的关系。
+
+                    </p>
+
+
+                    <div class="article-meta">
+
+                        <span>
+                            行情数据
+                        </span>
+
+                        <span>
+                            基础
+                        </span>
+
+                        <span>
+                            约 25 分钟
+                        </span>
+
+                    </div>
+
+
+                </header>
+
+
+
+                <!-- 01 -->
+
+                <section class="article-section" id="what-is-period">
+
+
+                    <div class="section-kicker">
+                        01
+                    </div>
+
+
+                    <h2>
+                        什么是 K 线周期？
+                    </h2>
+
+
+                    <p>
+
+                        在上一节中，我们知道一根 K 线记录的是一个时间区间内的
+                        Open、High、Low、Close，也就是开盘价、最高价、最低价和收盘价。
+
+                    </p>
+
+
+                    <p>
+
+                        <strong>K 线周期，就是这段时间区间的长度。</strong>
+
+                        例如，一根 1 分钟 K 线代表 1 分钟的行情，
+                        一根 5 分钟 K 线代表 5 分钟的行情，
+                        一根日线则代表一个交易日的行情。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，K 线周期本质上是在回答一个问题：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            “这一根 K 线，到底统计了多长时间？”
+                        </strong>
+
+                    </div>
+
+
+                    <p>
+
+                        周期不同，统计出来的 K 线也不同。
+                        同一段市场行情，可以按照不同周期进行观察。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 02 -->
+
+                <section class="article-section" id="why-period">
+
+
+                    <div class="section-kicker">
+                        02
+                    </div>
+
+
+                    <h2>
+                        为什么需要不同的 K 线周期？
+                    </h2>
+
+
+                    <p>
+
+                        市场数据产生的速度非常快。
+                        股票交易时间内，会不断产生新的成交价格和成交量。
+
+                    </p>
+
+
+                    <p>
+
+                        如果把所有成交逐笔展示出来，数据量会非常大，
+                        很难直接从中观察价格在较长时间内的变化。
+
+                    </p>
+
+
+                    <p>
+
+                        K 线周期提供了一种压缩和组织行情数据的方法。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                更细的周期
+                            </h3>
+
+
+                            <p>
+                                保留更多短时间内的价格变化。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                更大的周期
+                            </h3>
+
+
+                            <p>
+                                将更长时间的行情压缩成一根 K 线。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                多个观察尺度
+                            </h3>
+
+
+                            <p>
+                                可以从不同时间尺度观察同一市场。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        所以，不同周期并不是不同的市场数据，
+                        而是对行情数据采用了不同的时间划分方式。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 03 -->
+
+                <section class="article-section" id="one-minute">
+
+
+                    <div class="section-kicker">
+                        03
+                    </div>
+
+
+                    <h2>
+                        什么是 1 分钟 K 线？
+                    </h2>
+
+
+                    <p>
+
+                        1 分钟 K 线，也称为 1 分钟线，
+                        通常表示一个 1 分钟时间区间内的 OHLC 数据。
+
+                    </p>
+
+
+                    <p>
+
+                        例如某一分钟内：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            开始时的第一笔有效价格形成 Open
+                        </li>
+
+
+                        <li class="checklist-item">
+                            这一分钟内的最高价格形成 High
+                        </li>
+
+
+                        <li class="checklist-item">
+                            这一分钟内的最低价格形成 Low
+                        </li>
+
+
+                        <li class="checklist-item">
+                            这一分钟结束时的最后价格形成 Close
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        如果这一分钟内发生了很多笔成交，
+                        它们可以被汇总到同一根 1 分钟 K 线中。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，1 分钟线相比日线保留了更多的短期价格变化。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 04 -->
+
+                <section class="article-section" id="five-minute">
+
+
+                    <div class="section-kicker">
+                        04
+                    </div>
+
+
+                    <h2>
+                        什么是 5 分钟 K 线？
+                    </h2>
+
+
+                    <p>
+
+                        5 分钟 K 线表示连续 5 分钟时间范围内的行情。
+
+                    </p>
+
+
+                    <p>
+
+                        如果数据系统按照固定时间边界进行聚合，
+                        那么一个 5 分钟区间可以包含多笔甚至大量成交。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        09:30 ～ 09:35 → 一根 5 分钟 K 线<br>
+                        09:35 ～ 09:40 → 一根 5 分钟 K 线<br>
+                        09:40 ～ 09:45 → 一根 5 分钟 K 线
+
+                    </div>
+
+
+                    <p>
+
+                        每根 K 线内部仍然只有一组 OHLC，
+                        但它代表的时间范围比 1 分钟线更长。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 05 -->
+
+                <section class="article-section" id="fifteen-minute">
+
+
+                    <div class="section-kicker">
+                        05
+                    </div>
+
+
+                    <h2>
+                        什么是 15 分钟 K 线？
+                    </h2>
+
+
+                    <p>
+
+                        15 分钟 K 线表示一个 15 分钟的行情区间。
+
+                    </p>
+
+
+                    <p>
+
+                        如果按照时间进行聚合，
+                        一根 15 分钟 K 线可以由多个更细粒度的数据形成。
+
+                    </p>
+
+
+                    <p>
+
+                        例如一个完整的 15 分钟区间，
+                        可以进一步拆成三个 5 分钟区间：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        5 分钟 + 5 分钟 + 5 分钟
+                        = 15 分钟
+
+                    </div>
+
+
+                    <p>
+
+                        需要注意的是，
+                        这里讨论的是时间区间的关系，
+                        并不意味着所有数据源都会直接通过本地聚合生成 15 分钟线。
+
+                    </p>
+
+
+                    <p>
+
+                        有些数据源直接提供 15 分钟数据，
+                        有些系统则可能根据更细粒度的数据进行聚合。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 06 -->
+
+                <section class="article-section" id="thirty-minute">
+
+
+                    <div class="section-kicker">
+                        06
+                    </div>
+
+
+                    <h2>
+                        什么是 30 分钟 K 线？
+                    </h2>
+
+
+                    <p>
+
+                        30 分钟 K 线表示一个 30 分钟时间区间。
+
+                    </p>
+
+
+                    <p>
+
+                        从时间粒度来看，它比 1 分钟、5 分钟和 15 分钟线更粗，
+                        因此一根 K 线包含的行情时间更长。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        1 分钟 × 30 = 30 分钟<br>
+                        5 分钟 × 6 = 30 分钟<br>
+                        15 分钟 × 2 = 30 分钟
+
+                    </div>
+
+
+                    <p>
+
+                        但在实际数据系统中，
+                        不同周期之间是否能够直接无损转换，
+                        还取决于原始数据的时间边界和数据质量。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 07 -->
+
+                <section class="article-section" id="sixty-minute">
+
+
+                    <div class="section-kicker">
+                        07
+                    </div>
+
+
+                    <h2>
+                        什么是 60 分钟 K 线？
+                    </h2>
+
+
+                    <p>
+
+                        60 分钟 K 线，也通常称为小时线，
+                        表示一个小时范围内的行情数据。
+
+                    </p>
+
+
+                    <p>
+
+                        从时间尺度来看：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        60 分钟 = 1 小时
+
+                    </div>
+
+
+                    <p>
+
+                        60 分钟线比日线更细，
+                        但比 1 分钟、5 分钟等分钟线更粗。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，同一个交易日可以产生多根 60 分钟 K 线，
+                        而一个完整交易日又可以进一步形成一根日线。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 08 -->
+
+                <section class="article-section" id="day-line">
+
+
+                    <div class="section-kicker">
+                        08
+                    </div>
+
+
+                    <h2>
+                        什么是日线？
+                    </h2>
+
+
+                    <p>
+
+                        日线是股票行情中非常常见的一种 K 线周期。
+
+                    </p>
+
+
+                    <p>
+
+                        对股票市场来说，
+                        一根日线通常对应一个交易日。
+
+                    </p>
+
+
+                    <p>
+
+                        它记录这个交易日中的：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            开盘价 Open
+                        </li>
+
+
+                        <li class="checklist-item">
+                            最高价 High
+                        </li>
+
+
+                        <li class="checklist-item">
+                            最低价 Low
+                        </li>
+
+
+                        <li class="checklist-item">
+                            收盘价 Close
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交量、成交额等统计信息
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        因此，日线并不是简单地把“当天最后一个价格”保存下来。
+
+                    </p>
+
+
+                    <p>
+
+                        它实际上对整个交易日内的行情进行了总结。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 09 -->
+
+                <section class="article-section" id="week-line">
+
+
+                    <div class="section-kicker">
+                        09
+                    </div>
+
+
+                    <h2>
+                        什么是周线？
+                    </h2>
+
+
+                    <p>
+
+                        周线表示一个周时间范围内的行情数据。
+
+                    </p>
+
+
+                    <p>
+
+                        对股票市场来说，
+                        一根周线通常由一个交易周内的交易数据汇总形成。
+
+                    </p>
+
+
+                    <p>
+
+                        一根周线可以包含多根日线。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        多个交易日<br>
+                        ↓<br>
+                        一根周线
+
+                    </div>
+
+
+                    <p>
+
+                        周线因此比日线提供了更大的时间观察范围。
+
+                    </p>
+
+
+                    <p>
+
+                        例如，一段持续数月的行情，
+                        如果全部使用日线观察，会产生大量 K 线；
+                        使用周线后，数据点数量会明显减少。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 10 -->
+
+                <section class="article-section" id="month-line">
+
+
+                    <div class="section-kicker">
+                        10
+                    </div>
+
+
+                    <h2>
+                        什么是月线？
+                    </h2>
+
+
+                    <p>
+
+                        月线表示一个月时间范围内的行情数据。
+
+                    </p>
+
+
+                    <p>
+
+                        一根月线通常由一个月内的交易数据汇总形成。
+
+                    </p>
+
+
+                    <p>
+
+                        与日线和周线一样，
+                        月线依然遵循 OHLC 的基本结构。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        月线 Open
+                        → 月内最高价
+                        → 月内最低价
+                        → 月线 Close
+
+                    </div>
+
+
+                    <p>
+
+                        月线能够进一步压缩较长时间范围内的行情，
+                        因此适合观察更长周期的价格变化。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 11 -->
+
+                <section class="article-section" id="period-comparison">
+
+
+                    <div class="section-kicker">
+                        11
+                    </div>
+
+
+                    <h2>
+                        分钟线、日线、周线与月线有什么区别？
+                    </h2>
+
+
+                    <p>
+
+                        它们最核心的区别不是字段不同，
+                        而是<strong>每一根 K 线代表的时间范围不同</strong>。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                分钟线
+                            </h3>
+
+
+                            <p>
+                                观察日内较短时间范围的价格变化。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                日线
+                            </h3>
+
+
+                            <p>
+                                观察单个交易日的整体行情。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                周线
+                            </h3>
+
+
+                            <p>
+                                观察一个交易周内的价格变化。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+
+                            <h3>
+                                月线
+                            </h3>
+
+
+                            <p>
+                                观察一个月范围内的价格变化。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        周期越小，单位时间内产生的 K 线通常越多；
+                        周期越大，单位时间内产生的 K 线通常越少。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 12 -->
+
+                <section class="article-section" id="period-hierarchy">
+
+
+                    <div class="section-kicker">
+                        12
+                    </div>
+
+
+                    <h2>
+                        不同周期之间有什么关系？
+                    </h2>
+
+
+                    <p>
+
+                        不同周期之间存在明显的时间层级关系。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        1 分钟<br>
+                        ↓<br>
+                        5 分钟<br>
+                        ↓<br>
+                        15 分钟<br>
+                        ↓<br>
+                        30 分钟<br>
+                        ↓<br>
+                        60 分钟<br>
+                        ↓<br>
+                        日线<br>
+                        ↓<br>
+                        周线<br>
+                        ↓<br>
+                        月线
+
+                    </div>
+
+
+                    <p>
+
+                        这可以理解为从细粒度逐渐走向粗粒度。
+
+                    </p>
+
+
+                    <p>
+
+                        但是需要注意，
+                        这并不是说所有周期都可以简单地通过整数倍关系直接转换。
+
+                    </p>
+
+
+                    <p>
+
+                        交易日存在开收市时间、午间休市、节假日等市场规则，
+                        因此实际 K 线聚合必须遵循具体市场的交易日历和时间边界。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 13 -->
+
+                <section class="article-section" id="aggregation">
+
+
+                    <div class="section-kicker">
+                        13
+                    </div>
+
+
+                    <h2>
+                        什么是 K 线聚合？
+                    </h2>
+
+
+                    <p>
+
+                        所谓 K 线聚合，
+                        就是把更细粒度的行情数据按照时间区间重新汇总，
+                        形成更大周期的 K 线。
+
+                    </p>
+
+
+                    <p>
+
+                        假设有一组更细的行情数据，
+                        需要生成一个新的时间周期，
+                        那么系统需要重新计算 OHLC。
+
+                    </p>
+
+
+                    <p>
+
+                        聚合后的 Open 通常取时间区间内第一条有效价格，
+                        Close 取最后一条有效价格，
+                        High 取区间内最高价格，
+                        Low 取区间内最低价格。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        Open = 区间第一笔有效价格<br>
+                        High = 区间最高价格<br>
+                        Low = 区间最低价格<br>
+                        Close = 区间最后一笔有效价格
+
+                    </div>
+
+
+                    <p>
+
+                        这就是 K 线从细周期向大周期转换的核心逻辑。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 14 -->
+
+                <section class="article-section" id="volume-aggregation">
+
+
+                    <div class="section-kicker">
+                        14
+                    </div>
+
+
+                    <h2>
+                        成交量和成交额如何随周期变化？
+                    </h2>
+
+
+                    <p>
+
+                        K 线周期变化时，
+                        成交量和成交额通常也需要按照相同的时间区间进行统计。
+
+                    </p>
+
+
+                    <p>
+
+                        例如，一根 5 分钟 K 线对应一个 5 分钟区间，
+                        那么它的成交量通常表示这个区间内的成交量总和。
+
+                    </p>
+
+
+                    <p>
+
+                        成交额同样可以按照时间区间进行累计。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        更细周期成交量<br>
+                        ↓<br>
+                        按时间区间求和<br>
+                        ↓<br>
+                        更大周期成交量
+
+                    </div>
+
+
+                    <p>
+
+                        因此，在行情系统中，
+                        OHLC 与成交统计并不是孤立存在的，
+                        它们通常共同对应同一个时间区间。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 15 -->
+
+                <section class="article-section" id="period-timestamp">
+
+
+                    <div class="section-kicker">
+                        15
+                    </div>
+
+
+                    <h2>
+                        K 线的时间到底表示什么？
+                    </h2>
+
+
+                    <p>
+
+                        这是行情数据中一个非常容易被忽略的问题。
+
+                    </p>
+
+
+                    <p>
+
+                        一根 K 线有一个时间戳，
+                        但这个时间戳究竟代表“周期开始时间”
+                        还是“周期结束时间”，
+                        需要根据数据源的定义来判断。
+
+                    </p>
+
+
+                    <p>
+
+                        例如一根 5 分钟 K 线可能表示：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        09:30:00 → 09:35:00
+
+                    </div>
+
+
+                    <p>
+
+                        某些系统可能把 09:30 作为这根 K 线的时间，
+                        表示周期开始；
+
+                        也可能使用 09:35 作为时间，
+                        表示周期结束。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，在开发行情系统时，
+                        <strong>不能只看到 timestamp 就默认知道它的含义。</strong>
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 16 -->
+
+                <section class="article-section" id="trading-session">
+
+
+                    <div class="section-kicker">
+                        16
+                    </div>
+
+
+                    <h2>
+                        交易时间会影响 K 线周期吗？
+                    </h2>
+
+
+                    <p>
+
+                        会。
+
+                    </p>
+
+
+                    <p>
+
+                        K 线周期虽然按照时间划分，
+                        但股票市场并不是 24 小时连续交易。
+
+                    </p>
+
+
+                    <p>
+
+                        交易日历、开盘时间、收盘时间、
+                        午间休市以及节假日都会影响 K 线的形成。
+
+                    </p>
+
+
+                    <p>
+
+                        因此：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            交易时间之外通常不会产生正常交易 K 线
+                        </li>
+
+
+                        <li class="checklist-item">
+                            周末和节假日不会产生正常交易日线
+                        </li>
+
+
+                        <li class="checklist-item">
+                            午间休市会影响分钟线的连续性
+                        </li>
+
+
+                        <li class="checklist-item">
+                            不同市场的交易时间可能不同
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        这也是为什么行情系统需要交易日历，
+                        而不能只依赖简单的时间计算。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 17 -->
+
+                <section class="article-section" id="same-day">
+
+
+                    <div class="section-kicker">
+                        17
+                    </div>
+
+
+                    <h2>
+                        为什么同一天会有很多不同周期的 K 线？
+                    </h2>
+
+
+                    <p>
+
+                        因为 K 线周期只是观察市场的时间尺度。
+
+                    </p>
+
+
+                    <p>
+
+                        同一个交易日，
+                        可以同时存在：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        1 分钟线<br>
+                        5 分钟线<br>
+                        15 分钟线<br>
+                        30 分钟线<br>
+                        60 分钟线<br>
+                        日线
+
+                    </div>
+
+
+                    <p>
+
+                        它们描述的是同一天的市场，
+                        但采用了不同的时间划分方式。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，“一只股票只有一套 K 线数据”
+                        这种理解是不准确的。
+
+                    </p>
+
+
+                    <p>
+
+                        更准确的说法是：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        同一只股票
+                        +
+                        不同时间周期
+                        =
+                        不同的 K 线序列
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- 18 -->
+
+                <section class="article-section" id="period-and-data">
+
+
+                    <div class="section-kicker">
+                        18
+                    </div>
+
+
+                    <h2>
+                        K 线周期和行情数据有什么关系？
+                    </h2>
+
+
+                    <p>
+
+                        从数据系统的角度来看，
+                        周期实际上是 K 线数据的重要属性。
+
+                    </p>
+
+
+                    <p>
+
+                        一条 K 线数据除了需要知道股票代码和时间，
+                        还需要知道它属于什么周期。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        symbol = 600519.SH<br>
+                        interval = 5m<br>
+                        timestamp = 09:30<br>
+                        open = ...<br>
+                        high = ...<br>
+                        low = ...<br>
+                        close = ...
+
+                    </div>
+
+
+                    <p>
+
+                        如果没有 interval，
+                        系统可能无法判断这一条 K 线究竟是 1 分钟、
+                        5 分钟还是日线数据。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，在统一行情模型中，
+                        <strong>周期应该是明确的数据属性。</strong>
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 19 -->
+
+                <section class="article-section" id="period-api">
+
+
+                    <div class="section-kicker">
+                        19
+                    </div>
+
+
+                    <h2>
+                        为什么行情 API 需要 interval 参数？
+                    </h2>
+
+
+                    <p>
+
+                        当程序向行情系统请求 K 线数据时，
+                        通常需要告诉数据源希望获得什么周期。
+
+                    </p>
+
+
+                    <p>
+
+                        例如：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        interval = 1m<br>
+                        interval = 5m<br>
+                        interval = 15m<br>
+                        interval = 30m<br>
+                        interval = 60m<br>
+                        interval = 1d<br>
+                        interval = 1w<br>
+                        interval = 1M
+
+                    </div>
+
+
+                    <p>
+
+                        API 根据 interval 返回对应的 K 线序列。
+
+                    </p>
+
+
+                    <p>
+
+                        这也是为什么在设计行情数据接口时，
+                        周期不能只存在于前端页面的选择框里，
+                        而应该进入数据请求和数据模型。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 20 -->
+
+                <section class="article-section" id="period-data-volume">
+
+
+                    <div class="section-kicker">
+                        20
+                    </div>
+
+
+                    <h2>
+                        周期越小，数据量一定越大吗？
+                    </h2>
+
+
+                    <p>
+
+                        在相同时间范围内，
+                        周期越小，通常产生的 K 线数量越多。
+
+                    </p>
+
+
+                    <p>
+
+                        例如观察同一个交易日：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            1 分钟线会产生很多根 K 线
+                        </li>
+
+
+                        <li class="checklist-item">
+                            5 分钟线数量明显减少
+                        </li>
+
+
+                        <li class="checklist-item">
+                            60 分钟线数量进一步减少
+                        </li>
+
+
+                        <li class="checklist-item">
+                            日线通常只有一根
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        因此，分钟级行情通常需要处理更大的数据量。
+
+                    </p>
+
+
+                    <p>
+
+                        这会直接影响行情系统的：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            数据存储
+                        </li>
+
+
+                        <li class="checklist-item">
+                            查询速度
+                        </li>
+
+
+                        <li class="checklist-item">
+                            缓存设计
+                        </li>
+
+
+                        <li class="checklist-item">
+                            API 返回数量
+                        </li>
+
+
+                        <li class="checklist-item">
+                            前端图表渲染
+                        </li>
+
+
+                    </ul>
+
+
+                </section>
+
+
+
+                <!-- 21 -->
+
+                <section class="article-section" id="common-mistakes">
+
+
+                    <div class="section-kicker">
+                        21
+                    </div>
+
+
+                    <h2>
+                        K 线周期学习中的常见误区
+                    </h2>
+
+
+                    <p>
+
+                        学习 K 线周期时，有几个非常常见的误区。
+
+                    </p>
+
+
+                    <h3>
+                        误区一：认为不同周期代表不同价格
+                    </h3>
+
+
+                    <p>
+
+                        不同周期并不是不同市场，
+                        而是对同一市场行情采用不同时间尺度进行整理。
+
+                    </p>
+
+
+                    <h3>
+                        误区二：认为周期越大数据越“准确”
+                    </h3>
+
+
+                    <p>
+
+                        周期大小不是准确与否的问题。
+
+                        大周期保留的是更长时间范围的统计结果，
+                        小周期则保留更多短期变化。
+
+                    </p>
+
+
+                    <h3>
+                        误区三：忽略时间戳定义
+                    </h3>
+
+
+                    <p>
+
+                        如果没有确认 timestamp 是周期开始还是结束，
+                        在不同数据源之间转换时很容易产生时间错位。
+
+                    </p>
+
+
+                    <h3>
+                        误区四：认为所有周期都可以随便拼接
+                    </h3>
+
+
+                    <p>
+
+                        实际聚合需要考虑交易时间、交易日历、
+                        数据缺失以及数据源的周期定义。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 22 -->
+
+                <section class="article-section" id="how-to-read">
+
+
+                    <div class="section-kicker">
+                        22
+                    </div>
+
+
+                    <h2>
+                        如何理解一张多周期 K 线图？
+                    </h2>
+
+
+                    <p>
+
+                        当一个行情页面同时提供多个周期时，
+                        可以按照以下顺序理解。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                先看周期
+                            </h3>
+
+
+                            <p>
+                                先确认当前图表是一分钟、五分钟、日线还是其他周期。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                再看时间
+                            </h3>
+
+
+                            <p>
+                                确认 K 线对应的具体时间区间。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                再看价格
+                            </h3>
+
+
+                            <p>
+                                通过 OHLC 理解这一时间区间的价格变化。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        不同周期之间可以相互补充，
+                        但首先必须知道自己正在观察哪个时间尺度。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 23 -->
+
+                <section class="article-section" id="system-design">
+
+
+                    <div class="section-kicker">
+                        23
+                    </div>
+
+
+                    <h2>
+                        在行情系统中应该如何设计 K 线周期？
+                    </h2>
+
+
+                    <p>
+
+                        对一个股票研究系统来说，
+                        K 线周期最好使用统一的枚举或标准值进行管理。
+
+                    </p>
+
+
+                    <p>
+
+                        例如可以统一定义：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        1m · 5m · 15m · 30m · 60m · 1d · 1w · 1M
+
+                    </div>
+
+
+                    <p>
+
+                        数据源内部可能使用不同的命名方式，
+                        例如 minute、5min、daily、weekly 等。
+
+                    </p>
+
+
+                    <p>
+
+                        这些差异应该在 Gateway 或数据适配层进行转换，
+                        而不是让前端和上层业务分别处理每一个数据源的特殊命名。
+
+                    </p>
+
+
+                    <p>
+
+                        这样，无论数据来自哪个行情供应商，
+                        上层 Manager 和 API 都可以使用统一的周期定义。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        数据源<br>
+                        ↓<br>
+                        Gateway 统一周期<br>
+                        ↓<br>
+                        Manager<br>
+                        ↓<br>
+                        API<br>
+                        ↓<br>
+                        前端 K 线图
+
+                    </div>
+
+
+                    <p>
+
+                        这也是行情基础设施设计中非常重要的一层抽象。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 24 -->
+
+                <section class="article-section" id="summary">
+
+
+                    <div class="section-kicker">
+                        24
+                    </div>
+
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+
+                    <p>
+
+                        K 线周期决定了一根 K 线代表多长时间。
+
+                    </p>
+
+
+                    <p>
+
+                        从 1 分钟、5 分钟、15 分钟、
+                        30 分钟、60 分钟，到日线、周线和月线，
+                        它们本质上都是对市场行情进行不同时间粒度的组织。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                周期
+                            </h3>
+
+
+                            <p>
+                                决定一根 K 线代表的时间范围。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                聚合
+                            </h3>
+
+
+                            <p>
+                                可以按照时间区间将更细粒度数据汇总成更大周期。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                时间
+                            </h3>
+
+
+                            <p>
+                                K 线时间戳必须结合数据源定义理解。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+
+                            <h3>
+                                数据系统
+                            </h3>
+
+
+                            <p>
+                                周期应该成为统一行情模型和 API 的明确属性。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        到这里，我们已经知道了：
+
+                        <strong>
+                            一根 K 线是什么，以及一根 K 线代表多长时间。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        下一节继续向更细粒度的数据深入，
+                        认识股票行情中的 Tick、逐笔成交和盘口数据。
+
+                    </p>
+
+
+                    <div class="article-next">
+
+
+                        <div class="article-next-label">
+                            NEXT LESSON
+                        </div>
+
+
+                        <h3>
+                            LESSON 08 · Tick 与盘口数据
+                        </h3>
+
+
+                        <p>
+                            从 K 线进一步进入更细粒度的市场数据。
+                        </p>
+
+
+                        <a class="lesson-link" href="./08_tick_orderbook.html">
+                            继续学习 →
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+            </article>
+
+
+
+            <aside class="article-toc">
+
+
+                <div class="toc-label">
+                    LESSON 07
+                </div>
+
+
+                <div class="toc-title">
+                    K 线周期
+                </div>
+
+
+                <nav class="toc-list">
+
+
+                    <a href="#what-is-period">
+                        什么是 K 线周期？
+                    </a>
+
+
+                    <a href="#why-period">
+                        为什么需要不同的 K 线周期？
+                    </a>
+
+
+                    <a href="#one-minute">
+                        什么是 1 分钟 K 线？
+                    </a>
+
+
+                    <a href="#five-minute">
+                        什么是 5 分钟 K 线？
+                    </a>
+
+
+                    <a href="#fifteen-minute">
+                        什么是 15 分钟 K 线？
+                    </a>
+
+
+                    <a href="#thirty-minute">
+                        什么是 30 分钟 K 线？
+                    </a>
+
+
+                    <a href="#sixty-minute">
+                        什么是 60 分钟 K 线？
+                    </a>
+
+
+                    <a href="#day-line">
+                        什么是日线？
+                    </a>
+
+
+                    <a href="#week-line">
+                        什么是周线？
+                    </a>
+
+
+                    <a href="#month-line">
+                        什么是月线？
+                    </a>
+
+
+                    <a href="#period-comparison">
+                        分钟线、日线、周线与月线有什么区别？
+                    </a>
+
+
+                    <a href="#period-hierarchy">
+                        不同周期之间有什么关系？
+                    </a>
+
+
+                    <a href="#aggregation">
+                        什么是 K 线聚合？
+                    </a>
+
+
+                    <a href="#volume-aggregation">
+                        成交量和成交额如何随周期变化？
+                    </a>
+
+
+                    <a href="#period-timestamp">
+                        K 线的时间到底表示什么？
+                    </a>
+
+
+                    <a href="#trading-session">
+                        交易时间会影响 K 线周期吗？
+                    </a>
+
+
+                    <a href="#same-day">
+                        为什么同一天会有很多不同周期的 K 线？
+                    </a>
+
+
+                    <a href="#period-and-data">
+                        K 线周期和行情数据有什么关系？
+                    </a>
+
+
+                    <a href="#period-api">
+                        为什么行情 API 需要 interval 参数？
+                    </a>
+
+
+                    <a href="#period-data-volume">
+                        周期越小，数据量一定越大吗？
+                    </a>
+
+
+                    <a href="#common-mistakes">
+                        K 线周期学习中的常见误区
+                    </a>
+
+
+                    <a href="#how-to-read">
+                        如何理解一张多周期 K 线图？
+                    </a>
+
+
+                    <a href="#system-design">
+                        在行情系统中应该如何设计 K 线周期？
+                    </a>
+
+
+                    <a href="#summary">
+                        本篇总结
+                    </a>
+
+
+                </nav>
+
+
+                <div class="toc-footer">
+                    DATA · MARKET DATA
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+
+        <footer class="page-footer">
+
+            STOCK LAB · MARKET DATA
+
+        </footer>
+
+
+    </main>
+
+
+
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+
+            const tocLinks =
+                document.querySelectorAll(".toc-list a");
+
+
+            const sections = [];
+
+
+            tocLinks.forEach(link => {
+
+
+                const id =
+                    link.getAttribute("href");
+
+
+                if (!id || !id.startsWith("#")) {
+                    return;
+                }
+
+
+                const section =
+                    document.querySelector(id);
+
+
+                if (section) {
+
+
+                    sections.push({
+                        element: section,
+                        link: link
+                    });
+
+
+                }
+
+
+            });
+
+
+            if (!sections.length) {
+                return;
+            }
+
+
+            const observer =
+                new IntersectionObserver(
+
+
+                    entries => {
+
+
+                        entries.forEach(entry => {
+
+
+                            if (!entry.isIntersecting) {
+                                return;
+                            }
+
+
+                            sections.forEach(item => {
+
+
+                                item.link.classList.remove(
+                                    "active"
+                                );
+
+
+                            });
+
+
+                            const current =
+                                sections.find(
+                                    item =>
+                                        item.element ===
+                                        entry.target
+                                );
+
+
+                            if (current) {
+
+
+                                current.link.classList.add(
+                                    "active"
+                                );
+
+
+                            }
+
+
+                        });
+
+
+                    },
+
+
+                    {
+                        root: null,
+                        rootMargin:
+                            "-15% 0px -65% 0px",
+                        threshold: 0
+                    }
+
+
+                );
+
+
+            sections.forEach(item => {
+
+
+                observer.observe(
+                    item.element
+                );
+
+
+            });
+
+
+        });
+
+
+    </script>
+
+
+</body>
+
+
+</html>

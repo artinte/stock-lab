@@ -1,0 +1,2502 @@
+<!doctype html>
+
+<html lang="zh-CN">
+
+
+<head>
+
+
+    <meta charset="UTF-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <title>Tick、逐笔成交与盘口 - STOCK LAB</title>
+
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+
+</head>
+
+
+<body>
+
+
+    <main class="article-page">
+
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+
+            <article class="article-main">
+
+
+                <header class="article-header">
+
+
+                    <div class="article-eyebrow">
+                        DATA · MARKET DATA · LESSON 08
+                    </div>
+
+
+                    <h1>
+                        Tick、逐笔成交与盘口
+                    </h1>
+
+
+                    <p class="article-lead">
+
+                        从 K 线进一步进入更细粒度的市场数据，
+                        理解 Tick、逐笔成交、买卖盘以及
+                        Level-1 和 Level-2 行情之间的区别。
+
+                    </p>
+
+
+                    <div class="article-meta">
+
+                        <span>
+                            行情数据
+                        </span>
+
+                        <span>
+                            进阶
+                        </span>
+
+                        <span>
+                            约 30 分钟
+                        </span>
+
+                    </div>
+
+
+                </header>
+
+
+
+                <!-- 01 -->
+
+                <section class="article-section" id="what-is-tick">
+
+
+                    <div class="section-kicker">
+                        01
+                    </div>
+
+
+                    <h2>
+                        什么是 Tick 数据？
+                    </h2>
+
+
+                    <p>
+
+                        在前面的课程中，我们学习了 K 线。
+
+                        K 线会把一段时间内产生的大量行情数据，
+                        汇总成 Open、High、Low、Close 等字段。
+
+                    </p>
+
+
+                    <p>
+
+                        Tick 数据则更加接近市场实际发生的实时变化。
+
+                    </p>
+
+
+                    <p>
+
+                        在不同数据源中，“Tick”的具体定义可能存在差异，
+                        但通常可以把它理解为：
+
+                        <strong>
+                            市场行情发生一次更新时形成的一条细粒度行情记录。
+                        </strong>
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        K 线：对一段时间进行汇总<br>
+                        Tick：更接近实时行情变化
+
+                    </div>
+
+
+                    <p>
+
+                        因此，Tick 通常比分钟线拥有更细的时间粒度。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 02 -->
+
+                <section class="article-section" id="tick-time">
+
+
+                    <div class="section-kicker">
+                        02
+                    </div>
+
+
+                    <h2>
+                        Tick 为什么需要时间戳？
+                    </h2>
+
+
+                    <p>
+
+                        Tick 数据的核心价值之一，
+                        就是记录市场变化发生的时间。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，一条 Tick 通常至少需要关联一个时间信息。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        symbol<br>
+                        timestamp<br>
+                        price<br>
+                        volume<br>
+                        ...
+
+                    </div>
+
+
+                    <p>
+
+                        时间精度可能达到秒、毫秒甚至更细，
+                        具体取决于数据源和交易市场。
+
+                    </p>
+
+
+                    <p>
+
+                        在处理 Tick 数据时，
+                        不能只关注价格，
+                        还需要考虑时间顺序。
+
+                    </p>
+
+
+                    <p>
+
+                        因为市场数据本质上是一个不断随时间变化的序列。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 03 -->
+
+                <section class="article-section" id="tick-price">
+
+
+                    <div class="section-kicker">
+                        03
+                    </div>
+
+
+                    <h2>
+                        Tick 中通常包含哪些信息？
+                    </h2>
+
+
+                    <p>
+
+                        不同数据源提供的 Tick 字段并不完全相同，
+                        但常见信息包括：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            股票或证券代码
+                        </li>
+
+
+                        <li class="checklist-item">
+                            时间戳
+                        </li>
+
+
+                        <li class="checklist-item">
+                            最新成交价格
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交数量或成交量
+                        </li>
+
+
+                        <li class="checklist-item">
+                            买卖方向或相关标识
+                        </li>
+
+
+                        <li class="checklist-item">
+                            买卖盘价格与数量
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        需要特别注意：
+
+                        <strong>
+                            Tick 并没有一个所有数据源都完全一致的标准字段集合。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        因此，在构建行情系统时，
+                        应该先理解数据源的具体定义，
+                        再设计统一的数据模型。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 04 -->
+
+                <section class="article-section" id="trade-tick">
+
+
+                    <div class="section-kicker">
+                        04
+                    </div>
+
+
+                    <h2>
+                        什么是逐笔成交？
+                    </h2>
+
+
+                    <p>
+
+                        逐笔成交通常是指对市场实际成交事件进行记录。
+
+                    </p>
+
+
+                    <p>
+
+                        一笔成交可以理解为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        某个时间<br>
+                        某个价格<br>
+                        成交了某个数量
+
+                    </div>
+
+
+                    <p>
+
+                        因此，逐笔成交数据更加关注
+                        <strong>
+                            “实际成交发生了什么”
+                        </strong>。
+
+                    </p>
+
+
+                    <p>
+
+                        它和单纯的最新价并不是一回事。
+
+                        最新价告诉我们当前看到的价格，
+                        而逐笔成交则试图记录具体的成交事件。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 05 -->
+
+                <section class="article-section" id="trade-fields">
+
+
+                    <div class="section-kicker">
+                        05
+                    </div>
+
+
+                    <h2>
+                        逐笔成交通常包含哪些字段？
+                    </h2>
+
+
+                    <p>
+
+                        一条逐笔成交记录通常可能包含：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            证券代码
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交时间
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交价格
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交数量
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交金额
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交方向或买卖标识
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交序号等市场数据标识
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        但实际字段会根据交易所、
+                        数据供应商和行情等级而有所不同。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，“逐笔成交”描述的是数据粒度和内容类型，
+                        并不意味着所有供应商的数据结构完全相同。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 06 -->
+
+                <section class="article-section" id="tick-vs-trade">
+
+
+                    <div class="section-kicker">
+                        06
+                    </div>
+
+
+                    <h2>
+                        Tick 和逐笔成交有什么区别？
+                    </h2>
+
+
+                    <p>
+
+                        这两个概念经常被混在一起，
+                        但严格来说并不一定完全相同。
+
+                    </p>
+
+
+                    <p>
+
+                        “逐笔成交”更强调：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        一笔实际成交事件
+
+                    </div>
+
+
+                    <p>
+
+                        而“Tick”在不同数据源中可能用于描述
+                        最新价更新、成交事件、
+                        行情快照或者其他细粒度行情变化。
+
+                    </p>
+
+
+                    <p>
+
+                        所以：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        Tick 是一个更宽泛、依赖数据源定义的概念。<br>
+                        逐笔成交更强调实际成交事件。
+
+                    </div>
+
+
+                    <p>
+
+                        学习行情数据时，
+                        最重要的不是死记名词，
+                        而是确认数据源到底提供了什么。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 07 -->
+
+                <section class="article-section" id="order-book">
+
+
+                    <div class="section-kicker">
+                        07
+                    </div>
+
+
+                    <h2>
+                        什么是盘口？
+                    </h2>
+
+
+                    <p>
+
+                        如果逐笔成交关注的是
+                        <strong>
+                            “已经发生的交易”
+                        </strong>，
+
+                        那么盘口数据关注的则更多是：
+
+                        <strong>
+                            “当前市场上挂着什么订单”。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        盘口通常展示当前市场中的买方和卖方报价以及对应数量。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        买方报价 ← 当前等待成交的买入订单<br>
+                        卖方报价 → 当前等待成交的卖出订单
+
+                    </div>
+
+
+                    <p>
+
+                        因此，盘口和逐笔成交描述的是市场不同的一面。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 08 -->
+
+                <section class="article-section" id="bid-ask">
+
+
+                    <div class="section-kicker">
+                        08
+                    </div>
+
+
+                    <h2>
+                        什么是买盘和卖盘？
+                    </h2>
+
+
+                    <p>
+
+                        买盘通常表示市场中的买入报价及其数量。
+
+                    </p>
+
+
+                    <p>
+
+                        卖盘通常表示市场中的卖出报价及其数量。
+
+                    </p>
+
+
+                    <p>
+
+                        最常见的两个概念就是：
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                B
+                            </div>
+
+
+                            <h3>
+                                Bid
+                            </h3>
+
+
+                            <p>
+                                买方报价。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                A
+                            </div>
+
+
+                            <h3>
+                                Ask
+                            </h3>
+
+
+                            <p>
+                                卖方报价。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        在很多行情系统中，
+                        Bid 和 Ask 会进一步形成买卖盘口。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 09 -->
+
+                <section class="article-section" id="bid-ask-spread">
+
+
+                    <div class="section-kicker">
+                        09
+                    </div>
+
+
+                    <h2>
+                        什么是买一和卖一？
+                    </h2>
+
+
+                    <p>
+
+                        买一和卖一通常代表当前盘口中最接近成交价格的买方和卖方报价。
+
+                    </p>
+
+
+                    <p>
+
+                        可以简单理解为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        买一：当前最高买价<br>
+                        卖一：当前最低卖价
+
+                    </div>
+
+
+                    <p>
+
+                        两者之间的价格差，
+                        通常称为买卖价差，也就是 Bid-Ask Spread。
+
+                    </p>
+
+
+                    <p>
+
+                        当市场报价不断变化时，
+                        买一和卖一也会不断更新。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 10 -->
+
+                <section class="article-section" id="five-level">
+
+
+                    <div class="section-kicker">
+                        10
+                    </div>
+
+
+                    <h2>
+                        什么是五档盘口？
+                    </h2>
+
+
+                    <p>
+
+                        在股票行情页面中，
+                        经常可以看到买一到买五以及卖一到卖五。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        买五<br>
+                        买四<br>
+                        买三<br>
+                        买二<br>
+                        买一<br>
+                        ————<br>
+                        卖一<br>
+                        卖二<br>
+                        卖三<br>
+                        卖四<br>
+                        卖五
+
+                    </div>
+
+
+                    <p>
+
+                        每一个档位通常包含：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            报价价格
+                        </li>
+
+
+                        <li class="checklist-item">
+                            对应委托数量
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        五档盘口因此比只显示买一和卖一
+                        提供了更深一层的报价信息。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 11 -->
+
+                <section class="article-section" id="order-depth">
+
+
+                    <div class="section-kicker">
+                        11
+                    </div>
+
+
+                    <h2>
+                        什么是盘口深度？
+                    </h2>
+
+
+                    <p>
+
+                        盘口深度可以理解为：
+
+                        <strong>
+                            在不同价格位置上，有多少买入或卖出报价。
+                        </strong>
+
+                    </p>
+
+
+                    <p>
+
+                        如果只看买一和卖一，
+                        我们看到的是最靠近当前成交区域的一层报价。
+
+                    </p>
+
+
+                    <p>
+
+                        如果继续向外观察更多价格档位，
+                        就可以获得更丰富的市场报价深度。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        买一 → 买二 → 买三 → 买四 → 买五 → …<br>
+                        卖一 → 卖二 → 卖三 → 卖四 → 卖五 → …
+
+                    </div>
+
+
+                    <p>
+
+                        这也是 Level-2 等更高等级行情经常涉及的内容之一。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 12 -->
+
+                <section class="article-section" id="l1">
+
+
+                    <div class="section-kicker">
+                        12
+                    </div>
+
+
+                    <h2>
+                        什么是 Level-1 行情？
+                    </h2>
+
+
+                    <p>
+
+                        Level-1，也常写作 L1，
+                        通常可以理解为基础级别的实时行情服务。
+
+                    </p>
+
+
+                    <p>
+
+                        具体内容取决于市场和数据供应商，
+                        但通常会包含基础行情信息，例如：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            最新价
+                        </li>
+
+
+                        <li class="checklist-item">
+                            涨跌
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交量
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交额
+                        </li>
+
+
+                        <li class="checklist-item">
+                            基础买卖报价
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        L1 的核心特点可以理解为：
+                        <strong>
+                            提供基础市场行情。
+                        </strong>
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 13 -->
+
+                <section class="article-section" id="l2">
+
+
+                    <div class="section-kicker">
+                        13
+                    </div>
+
+
+                    <h2>
+                        什么是 Level-2 行情？
+                    </h2>
+
+
+                    <p>
+
+                        Level-2，也常写作 L2，
+                        通常提供比基础行情更丰富的市场微观结构信息。
+
+                    </p>
+
+
+                    <p>
+
+                        具体内容同样取决于交易所和数据供应商，
+                        可能包括更深入的盘口、
+                        逐笔成交以及其他市场数据。
+
+                    </p>
+
+
+                    <p>
+
+                        因此不能简单理解为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        L1 = 一档<br>
+                        L2 = 五档
+
+                    </div>
+
+
+                    <p>
+
+                        实际上，L1 和 L2 是行情服务等级的概念，
+                        具体字段和数据深度需要以对应市场及供应商定义为准。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 14 -->
+
+                <section class="article-section" id="l1-l2">
+
+
+                    <div class="section-kicker">
+                        14
+                    </div>
+
+
+                    <h2>
+                        L1 和 L2 有什么区别？
+                    </h2>
+
+
+                    <p>
+
+                        从学习角度，可以先从“数据深度”理解二者。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                L1
+                            </div>
+
+
+                            <h3>
+                                基础行情
+                            </h3>
+
+
+                            <p>
+                                关注当前市场的核心价格和成交信息。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                L2
+                            </div>
+
+
+                            <h3>
+                                更深行情
+                            </h3>
+
+
+                            <p>
+                                提供更丰富的盘口和交易事件等市场数据。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        对行情系统而言，
+                        L1 和 L2 最终都需要转换成系统能够统一处理的数据结构。
+
+                    </p>
+
+
+                    <p>
+
+                        但在实际项目中，
+                        必须根据具体供应商的授权和字段定义进行适配。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 15 -->
+
+                <section class="article-section" id="snapshot-vs-trade">
+
+
+                    <div class="section-kicker">
+                        15
+                    </div>
+
+
+                    <h2>
+                        行情快照和逐笔成交有什么区别？
+                    </h2>
+
+
+                    <p>
+
+                        这是行情系统中另一个非常重要的区别。
+
+                    </p>
+
+
+                    <p>
+
+                        行情快照通常描述：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        “现在市场是什么状态？”
+
+                    </div>
+
+
+                    <p>
+
+                        而逐笔成交描述：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        “刚刚发生了什么成交？”
+
+                    </div>
+
+
+                    <p>
+
+                        因此，快照更像某一个时间点的市场状态，
+                        逐笔成交则更像不断发生的事件记录。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 16 -->
+
+                <section class="article-section" id="order-event">
+
+
+                    <div class="section-kicker">
+                        16
+                    </div>
+
+
+                    <h2>
+                        委托、成交和盘口是什么关系？
+                    </h2>
+
+
+                    <p>
+
+                        可以从一个非常简单的过程来理解。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        投资者提交委托<br>
+                        ↓<br>
+                        进入市场订单簿<br>
+                        ↓<br>
+                        与其他订单撮合<br>
+                        ↓<br>
+                        发生成交<br>
+                        ↓<br>
+                        形成成交数据
+
+                    </div>
+
+
+                    <p>
+
+                        盘口更多反映当前尚未完全成交的报价状态，
+                        而逐笔成交则记录已经发生的交易事件。
+
+                    </p>
+
+
+                    <p>
+
+                        两者结合起来，
+                        才能更完整地观察市场交易过程。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 17 -->
+
+                <section class="article-section" id="order-book-change">
+
+
+                    <div class="section-kicker">
+                        17
+                    </div>
+
+
+                    <h2>
+                        为什么盘口会不断变化？
+                    </h2>
+
+
+                    <p>
+
+                        因为市场中的委托和成交一直在变化。
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            新的买单进入市场
+                        </li>
+
+
+                        <li class="checklist-item">
+                            新的卖单进入市场
+                        </li>
+
+
+                        <li class="checklist-item">
+                            已有订单被成交
+                        </li>
+
+
+                        <li class="checklist-item">
+                            委托被撤销或修改
+                        </li>
+
+
+                        <li class="checklist-item">
+                            市场价格发生变化
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        因此，盘口不是一张静态表格，
+                        而是一个不断变化的市场状态。
+
+                    </p>
+
+
+                    <p>
+
+                        当行情页面不断刷新买一、卖一以及其他档位时，
+                        本质上是在不断更新这个市场状态。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 18 -->
+
+                <section class="article-section" id="microstructure">
+
+
+                    <div class="section-kicker">
+                        18
+                    </div>
+
+
+                    <h2>
+                        什么是市场微观结构？
+                    </h2>
+
+
+                    <p>
+
+                        当我们从 K 线进一步研究 Tick、
+                        逐笔成交和盘口时，
+                        实际上已经开始接触市场微观结构。
+
+                    </p>
+
+
+                    <p>
+
+                        市场微观结构关注的是市场交易如何发生，
+                        例如：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            买卖报价如何形成
+                        </li>
+
+
+                        <li class="checklist-item">
+                            订单如何进入市场
+                        </li>
+
+
+                        <li class="checklist-item">
+                            订单如何撮合成交
+                        </li>
+
+
+                        <li class="checklist-item">
+                            成交价格如何变化
+                        </li>
+
+
+                        <li class="checklist-item">
+                            盘口深度如何变化
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        K 线主要告诉我们一段时间内价格发生了什么，
+                        而微观结构数据可以进一步观察市场内部发生了什么。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 19 -->
+
+                <section class="article-section" id="tick-to-kline">
+
+
+                    <div class="section-kicker">
+                        19
+                    </div>
+
+
+                    <h2>
+                        Tick 数据可以生成 K 线吗？
+                    </h2>
+
+
+                    <p>
+
+                        在满足数据完整性和时间定义等条件的情况下，
+                        更细粒度的成交数据可以按照时间区间聚合成 K 线。
+
+                    </p>
+
+
+                    <p>
+
+                        例如，将某一个 5 分钟区间内的成交数据进行统计：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        第一笔有效成交价格 → Open<br>
+                        区间最高成交价格 → High<br>
+                        区间最低成交价格 → Low<br>
+                        最后一笔有效成交价格 → Close
+
+                    </div>
+
+
+                    <p>
+
+                        成交量和成交额则可以按照对应规则进行汇总。
+
+                    </p>
+
+
+                    <p>
+
+                        因此可以把它理解为：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        细粒度成交数据<br>
+                        ↓<br>
+                        按时间区间聚合<br>
+                        ↓<br>
+                        K 线
+
+                    </div>
+
+
+                </section>
+
+
+
+                <!-- 20 -->
+
+                <section class="article-section" id="not-reversible">
+
+
+                    <div class="section-kicker">
+                        20
+                    </div>
+
+
+                    <h2>
+                        K 线可以还原成逐笔成交吗？
+                    </h2>
+
+
+                    <p>
+
+                        通常不能。
+
+                    </p>
+
+
+                    <p>
+
+                        一根 K 线只保留了一个时间区间的汇总信息：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        Open<br>
+                        High<br>
+                        Low<br>
+                        Close<br>
+                        Volume<br>
+                        Amount
+
+                    </div>
+
+
+                    <p>
+
+                        它并没有保存这个时间区间内每一笔成交发生的具体顺序。
+
+                    </p>
+
+
+                    <p>
+
+                        例如同样一根 K 线，
+                        可能存在很多种完全不同的成交路径，
+                        但最终得到相同的 OHLC。
+
+                    </p>
+
+
+                    <p>
+
+                        因此：
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        细粒度数据 → 可以聚合成 K 线<br>
+                        K 线 → 通常无法恢复原始逐笔成交
+
+                    </div>
+
+
+                    <p>
+
+                        这也是为什么 Tick 和逐笔数据的存储价值很高。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 21 -->
+
+                <section class="article-section" id="data-volume">
+
+
+                    <div class="section-kicker">
+                        21
+                    </div>
+
+
+                    <h2>
+                        为什么 Tick 和盘口数据更难处理？
+                    </h2>
+
+
+                    <p>
+
+                        与日线相比，
+                        Tick、逐笔成交和盘口数据的数量会大很多。
+
+                    </p>
+
+
+                    <p>
+
+                        同一只股票在一个交易日内，
+                        可能产生大量细粒度行情事件。
+
+                    </p>
+
+
+                    <p>
+
+                        因此，行情系统需要考虑：
+
+                    </p>
+
+
+                    <ul class="checklist">
+
+
+                        <li class="checklist-item">
+                            高频数据写入
+                        </li>
+
+
+                        <li class="checklist-item">
+                            大量数据存储
+                        </li>
+
+
+                        <li class="checklist-item">
+                            时间序列查询
+                        </li>
+
+
+                        <li class="checklist-item">
+                            实时数据推送
+                        </li>
+
+
+                        <li class="checklist-item">
+                            数据压缩和归档
+                        </li>
+
+
+                        <li class="checklist-item">
+                            数据清洗与异常处理
+                        </li>
+
+
+                    </ul>
+
+
+                    <p>
+
+                        这也是为什么 Tick 数据往往比日线数据
+                        对行情基础设施提出更高要求。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 22 -->
+
+                <section class="article-section" id="data-model">
+
+
+                    <div class="section-kicker">
+                        22
+                    </div>
+
+
+                    <h2>
+                        Tick 和盘口应该如何进入数据模型？
+                    </h2>
+
+
+                    <p>
+
+                        在统一行情系统中，
+                        不应该把 Tick、逐笔成交和盘口全部混成一种数据。
+
+                    </p>
+
+
+                    <p>
+
+                        它们描述的是不同类型的市场信息。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                T
+                            </div>
+
+
+                            <h3>
+                                Tick
+                            </h3>
+
+
+                            <p>
+                                细粒度的行情变化记录。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                T
+                            </div>
+
+
+                            <h3>
+                                Trade
+                            </h3>
+
+
+                            <p>
+                                实际成交事件。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                B
+                            </div>
+
+
+                            <h3>
+                                Book
+                            </h3>
+
+
+                            <p>
+                                当前买卖报价和市场深度。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        这种区分对于后面的 Gateway、
+                        Manager 和 API 设计都非常重要。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 23 -->
+
+                <section class="article-section" id="api-design">
+
+
+                    <div class="section-kicker">
+                        23
+                    </div>
+
+
+                    <h2>
+                        行情 API 如何提供这些数据？
+                    </h2>
+
+
+                    <p>
+
+                        如果一个行情系统同时支持 K 线、
+                        Tick、逐笔成交和盘口，
+                        API 最好将不同类型的数据明确区分。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        Quote<br>
+                        → 当前行情快照<br><br>
+
+                        Kline<br>
+                        → 时间周期行情<br><br>
+
+                        Tick / Trade<br>
+                        → 细粒度行情或成交事件<br><br>
+
+                        Order Book<br>
+                        → 买卖盘与市场深度
+
+                    </div>
+
+
+                    <p>
+
+                        这样可以避免让一个接口承担所有行情数据类型，
+                        也更方便不同数据源进行适配。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 24 -->
+
+                <section class="article-section" id="common-mistakes">
+
+
+                    <div class="section-kicker">
+                        24
+                    </div>
+
+
+                    <h2>
+                        Tick 与盘口学习中的常见误区
+                    </h2>
+
+
+                    <h3>
+                        误区一：认为 Tick 就等于逐笔成交
+                    </h3>
+
+
+                    <p>
+
+                        Tick 的具体含义依赖数据源定义，
+                        逐笔成交则更强调实际成交事件。
+
+                    </p>
+
+
+                    <h3>
+                        误区二：认为五档盘口就是完整订单簿
+                    </h3>
+
+
+                    <p>
+
+                        五档只是展示一定数量的价格档位，
+                        并不等于完整的市场订单簿。
+
+                    </p>
+
+
+                    <h3>
+                        误区三：认为 L2 在所有市场都完全一样
+                    </h3>
+
+
+                    <p>
+
+                        L2 是一种行情服务等级概念，
+                        具体字段和数据内容需要根据市场和供应商定义判断。
+
+                    </p>
+
+
+                    <h3>
+                        误区四：认为 K 线可以还原 Tick
+                    </h3>
+
+
+                    <p>
+
+                        K 线是汇总结果，
+                        原始成交顺序等细节通常已经丢失。
+
+                    </p>
+
+
+                    <h3>
+                        误区五：只关注价格，不关注数据时间
+                    </h3>
+
+
+                    <p>
+
+                        Tick 和逐笔数据高度依赖时间顺序。
+                        如果时间戳处理错误，
+                        数据分析结果也可能出现问题。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 25 -->
+
+                <section class="article-section" id="how-to-understand">
+
+
+                    <div class="section-kicker">
+                        25
+                    </div>
+
+
+                    <h2>
+                        如何理解不同层级的行情数据？
+                    </h2>
+
+
+                    <p>
+
+                        到目前为止，可以把行情数据理解成不同的观察层级。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                K 线
+                            </h3>
+
+
+                            <p>
+                                从时间区间观察价格和成交统计。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                Tick
+                            </h3>
+
+
+                            <p>
+                                更细粒度地观察行情变化。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                Trade
+                            </h3>
+
+
+                            <p>
+                                观察具体成交事件。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+
+                            <h3>
+                                Order Book
+                            </h3>
+
+
+                            <p>
+                                观察当前买卖报价和市场深度。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        它们并不是互相替代的关系，
+                        而是从不同角度描述市场。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 26 -->
+
+                <section class="article-section" id="system-flow">
+
+
+                    <div class="section-kicker">
+                        26
+                    </div>
+
+
+                    <h2>
+                        从原始行情到研究数据
+                    </h2>
+
+
+                    <p>
+
+                        在一个完整的行情系统中，
+                        原始市场数据最终需要经过采集、
+                        标准化和处理，才能被研究系统使用。
+
+                    </p>
+
+
+                    <div class="article-note">
+
+                        交易市场<br>
+                        ↓<br>
+                        原始行情<br>
+                        ↓<br>
+                        Gateway / 数据适配<br>
+                        ↓<br>
+                        统一数据模型<br>
+                        ↓<br>
+                        Manager<br>
+                        ↓<br>
+                        API<br>
+                        ↓<br>
+                        K 线 / Tick / 盘口 / 研究页面
+
+                    </div>
+
+
+                    <p>
+
+                        这也是行情数据课程从基础字段逐渐进入
+                        Tick、盘口和数据基础设施的原因。
+
+                    </p>
+
+
+                    <p>
+
+                        数据粒度越细，
+                        系统面对的数据量和实时性要求通常也越高。
+
+                    </p>
+
+
+                </section>
+
+
+
+                <!-- 27 -->
+
+                <section class="article-section" id="summary">
+
+
+                    <div class="section-kicker">
+                        27
+                    </div>
+
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+
+                    <p>
+
+                        Tick、逐笔成交和盘口，
+                        让我们从 K 线进一步进入市场内部的交易数据。
+
+                    </p>
+
+
+                    <div class="study-principles">
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+
+                            <h3>
+                                Tick
+                            </h3>
+
+
+                            <p>
+                                更细粒度的行情变化数据，具体定义依赖数据源。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+
+                            <h3>
+                                逐笔成交
+                            </h3>
+
+
+                            <p>
+                                记录实际发生的成交事件。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+
+                            <h3>
+                                盘口
+                            </h3>
+
+
+                            <p>
+                                展示当前买卖报价和对应数量。
+                            </p>
+
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+
+                            <h3>
+                                L1 / L2
+                            </h3>
+
+
+                            <p>
+                                代表不同层级的行情服务，具体内容取决于市场和供应商。
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                    <p>
+
+                        到这里，我们已经完成了从
+                        <strong>
+                            行情字段 → 实时行情 → 历史行情 → K 线 → K 线周期 → Tick 与盘口
+                        </strong>
+                        的基础学习。
+
+                    </p>
+
+
+                    <p>
+
+                        下一阶段将进一步研究价格变化、
+                        涨跌幅、涨跌停、成交量、成交额和换手率，
+                        进入股票行情中更具体的价格与成交数据。
+
+                    </p>
+
+
+                    <div class="article-next">
+
+
+                        <div class="article-next-label">
+                            NEXT LESSON
+                        </div>
+
+
+                        <h3>
+                            LESSON 09 · 价格变化
+                        </h3>
+
+
+                        <p>
+                            理解最新价、昨收、涨跌额与涨跌幅之间的关系。
+                        </p>
+
+
+                        <a class="lesson-link" href="./09_price_change.html">
+                            继续学习 →
+                        </a>
+
+
+                    </div>
+
+
+                </section>
+
+
+
+            </article>
+
+
+
+            <aside class="article-toc">
+
+
+                <div class="toc-label">
+                    LESSON 08
+                </div>
+
+
+                <div class="toc-title">
+                    Tick、逐笔成交与盘口
+                </div>
+
+
+                <nav class="toc-list">
+
+
+                    <a href="#what-is-tick">
+                        什么是 Tick 数据？
+                    </a>
+
+
+                    <a href="#tick-time">
+                        Tick 为什么需要时间戳？
+                    </a>
+
+
+                    <a href="#tick-price">
+                        Tick 中通常包含哪些信息？
+                    </a>
+
+
+                    <a href="#trade-tick">
+                        什么是逐笔成交？
+                    </a>
+
+
+                    <a href="#trade-fields">
+                        逐笔成交通常包含哪些字段？
+                    </a>
+
+
+                    <a href="#tick-vs-trade">
+                        Tick 和逐笔成交有什么区别？
+                    </a>
+
+
+                    <a href="#order-book">
+                        什么是盘口？
+                    </a>
+
+
+                    <a href="#bid-ask">
+                        什么是买盘和卖盘？
+                    </a>
+
+
+                    <a href="#bid-ask-spread">
+                        什么是买一和卖一？
+                    </a>
+
+
+                    <a href="#five-level">
+                        什么是五档盘口？
+                    </a>
+
+
+                    <a href="#order-depth">
+                        什么是盘口深度？
+                    </a>
+
+
+                    <a href="#l1">
+                        什么是 Level-1 行情？
+                    </a>
+
+
+                    <a href="#l2">
+                        什么是 Level-2 行情？
+                    </a>
+
+
+                    <a href="#l1-l2">
+                        L1 和 L2 有什么区别？
+                    </a>
+
+
+                    <a href="#snapshot-vs-trade">
+                        行情快照和逐笔成交有什么区别？
+                    </a>
+
+
+                    <a href="#order-event">
+                        委托、成交和盘口是什么关系？
+                    </a>
+
+
+                    <a href="#order-book-change">
+                        为什么盘口会不断变化？
+                    </a>
+
+
+                    <a href="#microstructure">
+                        什么是市场微观结构？
+                    </a>
+
+
+                    <a href="#tick-to-kline">
+                        Tick 数据可以生成 K 线吗？
+                    </a>
+
+
+                    <a href="#not-reversible">
+                        K 线可以还原成逐笔成交吗？
+                    </a>
+
+
+                    <a href="#data-volume">
+                        为什么 Tick 和盘口数据更难处理？
+                    </a>
+
+
+                    <a href="#data-model">
+                        Tick 和盘口应该如何进入数据模型？
+                    </a>
+
+
+                    <a href="#api-design">
+                        行情 API 如何提供这些数据？
+                    </a>
+
+
+                    <a href="#common-mistakes">
+                        Tick 与盘口学习中的常见误区
+                    </a>
+
+
+                    <a href="#how-to-understand">
+                        如何理解不同层级的行情数据？
+                    </a>
+
+
+                    <a href="#system-flow">
+                        从原始行情到研究数据
+                    </a>
+
+
+                    <a href="#summary">
+                        本篇总结
+                    </a>
+
+
+                </nav>
+
+
+                <div class="toc-footer">
+                    DATA · MARKET DATA
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+
+        <footer class="page-footer">
+
+            STOCK LAB · MARKET DATA
+
+        </footer>
+
+
+    </main>
+
+
+
+    <script>
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+
+            const tocLinks =
+                document.querySelectorAll(".toc-list a");
+
+
+            const sections = [];
+
+
+            tocLinks.forEach(link => {
+
+
+                const id =
+                    link.getAttribute("href");
+
+
+                if (!id || !id.startsWith("#")) {
+                    return;
+                }
+
+
+                const section =
+                    document.querySelector(id);
+
+
+                if (section) {
+
+
+                    sections.push({
+                        element: section,
+                        link: link
+                    });
+
+                }
+
+
+            });
+
+
+            if (!sections.length) {
+                return;
+            }
+
+
+            const observer =
+                new IntersectionObserver(
+
+
+                    entries => {
+
+
+                        entries.forEach(entry => {
+
+
+                            if (!entry.isIntersecting) {
+                                return;
+                            }
+
+
+                            sections.forEach(item => {
+
+
+                                item.link.classList.remove(
+                                    "active"
+                                );
+
+                            });
+
+
+                            const current =
+                                sections.find(
+                                    item =>
+                                        item.element ===
+                                        entry.target
+                                );
+
+
+                            if (current) {
+
+
+                                current.link.classList.add(
+                                    "active"
+                                );
+
+                            }
+
+
+                        });
+
+
+                    },
+
+
+                    {
+                        root: null,
+                        rootMargin:
+                            "-15% 0px -65% 0px",
+                        threshold: 0
+                    }
+
+
+                );
+
+
+            sections.forEach(item => {
+
+
+                observer.observe(
+                    item.element
+                );
+
+
+            });
+
+
+        });
+
+
+    </script>
+
+
+</body>
+
+
+</html>
