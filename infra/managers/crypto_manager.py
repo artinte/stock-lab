@@ -31,7 +31,7 @@ class CryptoManager:
     # 实时行情
     # --------------------------------------------------
 
-    def get_quote(
+    def get_crypto_quote(
         self,
         symbol: str,
     ) -> CryptoQuote:
@@ -44,7 +44,7 @@ class CryptoManager:
             manager.get_quote("ETH/USDT")
         """
 
-        return self.gateway.fetch_quote(symbol)
+        return self.gateway.fetch_crypto_quote(symbol)
 
     def get_quotes(
         self,

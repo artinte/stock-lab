@@ -9,7 +9,7 @@ class CryptoDataGateway(ABC):
     """加密货币市场数据接口。"""
 
     @abstractmethod
-    def fetch_quote(
+    def fetch_crypto_quote(
         self,
         symbol: str,
     ) -> CryptoQuote:
@@ -17,7 +17,7 @@ class CryptoDataGateway(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def fetch_quotes(
+    def fetch_crypto_quotes(
         self,
         symbols: list[str],
     ) -> list[CryptoQuote]:

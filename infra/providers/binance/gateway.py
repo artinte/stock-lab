@@ -28,7 +28,7 @@ class BinanceGateway(CryptoDataGateway):
         """将项目内部 symbol 转换为 Binance 交易对。"""
         return symbol.replace("/", "").replace("-", "").upper()
 
-    def fetch_quote(self, symbol: str) -> CryptoQuote:
+    def fetch_crypto_quote(self, symbol: str) -> CryptoQuote:
         """获取单个交易对行情。"""
         symbol = self.normalize_symbol(symbol)
 
@@ -54,7 +54,7 @@ class BinanceGateway(CryptoDataGateway):
             timestamp=int(data["closeTime"]),
         )
 
-    def fetch_quotes(
+    def fetch_crypto_quotes(
         self,
         symbols: list[str],
     ) -> list[CryptoQuote]:

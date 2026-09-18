@@ -27,6 +27,14 @@ CHECK_INTERVAL = 300
 
 MONITOR_CHANNELS = {
     # =========================================================
+    # 播客
+    # =========================================================
+    "All-In Podcast": "UCESLZhusAkFfsNsApnjF_Cg",
+    "Bloomberg Originals": "UCUMZ7gohGI9HcU9VNsr2FJQ",
+    "Lex Fridman": "UCSHZKyawb77ixDdsGog4iWA",
+    "Silicon Valley Girl": "UCiq1FIgtEK7LRAOB1JXTPig",
+    
+    # =========================================================
     # AI / 大模型
     # =========================================================
     "Google": "UCK8sQmJBp8GCxrOtXWBpyEA",
@@ -100,7 +108,7 @@ MONITOR_CHANNELS = {
     "The Wall Street Journal": "UCK7tptUDHh-RYDsdxO1-5QQ",
     "Yahoo Finance": "UCEAZeUIeJs0IjQiqTCdVSIg",
     "Forbes": "UCmh7afBz-uWwOSSNTqUBAhg",
-    "The Economist": "UC0p5jTq6Xx_DosDFxVXnWaQ",
+    "The Economist": "UC0p5jTq6Xx_DosDFxVXnWaQ",    
 }
 
 
