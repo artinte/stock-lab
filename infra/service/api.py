@@ -159,7 +159,7 @@ def get_indices(indices: str = Query(...)):
     ]
 
     try:
-        quotes = data.get_quotes(symbols)
+        quotes = data.stock.get_quotes(symbols)
 
     except Exception as exc:
         print(f"❌ 批量获取指数行情失败：{exc}")
@@ -229,7 +229,7 @@ def get_stock(symbol: str):
 
         manager = require_data()
 
-        stock = manager.get_stock(symbol)
+        stock = manager.stock.get_stock(symbol)
 
         if stock is None:
 
@@ -279,7 +279,7 @@ def get_industry_category(symbol: str):
 
         manager = require_data()
 
-        industry = manager.get_industry(symbol)
+        industry = manager.industry.get_industry(symbol)
 
         if industry is None:
 
@@ -330,7 +330,7 @@ def get_quote(symbol: str):
 
         manager = require_data()
 
-        quote = manager.get_quote(symbol)
+        quote = manager.stock.get_quote(symbol)
 
         if quote is None:
 
@@ -476,7 +476,7 @@ def get_kline(
                 "K线接口暂未实现",
             )
 
-        klines = manager.get_kline(
+        klines = manager.stock.get_kline(
             symbol,
             interval=interval,
             start_time=start_time,
@@ -564,7 +564,7 @@ def get_financial(symbol: str):
                 "财务接口暂未实现",
             )
 
-        result = manager.get_financial(symbol)
+        result = manager.stock.get_financial(symbol)
 
         if result is None:
 
@@ -621,7 +621,7 @@ def get_valuation(symbol: str):
                 "估值接口暂未实现",
             )
 
-        valuation = manager.get_valuation(symbol)
+        valuation = manager.stock.get_valuation(symbol)
 
         if valuation is None:
 
@@ -711,7 +711,7 @@ def get_industry(symbol: str):
                 "行业接口暂未实现",
             )
 
-        industry = manager.get_industry(symbol)
+        industry = manager.stock.get_industry(symbol)
 
         if industry is None:
 
@@ -768,7 +768,7 @@ def get_technical(symbol: str):
                 "技术指标接口暂未实现",
             )
 
-        technical = manager.get_technical(symbol)
+        technical = manager.stock.get_technical(symbol)
 
         if technical is None:
 
@@ -832,7 +832,7 @@ def get_news(
                 "新闻接口暂未实现",
             )
 
-        news = manager.get_news(
+        news = manager.stock.get_news(
             symbol,
             limit=limit,
         )
@@ -1133,7 +1133,7 @@ def get_crypto_quote(symbol: str):
     try:
         manager = require_data()
 
-        quote = manager.get_crypto_quote(symbol)
+        quote = manager.crypto.get_crypto_quote(symbol)
 
         if quote is None:
             return failure(
@@ -1209,7 +1209,7 @@ def get_crypto_quotes(
     try:
         manager = require_data()
 
-        quotes = manager.get_crypto_quotes(symbol_list)
+        quotes = manager.crypto.get_crypto_quotes(symbol_list)
 
         result = []
 
@@ -1355,7 +1355,7 @@ def get_crypto_order_book(
     try:
         manager = require_data()
 
-        order_book = manager.get_crypto_order_book(
+        order_book = manager.crypto.get_crypto_order_book(
             symbol=symbol,
             limit=limit,
         )
