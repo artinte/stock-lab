@@ -486,21 +486,36 @@ select {
 
 .lesson-number {
     display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
 
-    align-items: center;
-    justify-content: center;
+    width: 62px;
+    min-width: 62px;
+    padding-top: 2px;
 
-    width: 36px;
-    height: 36px;
+    background: linear-gradient(
+        145deg,
+        #4f7cff 0%,
+        #6c8cff 45%,
+        #9b8cff 75%,
+        #b6a8ff 100%
+    );
 
-    background: #eef0f3;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 
-    border-radius: 10px;
+    font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.05;
 
-    color: #4b5563;
+    letter-spacing: -0.025em;
 
-    font-size: 12px;
-    font-weight: 700;
+    transform: scaleY(1.08);
+    transform-origin: left top;
+
+    user-select: none;
 }
 
 .lesson-content {

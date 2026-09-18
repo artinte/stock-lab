@@ -1,0 +1,2494 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="行情字段详解：系统理解股票行情页面中的最新价、昨收、开盘价、最高价、最低价、涨跌、涨跌幅、振幅、成交量、成交额、换手率、市值、PE、PB、PS、量比等常见字段。">
+
+    <title>行情字段详解｜STOCK LAB</title>
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+</head>
+
+
+<body>
+
+    <main class="article-page">
+
+        <!-- =====================================================
+             返回课程
+        ====================================================== -->
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+            <!-- =================================================
+                 主内容
+            ================================================== -->
+
+            <article class="article-main">
+
+
+                <!-- =================================================
+                     页面头部
+                ================================================== -->
+
+                <header class="article-header">
+
+                    <div class="article-eyebrow">
+                        LESSON 03 · MARKET DATA
+                    </div>
+
+                    <h1>
+                        行情字段详解
+                    </h1>
+
+                    <p class="article-lead">
+                        打开股票行情页面，你会看到大量数字：
+                        最新价、涨跌、涨跌幅、成交量、成交额、市值、PE、PB……
+                        它们并不是互相独立的数字，而是在从价格、成交、流动性和估值等不同角度描述一只股票。
+                        本篇将这些常见字段逐一拆开，建立完整的行情字段认知。
+                    </p>
+
+                    <div class="article-meta">
+
+                        <span class="article-meta-item">
+                            第一阶段 · 认识行情数据
+                        </span>
+
+                        <span class="article-meta-item">
+                            基础
+                        </span>
+
+                        <span class="article-meta-item">
+                            约 25 分钟
+                        </span>
+
+                        <span class="article-meta-item">
+                            STOCK LAB
+                        </span>
+
+                    </div>
+
+                </header>
+
+
+                <!-- =================================================
+                     01 行情字段是什么
+                ================================================== -->
+
+                <section class="article-section" id="what-are-quote-fields">
+
+                    <div class="section-kicker">
+                        01 · WHAT ARE QUOTE FIELDS
+                    </div>
+
+                    <h2>
+                        行情字段是什么？
+                    </h2>
+
+                    <p>
+                        在上一课中，我们知道股票行情并不是一个价格，
+                        而是一组描述股票市场状态的数据。
+                    </p>
+
+                    <p>
+                        那么，这些数据在计算机中究竟是如何表示的？
+                    </p>
+
+                    <p>
+                        最常见的方式，就是把一条行情拆分成很多个具有明确含义的
+                        <strong>字段（Field）</strong>。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            一条股票行情
+                        </strong>
+
+                        <br><br>
+
+                        symbol：600519.SH
+                        <br>
+                        name：贵州茅台
+                        <br>
+                        last：最新价
+                        <br>
+                        open：开盘价
+                        <br>
+                        high：最高价
+                        <br>
+                        low：最低价
+                        <br>
+                        prev_close：昨收
+                        <br>
+                        change：涨跌
+                        <br>
+                        change_percent：涨跌幅
+                        <br>
+                        volume：成交量
+                        <br>
+                        amount：成交额
+
+                    </div>
+
+
+                    <p>
+                        这里的
+                        <strong>last、open、high、low、volume</strong>
+                        等，就是行情数据中的字段名称。
+                    </p>
+
+                    <p>
+                        每一个字段都负责表达一个明确的市场信息。
+                        多个字段组合起来，
+                        才构成一条完整的股票行情。
+                    </p>
+
+
+                    <h3>
+                        为什么要拆成字段？
+                    </h3>
+
+                    <p>
+                        因为计算机不能像人一样直接“看懂”股票行情页面。
+                        它需要知道每一个数字具体代表什么。
+                    </p>
+
+                    <p>
+                        比如：
+                    </p>
+
+                    <div class="article-note">
+
+                        100.00
+
+                    </div>
+
+                    <p>
+                        对人来说，这可能是股票价格。
+                        但对于程序来说，
+                        100.00 到底是最新价、开盘价、最高价还是其他数据？
+                        如果没有字段名称，程序无法准确理解。
+                    </p>
+
+                    <p>
+                        所以：
+                        <strong>字段名称决定了一个数字的含义。</strong>
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     02 证券基本字段
+                ================================================== -->
+
+                <section class="article-section" id="security-fields">
+
+                    <div class="section-kicker">
+                        02 · SECURITY FIELDS
+                    </div>
+
+                    <h2>
+                        证券基本字段
+                    </h2>
+
+                    <p>
+                        在阅读价格之前，
+                        首先应该确认这份行情数据属于哪一只证券。
+                    </p>
+
+                    <p>
+                        因此，一条完整的行情记录通常会包含一些证券身份字段。
+                    </p>
+
+
+                    <div class="study-principles">
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <h4>
+                                Symbol
+                            </h4>
+
+                            <p>
+                                证券代码或统一证券标识，
+                                用于确定行情属于哪一只证券。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <h4>
+                                Name
+                            </h4>
+
+                            <p>
+                                股票名称，
+                                用于在人类可读的界面中识别证券。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+                            <h4>
+                                Exchange
+                            </h4>
+
+                            <p>
+                                交易所，例如上海证券交易所、
+                                深圳证券交易所等。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+                            <h4>
+                                Market
+                            </h4>
+
+                            <p>
+                                所属市场，
+                                用于进一步区分证券所在的市场体系。
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        为什么证券代码如此重要？
+                    </h3>
+
+                    <p>
+                        假设行情数据中只有：
+                    </p>
+
+                    <div class="article-note">
+
+                        最新价：100.00
+
+                    </div>
+
+                    <p>
+                        我们根本不知道这 100 元属于哪只股票。
+                    </p>
+
+                    <p>
+                        如果增加：
+                    </p>
+
+                    <div class="article-note">
+
+                        Symbol：600519.SH
+                        <br>
+                        Name：贵州茅台
+                        <br>
+                        最新价：100.00
+
+                    </div>
+
+                    <p>
+                        数据才真正具备了明确的对象。
+                    </p>
+
+                    <p>
+                        因此在行情系统中，
+                        <strong>证券身份是所有行情字段的基础。</strong>
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     03 最新价、昨收与开盘价
+                ================================================== -->
+
+                <section class="article-section" id="core-price-fields">
+
+                    <div class="section-kicker">
+                        03 · CORE PRICE FIELDS
+                    </div>
+
+                    <h2>
+                        最新价、昨收与开盘价
+                    </h2>
+
+                    <p>
+                        价格字段是股票行情页面中最核心的一组字段。
+                    </p>
+
+                    <p>
+                        其中最重要的三个概念是：
+                        <strong>最新价、昨收和开盘价。</strong>
+                    </p>
+
+
+                    <h3>
+                        最新价
+                    </h3>
+
+                    <p>
+                        最新价通常对应当前时点最近一次成交的价格。
+                    </p>
+
+                    <div class="article-note">
+
+                        last：
+                        <strong>100.50 元</strong>
+
+                    </div>
+
+                    <p>
+                        在交易过程中，
+                        随着新的成交发生，
+                        最新价可能不断变化。
+                    </p>
+
+
+                    <h3>
+                        昨收
+                    </h3>
+
+                    <p>
+                        昨收表示上一交易日的收盘价格。
+                    </p>
+
+                    <div class="article-note">
+
+                        prev_close：
+                        <strong>99.80 元</strong>
+
+                    </div>
+
+                    <p>
+                        它通常作为计算当前涨跌和涨跌幅的重要基准。
+                    </p>
+
+
+                    <h3>
+                        开盘价
+                    </h3>
+
+                    <p>
+                        开盘价表示当前交易日形成的开盘价格。
+                    </p>
+
+                    <div class="article-note">
+
+                        open：
+                        <strong>100.20 元</strong>
+
+                    </div>
+
+
+                    <p>
+                        因此，一条简单的实时行情可以表示为：
+                    </p>
+
+                    <div class="article-note">
+
+                        昨收：99.80 元
+                        <br>
+                        今开：100.20 元
+                        <br>
+                        最新：100.50 元
+
+                    </div>
+
+
+                    <p>
+                        通过这三个数字，
+                        我们已经可以初步了解当前价格相对于上一交易日和今天开盘的位置。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     04 最高价与最低价
+                ================================================== -->
+
+                <section class="article-section" id="high-low-fields">
+
+                    <div class="section-kicker">
+                        04 · HIGH & LOW
+                    </div>
+
+                    <h2>
+                        最高价与最低价
+                    </h2>
+
+                    <p>
+                        最新价告诉我们“现在在哪里”，
+                        而最高价和最低价告诉我们：
+                        <strong>今天到目前为止，价格曾经走到哪里。</strong>
+                    </p>
+
+
+                    <h3>
+                        最高价
+                    </h3>
+
+                    <p>
+                        最高价是当前统计区间内已经出现过的最高价格。
+                    </p>
+
+                    <div class="article-note">
+
+                        high：
+                        <strong>105.80 元</strong>
+
+                    </div>
+
+
+                    <h3>
+                        最低价
+                    </h3>
+
+                    <p>
+                        最低价是当前统计区间内已经出现过的最低价格。
+                    </p>
+
+                    <div class="article-note">
+
+                        low：
+                        <strong>98.60 元</strong>
+
+                    </div>
+
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        今开：100.00 元
+                        <br>
+                        最高：105.80 元
+                        <br>
+                        最低：98.60 元
+                        <br>
+                        最新：103.50 元
+
+                    </div>
+
+
+                    <p>
+                        这组数据告诉我们，
+                        股票今天的价格运行区间已经从 98.60 元到 105.80 元，
+                        当前最新成交价格为 103.50 元。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            基本关系
+                        </strong>
+
+                        <br><br>
+
+                        最低价 ≤ 最新价 ≤ 最高价
+
+                    </div>
+
+
+                    <p>
+                        这也是行情数据中一个非常重要的基本关系。
+                        后面进行程序化数据处理时，
+                        这种字段之间的关系也可以帮助我们发现异常数据。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     05 涨跌与涨跌幅
+                ================================================== -->
+
+                <section class="article-section" id="change-fields">
+
+                    <div class="section-kicker">
+                        05 · CHANGE & CHANGE PERCENT
+                    </div>
+
+                    <h2>
+                        涨跌与涨跌幅
+                    </h2>
+
+                    <p>
+                        仅仅知道最新价格还不够。
+                        股票行情页面通常还会告诉你：
+                        当前价格相对于昨收发生了多大的变化。
+                    </p>
+
+                    <p>
+                        这就是
+                        <strong>涨跌</strong>和
+                        <strong>涨跌幅</strong>。
+                    </p>
+
+
+                    <h3>
+                        涨跌
+                    </h3>
+
+                    <p>
+                        涨跌表示当前价格与上一交易日收盘价格之间的价格差。
+                    </p>
+
+                    <div class="article-note">
+
+                        昨收：100.00 元
+                        <br>
+                        最新：103.00 元
+                        <br><br>
+
+                        涨跌：
+                        <strong>3.00 元</strong>
+
+                    </div>
+
+
+                    <p>
+                        从概念上看：
+                    </p>
+
+                    <div class="article-note">
+
+                        涨跌 = 最新价 − 昨收价
+
+                    </div>
+
+
+                    <h3>
+                        涨跌幅
+                    </h3>
+
+                    <p>
+                        涨跌幅则把价格变化转换成相对于昨收的比例。
+                    </p>
+
+                    <div class="article-note">
+
+                        涨跌幅 =
+                        （最新价 − 昨收价）
+                        ÷ 昨收价
+
+                    </div>
+
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        昨收：100.00 元
+                        <br>
+                        最新：103.00 元
+                        <br>
+                        涨跌：3.00 元
+                        <br>
+                        涨跌幅：3%
+
+                    </div>
+
+
+                    <p>
+                        因此：
+                        <strong>涨跌告诉你变化了多少价格，涨跌幅告诉你变化了多少比例。</strong>
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            注意
+                        </strong>
+
+                        涨跌和涨跌幅虽然关系密切，
+                        但不是同一个字段。
+                        一个是价格差，
+                        一个是比例。
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     06 振幅
+                ================================================== -->
+
+                <section class="article-section" id="amplitude">
+
+                    <div class="section-kicker">
+                        06 · AMPLITUDE
+                    </div>
+
+                    <h2>
+                        振幅
+                    </h2>
+
+                    <p>
+                        涨跌幅描述的是当前价格相对于昨收的变化，
+                        而<strong>振幅</strong>关注的是当天价格运行范围有多大。
+                    </p>
+
+                    <p>
+                        它会同时考虑当天的最高价和最低价。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        振幅 =
+                        （最高价 − 最低价）
+                        ÷ 昨收价
+
+                    </div>
+
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        昨收：100.00 元
+                        <br>
+                        最高：105.00 元
+                        <br>
+                        最低：98.00 元
+
+                        <br><br>
+
+                        当天价格运行区间：
+                        <strong>7.00 元</strong>
+
+                    </div>
+
+
+                    <p>
+                        与涨跌幅不同，
+                        振幅并不关心当前最新价最终停留在哪里，
+                        而是关注价格在这个交易日中曾经走过多大的范围。
+                    </p>
+
+
+                    <h3>
+                        涨跌幅和振幅有什么区别？
+                    </h3>
+
+                    <div class="study-principles">
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <h4>
+                                涨跌幅
+                            </h4>
+
+                            <p>
+                                当前最新价格相对于昨收价格变化了多少。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <h4>
+                                振幅
+                            </h4>
+
+                            <p>
+                                当天最高价与最低价之间的价格区间有多大。
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        一只股票即使最终涨跌幅不大，
+                        盘中也可能经历比较大的价格波动。
+                        振幅就是帮助我们观察这种价格运行范围的字段。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     07 成交量
+                ================================================== -->
+
+                <section class="article-section" id="volume">
+
+                    <div class="section-kicker">
+                        07 · VOLUME
+                    </div>
+
+                    <h2>
+                        成交量
+                    </h2>
+
+                    <p>
+                        价格告诉我们股票交易到了什么位置，
+                        但还需要知道：
+                        <strong>到底有多少股票发生了交易？</strong>
+                    </p>
+
+                    <p>
+                        这就是成交量。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            成交量 Volume
+                        </strong>
+
+                        <br><br>
+
+                        表示在一定统计区间内，
+                        市场实际成交的证券数量。
+
+                    </div>
+
+
+                    <p>
+                        在股票行情中，
+                        成交量通常以股、手等形式展示，
+                        具体单位取决于数据源和行情页面的定义。
+                    </p>
+
+
+                    <h3>
+                        成交量反映什么？
+                    </h3>
+
+                    <p>
+                        成交量首先反映的是：
+                        <strong>市场发生了多少成交。</strong>
+                    </p>
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        成交量：1,000,000 股
+
+                    </div>
+
+                    <p>
+                        可以理解为在对应统计区间内，
+                        累计发生了 100 万股的成交。
+                    </p>
+
+
+                    <p>
+                        当我们把价格和成交量放在一起观察时，
+                        就可以进一步研究价格变化与市场交易活跃程度之间的关系。
+                    </p>
+
+                    <p>
+                        这也是为什么成交量是技术分析和量价分析中的基础数据之一。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            注意单位
+                        </strong>
+
+                        不同数据源对成交量的单位和统计口径可能不同。
+                        读取数据时不能只看数字大小，
+                        还需要确认字段单位。
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     08 成交额
+                ================================================== -->
+
+                <section class="article-section" id="amount">
+
+                    <div class="section-kicker">
+                        08 · AMOUNT
+                    </div>
+
+                    <h2>
+                        成交额
+                    </h2>
+
+                    <p>
+                        成交量告诉我们交易了多少证券，
+                        而成交额告诉我们：
+                        <strong>这些成交对应了多少资金规模。</strong>
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            成交额 Amount
+                        </strong>
+
+                        <br><br>
+
+                        表示一定统计区间内，
+                        股票成交对应的资金金额。
+
+                    </div>
+
+
+                    <p>
+                        例如某只股票当天成交额为：
+                    </p>
+
+                    <div class="article-note">
+
+                        成交额：
+                        <strong>50 亿元</strong>
+
+                    </div>
+
+                    <p>
+                        这表示当天累计成交对应的金额规模约为 50 亿元。
+                    </p>
+
+
+                    <h3>
+                        成交量和成交额有什么区别？
+                    </h3>
+
+                    <div class="study-principles">
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <h4>
+                                成交量
+                            </h4>
+
+                            <p>
+                                关注成交了多少证券，
+                                核心单位是数量。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <h4>
+                                成交额
+                            </h4>
+
+                            <p>
+                                关注这些成交对应了多少资金，
+                                核心单位是金额。
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        两者都描述成交，
+                        但观察角度不同。
+                    </p>
+
+                    <p>
+                        对股票研究来说，
+                        成交量和成交额结合起来使用，
+                        可以更完整地了解市场交易规模。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     09 换手率
+                ================================================== -->
+
+                <section class="article-section" id="turnover">
+
+                    <div class="section-kicker">
+                        09 · TURNOVER RATE
+                    </div>
+
+                    <h2>
+                        换手率
+                    </h2>
+
+                    <p>
+                        成交量告诉我们交易了多少股票，
+                        但不同股票的流通股本规模并不一样。
+                    </p>
+
+                    <p>
+                        如果一只股票流通股很多，
+                        成交 100 万股可能并不算特别活跃；
+                        对另一只流通股较少的股票来说，
+                        100 万股可能已经是很大的成交规模。
+                    </p>
+
+                    <p>
+                        因此，我们还需要一个相对指标：
+                        <strong>换手率。</strong>
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            换手率
+                        </strong>
+
+                        <br><br>
+
+                        通常用于衡量一定时间内成交数量
+                        相对于流通股本的比例。
+
+                    </div>
+
+
+                    <p>
+                        从概念上可以理解为：
+                    </p>
+
+                    <div class="article-note">
+
+                        换手率
+                        ≈
+                        一定时间内成交股数
+                        ÷
+                        流通股本
+
+                    </div>
+
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        流通股本：1 亿股
+                        <br>
+                        当日成交：1,000 万股
+
+                        <br><br>
+
+                        换手率约为：
+                        <strong>10%</strong>
+
+                    </div>
+
+
+                    <p>
+                        这意味着从统计口径上看，
+                        当天成交数量相当于流通股本的一定比例。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            换手率的核心
+                        </strong>
+
+                        它不是简单看“成交了多少”，
+                        而是把成交量放到股票自身的流通股本背景下进行比较。
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     10 市值
+                ================================================== -->
+
+                <section class="article-section" id="market-cap">
+
+                    <div class="section-kicker">
+                        10 · MARKET CAP
+                    </div>
+
+                    <h2>
+                        市值
+                    </h2>
+
+                    <p>
+                        前面的字段主要描述股票的价格和交易情况，
+                        而市值开始进入另一个重要维度：
+                        <strong>公司在股票市场中的规模。</strong>
+                    </p>
+
+                    <p>
+                        最常见的是
+                        <strong>总市值</strong>和
+                        <strong>流通市值</strong>。
+                    </p>
+
+
+                    <h3>
+                        总市值
+                    </h3>
+
+                    <p>
+                        总市值可以简单理解为：
+                        <strong>当前股票价格 × 公司总股本</strong>。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        总市值
+                        ≈
+                        当前股价 × 总股本
+
+                    </div>
+
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        当前股价：100 元
+                        <br>
+                        总股本：10 亿股
+
+                        <br><br>
+
+                        总市值：
+                        <strong>约 1,000 亿元</strong>
+
+                    </div>
+
+
+                    <h3>
+                        流通市值
+                    </h3>
+
+                    <p>
+                        流通市值则关注当前市场中可流通股份对应的市值规模。
+                    </p>
+
+                    <div class="article-note">
+
+                        流通市值
+                        ≈
+                        当前股价 × 流通股本
+
+                    </div>
+
+
+                    <p>
+                        因此：
+                    </p>
+
+                    <div class="article-note">
+
+                        总市值：
+                        <strong>看整个公司的股本规模</strong>
+
+                        <br><br>
+
+                        流通市值：
+                        <strong>看流通股份对应的市场规模</strong>
+
+                    </div>
+
+
+                    <p>
+                        市值是股票筛选、公司规模比较以及市场分类中非常常见的数据。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     11 市值与股价
+                ================================================== -->
+
+                <section class="article-section" id="market-cap-and-price">
+
+                    <div class="section-kicker">
+                        11 · MARKET CAP & PRICE
+                    </div>
+
+                    <h2>
+                        市值和股价不是一回事
+                    </h2>
+
+                    <p>
+                        很多人第一次接触股票时，
+                        容易认为股价高的公司就是“大公司”，
+                        股价低的公司就是“小公司”。
+                    </p>
+
+                    <p>
+                        这种理解是不准确的。
+                    </p>
+
+                    <p>
+                        公司规模不能只通过股票价格判断。
+                        更重要的是结合股本数量计算市值。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            公司 A
+                        </strong>
+
+                        <br><br>
+
+                        股价：100 元
+                        <br>
+                        总股本：1 亿股
+                        <br>
+                        总市值：100 亿元
+
+                        <br><br>
+
+                        <strong>
+                            公司 B
+                        </strong>
+
+                        <br><br>
+
+                        股价：10 元
+                        <br>
+                        总股本：20 亿股
+                        <br>
+                        总市值：200 亿元
+
+                    </div>
+
+
+                    <p>
+                        虽然公司 B 的股价只有公司 A 的十分之一，
+                        但由于股本数量不同，
+                        两家公司的总市值完全可能相反。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            所以要记住：
+                        </strong>
+
+                        <br><br>
+
+                        股价高低 ≠ 公司规模大小
+                        <br>
+                        市值才是观察公司股票市场规模的重要指标之一
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     12 PE 市盈率
+                ================================================== -->
+
+                <section class="article-section" id="pe">
+
+                    <div class="section-kicker">
+                        12 · PRICE TO EARNINGS
+                    </div>
+
+                    <h2>
+                        PE：市盈率
+                    </h2>
+
+                    <p>
+                        当行情页面开始出现
+                        <strong>PE</strong>、
+                        <strong>PB</strong>、
+                        <strong>PS</strong>
+                        等字段时，
+                        我们就从单纯的市场行情进入了估值数据。
+                    </p>
+
+                    <p>
+                        PE 的中文名称是
+                        <strong>市盈率（Price to Earnings Ratio）</strong>。
+                    </p>
+
+
+                    <p>
+                        它核心回答的是：
+                        <strong>当前股票价格相对于公司盈利水平处于什么关系？</strong>
+                    </p>
+
+
+                    <div class="article-note">
+
+                        PE
+                        ≈
+                        股票价格
+                        ÷
+                        每股收益
+
+                    </div>
+
+
+                    <p>
+                        从市值角度，也可以理解为：
+                    </p>
+
+                    <div class="article-note">
+
+                        PE
+                        ≈
+                        公司市值
+                        ÷
+                        公司盈利
+
+                    </div>
+
+
+                    <h3>
+                        一个简单例子
+                    </h3>
+
+                    <div class="article-note">
+
+                        股价：100 元
+                        <br>
+                        每股收益：5 元
+
+                        <br><br>
+
+                        PE：
+                        <strong>20 倍</strong>
+
+                    </div>
+
+
+                    <p>
+                        这里的 20 倍并不是说股票一定会在 20 年后回本，
+                        而是一个价格与盈利之间的相对关系指标。
+                    </p>
+
+
+                    <h3>
+                        为什么行情页面里的 PE 可能不同？
+                    </h3>
+
+                    <p>
+                        实际行情系统中，
+                        你可能会看到：
+                    </p>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            PE 静态
+                        </div>
+
+                        <div class="checklist-item">
+                            PE 动态
+                        </div>
+
+                        <div class="checklist-item">
+                            PE TTM
+                        </div>
+
+                    </div>
+
+                    <p>
+                        它们使用的盈利数据口径不同，
+                        因此数值可能不同。
+                    </p>
+
+                    <p>
+                        PE 的具体分类和计算口径属于估值课程的内容，
+                        本篇先建立一个基本认识：
+                        <strong>PE 是价格与盈利之间的相对关系指标。</strong>
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     13 PB 市净率
+                ================================================== -->
+
+                <section class="article-section" id="pb">
+
+                    <div class="section-kicker">
+                        13 · PRICE TO BOOK
+                    </div>
+
+                    <h2>
+                        PB：市净率
+                    </h2>
+
+                    <p>
+                        PB 的中文名称是
+                        <strong>市净率（Price to Book Ratio）</strong>。
+                    </p>
+
+                    <p>
+                        与 PE 关注盈利不同，
+                        PB 更关注股票价格与公司净资产之间的关系。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        PB
+                        ≈
+                        股票价格
+                        ÷
+                        每股净资产
+
+                    </div>
+
+
+                    <p>
+                        从公司整体角度，也可以理解为：
+                    </p>
+
+                    <div class="article-note">
+
+                        PB
+                        ≈
+                        公司市值
+                        ÷
+                        公司净资产
+
+                    </div>
+
+
+                    <h3>
+                        一个简单例子
+                    </h3>
+
+                    <div class="article-note">
+
+                        股价：50 元
+                        <br>
+                        每股净资产：25 元
+
+                        <br><br>
+
+                        PB：
+                        <strong>2 倍</strong>
+
+                    </div>
+
+
+                    <p>
+                        也就是说，
+                        当前市场价格与每股净资产之间存在一定倍数关系。
+                    </p>
+
+                    <p>
+                        PE 与 PB 关注的基础不同：
+                    </p>
+
+                    <div class="study-principles">
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                PE
+                            </div>
+
+                            <h4>
+                                盈利
+                            </h4>
+
+                            <p>
+                                关注股票价格与公司盈利能力之间的关系。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                PB
+                            </div>
+
+                            <h4>
+                                净资产
+                            </h4>
+
+                            <p>
+                                关注股票价格与公司净资产之间的关系。
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        不同行业的商业模式和资产结构不同，
+                        因此 PE、PB 等估值指标需要结合具体行业和公司情况理解。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     14 PS 市销率
+                ================================================== -->
+
+                <section class="article-section" id="ps">
+
+                    <div class="section-kicker">
+                        14 · PRICE TO SALES
+                    </div>
+
+                    <h2>
+                        PS：市销率
+                    </h2>
+
+                    <p>
+                        PS 的中文名称是
+                        <strong>市销率（Price to Sales Ratio）</strong>。
+                    </p>
+
+                    <p>
+                        与 PE 使用利润不同，
+                        PS 使用公司的营业收入作为基础。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        PS
+                        ≈
+                        公司市值
+                        ÷
+                        公司营业收入
+
+                    </div>
+
+
+                    <p>
+                        也可以从每股角度理解：
+                    </p>
+
+                    <div class="article-note">
+
+                        PS
+                        ≈
+                        股票价格
+                        ÷
+                        每股销售收入
+
+                    </div>
+
+
+                    <p>
+                        PS 在一些利润率较低、
+                        盈利波动较大或者处于快速成长阶段的公司分析中可能具有一定参考意义。
+                    </p>
+
+                    <p>
+                        但需要注意，
+                        PS 只反映价格与收入之间的关系，
+                        并不能直接说明公司最终能够获得多少利润。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            PE、PB、PS 的区别
+                        </strong>
+
+                        <br><br>
+
+                        PE → 盈利
+                        <br>
+                        PB → 净资产
+                        <br>
+                        PS → 营业收入
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     15 量比
+                ================================================== -->
+
+                <section class="article-section" id="volume-ratio">
+
+                    <div class="section-kicker">
+                        15 · VOLUME RATIO
+                    </div>
+
+                    <h2>
+                        量比
+                    </h2>
+
+                    <p>
+                        在实时行情页面中，
+                        你还可能看到一个叫做
+                        <strong>量比</strong>
+                        的字段。
+                    </p>
+
+                    <p>
+                        它主要用于比较当前成交量与过去一段时间平均成交情况之间的关系。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            量比
+                        </strong>
+
+                        可以理解为一种
+                        <strong>当前成交活跃程度的相对指标</strong>。
+
+                    </div>
+
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        量比：1.50
+
+                    </div>
+
+                    <p>
+                        一般表示当前时段的成交活跃程度相对于相应历史基准处于较高水平。
+                    </p>
+
+
+                    <p>
+                        需要注意的是，
+                        量比并不是简单的“今天成交量 ÷ 昨天成交量”。
+                        它涉及具体的时间口径和计算方式。
+                    </p>
+
+                    <p>
+                        因此在程序化处理时，
+                        需要确认数据源对量比字段的具体定义。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            为什么需要相对指标？
+                        </strong>
+
+                        不同股票的成交规模差异很大。
+                        直接比较成交量，
+                        有时无法准确判断一只股票当前是否异常活跃。
+                        量比提供了另一种相对比较的视角。
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     16 行情字段之间的关系
+                ================================================== -->
+
+                <section class="article-section" id="field-relationships">
+
+                    <div class="section-kicker">
+                        16 · FIELD RELATIONSHIPS
+                    </div>
+
+                    <h2>
+                        行情字段之间有什么关系？
+                    </h2>
+
+                    <p>
+                        到这里，我们已经认识了大量行情字段。
+                        但真正理解行情数据，
+                        不能只停留在“记住字段名称”。
+                    </p>
+
+                    <p>
+                        更重要的是理解：
+                        <strong>这些字段之间是如何相互联系的。</strong>
+                    </p>
+
+
+                    <h3>
+                        价格字段之间
+                    </h3>
+
+                    <div class="article-note">
+
+                        昨收
+                        → 计算当前涨跌
+                        <br><br>
+
+                        最新价
+                        → 当前市场价格
+                        <br><br>
+
+                        开盘 / 最高 / 最低
+                        → 描述当日价格运行范围
+
+                    </div>
+
+
+                    <h3>
+                        成交字段之间
+                    </h3>
+
+                    <div class="article-note">
+
+                        成交量
+                        → 成交了多少证券
+                        <br><br>
+
+                        成交额
+                        → 对应多少资金规模
+                        <br><br>
+
+                        换手率
+                        → 成交量相对于流通股本的比例
+                        <br><br>
+
+                        量比
+                        → 当前成交活跃程度的相对比较
+
+                    </div>
+
+
+                    <h3>
+                        市值与估值字段之间
+                    </h3>
+
+                    <div class="article-note">
+
+                        股价
+                        +
+                        股本
+                        → 市值
+
+                        <br><br>
+
+                        市值
+                        +
+                        盈利
+                        → PE
+
+                        <br><br>
+
+                        市值
+                        +
+                        净资产
+                        → PB
+
+                        <br><br>
+
+                        市值
+                        +
+                        营业收入
+                        → PS
+
+                    </div>
+
+
+                    <p>
+                        这样来看，
+                        行情页面中的几十个数字并不是杂乱无章的。
+                    </p>
+
+                    <p>
+                        它们实际上形成了一张相互关联的数据网络。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            价格
+                        </strong>
+                        <br>
+                        ↓
+                        <br>
+                        涨跌 / 涨跌幅 / 振幅
+
+                        <br><br>
+
+                        <strong>
+                            成交
+                        </strong>
+                        <br>
+                        ↓
+                        <br>
+                        成交量 / 成交额 / 换手率 / 量比
+
+                        <br><br>
+
+                        <strong>
+                            股本
+                        </strong>
+                        <br>
+                        ↓
+                        <br>
+                        总市值 / 流通市值
+
+                        <br><br>
+
+                        <strong>
+                            财务数据
+                        </strong>
+                        <br>
+                        ↓
+                        <br>
+                        PE / PB / PS
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     17 如何阅读一张行情页面
+                ================================================== -->
+
+                <section class="article-section" id="how-to-read-quote">
+
+                    <div class="section-kicker">
+                        17 · HOW TO READ QUOTE
+                    </div>
+
+                    <h2>
+                        如何阅读一张行情页面？
+                    </h2>
+
+                    <p>
+                        当你打开一个股票行情页面时，
+                        不需要一开始就把所有数字全部记住。
+                    </p>
+
+                    <p>
+                        可以按照一个固定的顺序阅读。
+                    </p>
+
+
+                    <h3>
+                        第一步：确认股票是谁
+                    </h3>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            股票代码
+                        </div>
+
+                        <div class="checklist-item">
+                            股票名称
+                        </div>
+
+                        <div class="checklist-item">
+                            交易所
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        第二步：看现在价格在哪里
+                    </h3>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            最新价
+                        </div>
+
+                        <div class="checklist-item">
+                            昨收
+                        </div>
+
+                        <div class="checklist-item">
+                            今开
+                        </div>
+
+                        <div class="checklist-item">
+                            最高
+                        </div>
+
+                        <div class="checklist-item">
+                            最低
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        第三步：看价格发生了什么变化
+                    </h3>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            涨跌
+                        </div>
+
+                        <div class="checklist-item">
+                            涨跌幅
+                        </div>
+
+                        <div class="checklist-item">
+                            振幅
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        第四步：看市场交易有多活跃
+                    </h3>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            成交量
+                        </div>
+
+                        <div class="checklist-item">
+                            成交额
+                        </div>
+
+                        <div class="checklist-item">
+                            换手率
+                        </div>
+
+                        <div class="checklist-item">
+                            量比
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        第五步：再看公司规模与估值
+                    </h3>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            总市值
+                        </div>
+
+                        <div class="checklist-item">
+                            流通市值
+                        </div>
+
+                        <div class="checklist-item">
+                            PE
+                        </div>
+
+                        <div class="checklist-item">
+                            PB
+                        </div>
+
+                        <div class="checklist-item">
+                            PS
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        这样阅读，
+                        一张看起来非常复杂的股票行情页面，
+                        就可以被拆成几个容易理解的数据层次。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     18 行情字段不是投资结论
+                ================================================== -->
+
+                <section class="article-section" id="fields-are-not-conclusions">
+
+                    <div class="section-kicker">
+                        18 · DATA IS NOT CONCLUSION
+                    </div>
+
+                    <h2>
+                        行情字段只是数据，不是投资结论
+                    </h2>
+
+                    <p>
+                        需要特别注意的是，
+                        行情字段本身只是对市场状态和公司相关数据的描述。
+                    </p>
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        涨幅较大
+                        <br>
+                        成交量较高
+                        <br>
+                        换手率较高
+                        <br>
+                        PE 较高
+                        <br>
+                        PB 较低
+
+                    </div>
+
+                    <p>
+                        这些信息本身并不能直接告诉我们股票未来一定会怎样。
+                    </p>
+
+                    <p>
+                        它们真正的作用，
+                        是为后续的市场分析、公司研究和估值分析提供数据基础。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            数据 → 信息 → 分析
+                        </strong>
+
+                        <br><br>
+
+                        行情字段
+                        <br>
+                        ↓
+                        <br>
+                        理解字段含义
+                        <br>
+                        ↓
+                        <br>
+                        比较历史与横截面数据
+                        <br>
+                        ↓
+                        <br>
+                        结合公司基本面、行业和市场环境
+                        <br>
+                        ↓
+                        <br>
+                        形成研究判断
+
+                    </div>
+
+
+                    <p>
+                        所以学习行情字段的目的，
+                        不是为了看到一个数字就立即得出结论，
+                        而是先知道：
+                        <strong>这个数字记录了什么，以及它与其他数据有什么关系。</strong>
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     19 本篇总结
+                ================================================== -->
+
+                <section class="article-section" id="summary">
+
+                    <div class="section-kicker">
+                        SUMMARY
+                    </div>
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+                    <p>
+                        一张股票行情页面看起来充满了数字，
+                        但这些数字实际上可以按照不同的功能分成几个主要类别：
+                        证券身份、价格、涨跌、成交、流动性、市值和估值。
+                    </p>
+
+                    <p>
+                        真正理解行情字段，
+                        不是把字段名称全部背下来，
+                        而是知道每一个数字在描述什么，
+                        以及它和其他字段之间存在什么关系。
+                    </p>
+
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            Symbol 和 Name 用于确认行情属于哪一只证券。
+                        </div>
+
+                        <div class="checklist-item">
+                            最新价表示当前时点最近一次成交对应的价格。
+                        </div>
+
+                        <div class="checklist-item">
+                            昨收是上一交易日收盘价格，是计算当前涨跌的重要基准。
+                        </div>
+
+                        <div class="checklist-item">
+                            开盘价表示当前交易日形成的开盘价格。
+                        </div>
+
+                        <div class="checklist-item">
+                            最高价和最低价描述当前统计区间内已经出现的价格范围。
+                        </div>
+
+                        <div class="checklist-item">
+                            涨跌表示当前价格与昨收之间的价格变化。
+                        </div>
+
+                        <div class="checklist-item">
+                            涨跌幅表示当前价格相对于昨收的比例变化。
+                        </div>
+
+                        <div class="checklist-item">
+                            振幅描述统计区间内最高价和最低价之间的价格运行范围。
+                        </div>
+
+                        <div class="checklist-item">
+                            成交量描述一定时间内成交了多少证券。
+                        </div>
+
+                        <div class="checklist-item">
+                            成交额描述这些成交对应的资金规模。
+                        </div>
+
+                        <div class="checklist-item">
+                            换手率将成交量放到流通股本的背景下进行衡量。
+                        </div>
+
+                        <div class="checklist-item">
+                            量比用于观察当前成交活跃程度相对于历史基准的变化。
+                        </div>
+
+                        <div class="checklist-item">
+                            总市值和流通市值用于描述股票对应的市场规模。
+                        </div>
+
+                        <div class="checklist-item">
+                            PE 主要描述价格与盈利之间的关系。
+                        </div>
+
+                        <div class="checklist-item">
+                            PB 主要描述价格与净资产之间的关系。
+                        </div>
+
+                        <div class="checklist-item">
+                            PS 主要描述价格与营业收入之间的关系。
+                        </div>
+
+                        <div class="checklist-item">
+                            不同行情字段并不是孤立存在的，它们共同构成一条完整的市场数据记录。
+                        </div>
+
+                    </div>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            这一课真正要记住的一句话
+                        </strong>
+
+                        <br><br>
+
+                        看懂股票行情，
+                        不是记住一堆数字，
+                        <strong>而是理解每个字段记录了什么，以及这些字段如何共同描述市场。</strong>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     下一篇
+                ================================================== -->
+
+                <section class="article-section article-next">
+
+                    <div class="section-kicker">
+                        NEXT LESSON
+                    </div>
+
+                    <h2>
+                        下一篇：股票交易状态
+                    </h2>
+
+                    <p>
+                        行情数据除了价格和成交之外，
+                        还必须知道股票当前处于什么交易状态。
+                        下一篇将进一步理解正常交易、停牌、开盘、收盘以及不同交易阶段，
+                        看懂为什么同一只股票在不同时间可能具有不同的行情状态。
+                    </p>
+
+                    <a class="lesson-link" href="./04_trading_status.html">
+                        阅读下一篇 →
+                    </a>
+
+                </section>
+
+            </article>
+
+
+            <!-- =================================================
+                 右侧目录
+            ================================================== -->
+
+            <aside class="article-toc">
+
+                <div class="toc-label">
+                    CONTENTS
+                </div>
+
+                <div class="toc-title">
+                    行情字段详解
+                </div>
+
+
+                <ul class="toc-list">
+
+                    <li>
+                        <a href="#what-are-quote-fields">
+                            01 · 行情字段是什么？
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#security-fields">
+                            02 · 证券基本字段
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#core-price-fields">
+                            03 · 最新价、昨收与开盘价
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#high-low-fields">
+                            04 · 最高价与最低价
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#change-fields">
+                            05 · 涨跌与涨跌幅
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#amplitude">
+                            06 · 振幅
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#volume">
+                            07 · 成交量
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#amount">
+                            08 · 成交额
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#turnover">
+                            09 · 换手率
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#market-cap">
+                            10 · 市值
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#market-cap-and-price">
+                            11 · 市值和股价不是一回事
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#pe">
+                            12 · PE：市盈率
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#pb">
+                            13 · PB：市净率
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#ps">
+                            14 · PS：市销率
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#volume-ratio">
+                            15 · 量比
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#field-relationships">
+                            16 · 行情字段之间有什么关系？
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#how-to-read-quote">
+                            17 · 如何阅读一张行情页面？
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#fields-are-not-conclusions">
+                            18 · 行情字段只是数据，不是投资结论
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#summary">
+                            本篇总结
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <div class="toc-footer">
+
+                    <a class="lesson-link" href="./index.html">
+                        ← 返回课程总览
+                    </a>
+
+                    <br>
+
+                    STOCK LAB
+                    <br>
+                    股票研究与投资学习
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <!-- =====================================================
+             Footer
+        ====================================================== -->
+
+        <footer class="page-footer">
+
+            STOCK LAB · 股票研究中心
+
+        </footer>
+
+    </main>
+
+
+    <!-- =========================================================
+         目录高亮
+    ========================================================== -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const tocLinks = document.querySelectorAll(".toc-list a");
+
+            const sections = [];
+
+
+            tocLinks.forEach(link => {
+
+                const id = link.getAttribute("href");
+
+                if (!id || !id.startsWith("#")) {
+                    return;
+                }
+
+                const section = document.querySelector(id);
+
+                if (section) {
+
+                    sections.push({
+                        element: section,
+                        link: link
+                    });
+
+                }
+
+            });
+
+
+            if (!sections.length) {
+                return;
+            }
+
+
+            const observer = new IntersectionObserver(
+
+                entries => {
+
+                    entries.forEach(entry => {
+
+                        if (!entry.isIntersecting) {
+                            return;
+                        }
+
+
+                        sections.forEach(item => {
+
+                            item.link.classList.remove("active");
+
+                        });
+
+
+                        const current = sections.find(
+
+                            item => item.element === entry.target
+
+                        );
+
+
+                        if (current) {
+
+                            current.link.classList.add("active");
+
+                        }
+
+                    });
+
+                },
+
+                {
+                    root: null,
+
+                    /*
+                     * 当前章节进入阅读区域后，
+                     * 对应右侧目录自动高亮。
+                     */
+                    rootMargin: "-15% 0px -65% 0px",
+
+                    threshold: 0
+                }
+
+            );
+
+
+            sections.forEach(item => {
+
+                observer.observe(item.element);
+
+            });
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

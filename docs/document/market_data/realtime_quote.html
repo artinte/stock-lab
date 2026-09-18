@@ -1,0 +1,1531 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="什么是实时行情？理解股票实时行情中的最新价、昨收、开盘价、最高价、最低价以及行情数据在交易时间内如何变化，建立对实时股票价格的基本认识。">
+
+    <title>什么是实时行情？｜STOCK LAB</title>
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+</head>
+
+
+<body>
+
+    <main class="article-page">
+
+        <!-- =====================================================
+             返回课程
+        ====================================================== -->
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+            <!-- =================================================
+                 主内容
+            ================================================== -->
+
+            <article class="article-main">
+
+
+                <!-- =================================================
+                     页面头部
+                ================================================== -->
+
+                <header class="article-header">
+
+                    <div class="article-eyebrow">
+                        LESSON 02 · MARKET DATA
+                    </div>
+
+                    <h1>
+                        什么是实时行情？
+                    </h1>
+
+                    <p class="article-lead">
+                        实时行情描述的是股票市场当前正在发生什么。
+                        最新价会随着新的成交不断变化，而开盘价、最高价、最低价和昨收则共同构成了理解当前价格的重要参照。
+                        掌握这些概念，才能真正看懂股票软件中的实时行情。
+                    </p>
+
+                    <div class="article-meta">
+
+                        <span class="article-meta-item">
+                            第一阶段 · 认识行情数据
+                        </span>
+
+                        <span class="article-meta-item">
+                            基础
+                        </span>
+
+                        <span class="article-meta-item">
+                            约 20 分钟
+                        </span>
+
+                        <span class="article-meta-item">
+                            STOCK LAB
+                        </span>
+
+                    </div>
+
+                </header>
+
+
+                <!-- =================================================
+                     01 什么是实时行情
+                ================================================== -->
+
+                <section class="article-section" id="what-is-realtime">
+
+                    <div class="section-kicker">
+                        01 · WHAT IS REALTIME QUOTE
+                    </div>
+
+                    <h2>
+                        什么是实时行情？
+                    </h2>
+
+                    <p>
+                        当股票市场正在交易时，
+                        股票的价格和成交情况会不断发生变化。
+                        股票软件需要持续获取这些变化，并将最新的市场状态展示给投资者。
+                    </p>
+
+                    <p>
+                        这就是我们通常所说的
+                        <strong>实时行情</strong>。
+                    </p>
+
+                    <p>
+                        例如，在交易过程中，一只股票的行情可能不断更新：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            600519.SH
+                        </strong>
+
+                        <br><br>
+
+                        最新价：1,xxx.xx 元
+                        <br>
+                        涨跌：xx.xx 元
+                        <br>
+                        涨跌幅：x.xx%
+                        <br>
+                        今开：1,xxx.xx 元
+                        <br>
+                        最高：1,xxx.xx 元
+                        <br>
+                        最低：1,xxx.xx 元
+                        <br>
+                        昨收：1,xxx.xx 元
+
+                    </div>
+
+
+                    <p>
+                        几秒钟之后，最新价可能发生变化，
+                        成交量和成交额也可能随之增加。
+                    </p>
+
+                    <p>
+                        因此，实时行情并不是一条固定的数据，
+                        而是随着市场交易不断更新的市场状态。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            一个简单的理解
+                        </strong>
+
+                        <br><br>
+
+                        实时行情 =
+                        <strong>当前市场状态的持续更新</strong>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     02 最新价
+                ================================================== -->
+
+                <section class="article-section" id="latest-price">
+
+                    <div class="section-kicker">
+                        02 · LATEST PRICE
+                    </div>
+
+                    <h2>
+                        最新价是什么？
+                    </h2>
+
+                    <p>
+                        在股票行情页面中，
+                        最醒目的数字通常就是
+                        <strong>最新价</strong>。
+                    </p>
+
+                    <p>
+                        最新价可以简单理解为：
+                        <strong>截至当前行情时点，市场最近一次成交对应的价格。</strong>
+                    </p>
+
+                    <p>
+                        例如：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            最新价：100.00 元
+                        </strong>
+
+                        <br><br>
+
+                        表示截至当前记录时点，
+                        最近一次成交价格为 100.00 元。
+
+                    </div>
+
+
+                    <p>
+                        需要注意的是，
+                        最新价并不是一只股票当天唯一的价格。
+                    </p>
+
+                    <p>
+                        在一个交易日中，
+                        股票可能经历大量不同价格的成交。
+                        最新价只是当前时刻最接近市场状态的一个价格。
+                    </p>
+
+
+                    <h3>
+                        最新价为什么会不断变化？
+                    </h3>
+
+                    <p>
+                        因为新的成交会不断发生。
+                    </p>
+
+                    <p>
+                        假设市场中连续出现以下成交：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        09:30:01　100.00 元
+                        <br>
+                        09:30:05　100.05 元
+                        <br>
+                        09:30:08　100.03 元
+                        <br>
+                        09:30:12　100.08 元
+                        <br>
+                        09:30:17　100.10 元
+
+                    </div>
+
+
+                    <p>
+                        那么随着新的成交出现，
+                        行情系统中的最新价也会不断更新。
+                    </p>
+
+                    <p>
+                        这就是股票行情页面中价格“跳动”的来源之一：
+                        <strong>市场交易不断产生新的价格信息。</strong>
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     03 昨收
+                ================================================== -->
+
+                <section class="article-section" id="previous-close">
+
+                    <div class="section-kicker">
+                        03 · PREVIOUS CLOSE
+                    </div>
+
+                    <h2>
+                        昨收是什么？
+                    </h2>
+
+                    <p>
+                        如果只知道今天的最新价，
+                        我们仍然不知道这只股票今天到底是上涨还是下跌。
+                    </p>
+
+                    <p>
+                        因此，实时行情还需要一个非常重要的参照：
+                        <strong>昨收价</strong>。
+                    </p>
+
+                    <p>
+                        昨收，就是上一交易日的收盘价格。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            昨收：100.00 元
+                        </strong>
+
+                        <br><br>
+
+                        表示上一交易日结束时，
+                        股票对应的收盘价格为 100.00 元。
+
+                    </div>
+
+
+                    <p>
+                        假设今天最新价是 103.00 元，
+                        那么我们就可以知道，
+                        当前价格相对于上一交易日收盘价已经发生了变化。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        昨收：100.00 元
+                        <br>
+                        最新价：103.00 元
+                        <br><br>
+
+                        当前价格比上一交易日收盘价格高 3.00 元。
+
+                    </div>
+
+
+                    <p>
+                        这就是为什么昨收是实时行情中非常重要的基准数据。
+                    </p>
+
+                    <p>
+                        后面看到的
+                        <strong>涨跌和涨跌幅</strong>，
+                        都与这个基准密切相关。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     04 开盘价
+                ================================================== -->
+
+                <section class="article-section" id="open-price">
+
+                    <div class="section-kicker">
+                        04 · OPEN PRICE
+                    </div>
+
+                    <h2>
+                        开盘价是什么？
+                    </h2>
+
+                    <p>
+                        每个交易日开始后，
+                        市场会形成当天的第一个正式价格。
+                        这个价格就是我们通常所说的
+                        <strong>开盘价</strong>。
+                    </p>
+
+                    <p>
+                        例如：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            今开：102.00 元
+                        </strong>
+
+                        <br><br>
+
+                        表示当天交易开始后形成的开盘价格为 102.00 元。
+
+                    </div>
+
+
+                    <p>
+                        开盘价和昨收价经常会被放在一起观察。
+                    </p>
+
+                    <div class="article-note">
+
+                        昨收：100.00 元
+                        <br>
+                        今开：102.00 元
+
+                        <br><br>
+
+                        今天的开盘价格高于上一交易日收盘价格。
+
+                    </div>
+
+
+                    <p>
+                        通过比较昨收和今开，
+                        我们可以快速了解新交易日开始时的价格位置。
+                    </p>
+
+                    <p>
+                        但开盘价只代表交易日开始时的价格，
+                        它并不能代表当天最终会收在哪里。
+                    </p>
+
+                    <p>
+                        在开盘之后，
+                        股票价格仍然可能继续上涨或者下跌，
+                        并形成新的最高价、最低价以及最新价。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     05 最高价
+                ================================================== -->
+
+                <section class="article-section" id="high-price">
+
+                    <div class="section-kicker">
+                        05 · HIGH PRICE
+                    </div>
+
+                    <h2>
+                        最高价是什么？
+                    </h2>
+
+                    <p>
+                        在一个统计区间内，
+                        股票价格可能不断变化。
+                        到目前为止曾经达到过的最高价格，
+                        就可以称为这个区间的
+                        <strong>最高价</strong>。
+                    </p>
+
+                    <p>
+                        在实时行情中，
+                        通常关注的是：
+                        <strong>今天到目前为止的最高价格。</strong>
+                    </p>
+
+
+                    <div class="article-note">
+
+                        今开：100.00 元
+                        <br>
+                        最新价：103.00 元
+                        <br>
+                        最高：105.00 元
+
+                    </div>
+
+
+                    <p>
+                        上面的数据说明，
+                        今天股票曾经上涨到 105.00 元，
+                        但当前最新成交价格已经回落到 103.00 元。
+                    </p>
+
+                    <p>
+                        因此，最高价和最新价并不一定相同。
+                    </p>
+
+
+                    <h3>
+                        最高价会不会变化？
+                    </h3>
+
+                    <p>
+                        会。
+                    </p>
+
+                    <p>
+                        在交易开始后，
+                        如果股票不断创出新的盘中价格高点，
+                        最高价就会被更新。
+                    </p>
+
+                    <div class="article-note">
+
+                        09:30　最高：101.00 元
+                        <br>
+                        10:15　最高：103.00 元
+                        <br>
+                        11:20　最高：104.00 元
+                        <br>
+                        14:05　最高：105.00 元
+
+                    </div>
+
+                    <p>
+                        因此，
+                        实时行情中的最高价是一个随着交易进展不断维护的状态值。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     06 最低价
+                ================================================== -->
+
+                <section class="article-section" id="low-price">
+
+                    <div class="section-kicker">
+                        06 · LOW PRICE
+                    </div>
+
+                    <h2>
+                        最低价是什么？
+                    </h2>
+
+                    <p>
+                        最低价与最高价正好对应。
+                    </p>
+
+                    <p>
+                        在一个统计区间内，
+                        股票价格曾经达到过的最低价格，
+                        就是这个区间的
+                        <strong>最低价</strong>。
+                    </p>
+
+                    <p>
+                        在实时行情中，
+                        最常见的理解是：
+                        <strong>当天截至当前时间出现过的最低价格。</strong>
+                    </p>
+
+
+                    <div class="article-note">
+
+                        今开：100.00 元
+                        <br>
+                        最新价：103.00 元
+                        <br>
+                        最高：105.00 元
+                        <br>
+                        最低：98.00 元
+
+                    </div>
+
+
+                    <p>
+                        这意味着当天股票价格曾经最低到 98.00 元，
+                        当前最新成交价格则为 103.00 元。
+                    </p>
+
+                    <p>
+                        和最高价一样，
+                        最低价也会随着新的价格出现而更新。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            实时行情中的最高价与最低价
+                        </strong>
+
+                        <br><br>
+
+                        最高价：
+                        到目前为止出现过的最高价格
+                        <br><br>
+
+                        最低价：
+                        到目前为止出现过的最低价格
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     07 五个核心价格
+                ================================================== -->
+
+                <section class="article-section" id="five-core-prices">
+
+                    <div class="section-kicker">
+                        07 · FIVE CORE PRICES
+                    </div>
+
+                    <h2>
+                        把五个核心价格放在一起看
+                    </h2>
+
+                    <p>
+                        到这里，我们已经认识了实时行情中最基础的五个价格：
+                    </p>
+
+
+                    <div class="study-principles">
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <h4>
+                                昨收
+                            </h4>
+
+                            <p>
+                                上一个交易日的收盘价格，
+                                是观察今天涨跌的重要参照。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <h4>
+                                今开
+                            </h4>
+
+                            <p>
+                                当前交易日开始后形成的开盘价格。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+                            <h4>
+                                最高
+                            </h4>
+
+                            <p>
+                                当前统计区间内已经出现的最高价格。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+                            <h4>
+                                最低
+                            </h4>
+
+                            <p>
+                                当前统计区间内已经出现的最低价格。
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="study-principles">
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                05
+                            </div>
+
+                            <h4>
+                                最新价
+                            </h4>
+
+                            <p>
+                                当前时点最近一次成交对应的价格，
+                                会随着新的成交不断变化。
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        将这些价格放在一起，
+                        就可以对股票当前的价格状态形成一个基本认识。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        昨收 → 今天从哪里开始
+                        <br>
+                        今开 → 今天开始时是多少
+                        <br>
+                        最高 → 今天到目前最高到哪里
+                        <br>
+                        最低 → 今天到目前最低到哪里
+                        <br>
+                        最新 → 现在最近一次成交在哪里
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     08 实时行情如何变化
+                ================================================== -->
+
+                <section class="article-section" id="realtime-change">
+
+                    <div class="section-kicker">
+                        08 · REALTIME CHANGE
+                    </div>
+
+                    <h2>
+                        实时行情在交易时间内是如何变化的？
+                    </h2>
+
+                    <p>
+                        实时行情最重要的特点，就是
+                        <strong>动态变化</strong>。
+                    </p>
+
+                    <p>
+                        股票市场中新的成交不断产生，
+                        行情系统就需要不断更新数据。
+                    </p>
+
+
+                    <h3>
+                        一个简单的过程
+                    </h3>
+
+                    <div class="article-note">
+
+                        市场发生新的成交
+                        <br>
+                        ↓
+                        <br>
+                        产生新的价格信息
+                        <br>
+                        ↓
+                        <br>
+                        行情数据更新
+                        <br>
+                        ↓
+                        <br>
+                        最新价发生变化
+                        <br>
+                        ↓
+                        <br>
+                        如果创出新高 / 新低，
+                        最高价或最低价也会更新
+
+                    </div>
+
+
+                    <p>
+                        例如一只股票当天开盘为 100 元。
+                    </p>
+
+                    <div class="article-note">
+
+                        <strong>
+                            09:30
+                        </strong>
+                        <br>
+                        今开：100.00
+                        <br>
+                        最高：100.00
+                        <br>
+                        最低：100.00
+                        <br>
+                        最新：100.00
+
+                        <br><br>
+
+                        <strong>
+                            10:30
+                        </strong>
+                        <br>
+                        最高：103.00
+                        <br>
+                        最低：99.20
+                        <br>
+                        最新：102.50
+
+                        <br><br>
+
+                        <strong>
+                            14:30
+                        </strong>
+                        <br>
+                        最高：105.00
+                        <br>
+                        最低：99.20
+                        <br>
+                        最新：104.20
+
+                    </div>
+
+
+                    <p>
+                        可以看到，
+                        <strong>今开</strong>一旦形成通常不会因为后面的普通成交而改变，
+                        而<strong>最高、最低和最新价</strong>则可能随着交易继续发生变化。
+                    </p>
+
+                    <p>
+                        这就是实时行情和静态数据最大的区别之一：
+                        <strong>实时行情是在持续更新的。</strong>
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     09 最新价与最高最低
+                ================================================== -->
+
+                <section class="article-section" id="price-relationships">
+
+                    <div class="section-kicker">
+                        09 · PRICE RELATIONSHIPS
+                    </div>
+
+                    <h2>
+                        最新价、最高价和最低价之间是什么关系？
+                    </h2>
+
+                    <p>
+                        理解实时行情时，
+                        不应该把每一个价格字段孤立来看。
+                    </p>
+
+                    <p>
+                        它们之间存在非常直观的关系。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            最低价 ≤ 最新价 ≤ 最高价
+                        </strong>
+
+                    </div>
+
+
+                    <p>
+                        在正常的价格统计区间内，
+                        当前最新价应该位于当前已经出现过的最高价和最低价之间。
+                    </p>
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        最高：105.00 元
+                        <br>
+                        最新：103.00 元
+                        <br>
+                        最低：98.00 元
+
+                    </div>
+
+                    <p>
+                        那么当前价格 103 元位于当天已经形成的价格区间
+                        98 元到 105 元之间。
+                    </p>
+
+
+                    <h3>
+                        为什么这种关系很重要？
+                    </h3>
+
+                    <p>
+                        因为当你开始读取行情数据时，
+                        这些字段之间的关系可以帮助你判断数据是否合理。
+                    </p>
+
+                    <p>
+                        例如，如果一个行情记录显示最新价明显高于当前最高价，
+                        就需要进一步检查数据的时间、统计口径或者数据来源。
+                    </p>
+
+                    <p>
+                        因此，理解字段之间的关系，
+                        不只是为了看懂行情页面，
+                        也是为了以后处理行情数据。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     10 实时行情与涨跌
+                ================================================== -->
+
+                <section class="article-section" id="change-and-change-percent">
+
+                    <div class="section-kicker">
+                        10 · CHANGE & CHANGE PERCENT
+                    </div>
+
+                    <h2>
+                        实时行情为什么会显示“涨跌”和“涨跌幅”？
+                    </h2>
+
+                    <p>
+                        当我们看到股票最新价发生变化时，
+                        通常还会看到两个非常重要的数字：
+                        <strong>涨跌</strong>和<strong>涨跌幅</strong>。
+                    </p>
+
+                    <p>
+                        它们的核心目的，是回答一个问题：
+                        <strong>当前价格相对于上一交易日收盘价格发生了多大变化？</strong>
+                    </p>
+
+
+                    <h3>
+                        涨跌
+                    </h3>
+
+                    <p>
+                        涨跌表示当前价格与昨收之间的价格差。
+                    </p>
+
+                    <div class="article-note">
+
+                        昨收：100.00 元
+                        <br>
+                        最新：103.00 元
+                        <br><br>
+
+                        涨跌：
+                        <strong>+3.00 元</strong>
+
+                    </div>
+
+
+                    <h3>
+                        涨跌幅
+                    </h3>
+
+                    <p>
+                        涨跌幅则进一步把价格变化转换成相对于昨收的比例。
+                    </p>
+
+                    <div class="article-note">
+
+                        昨收：100.00 元
+                        <br>
+                        最新：103.00 元
+                        <br><br>
+
+                        涨跌幅：
+                        <strong>3%</strong>
+
+                    </div>
+
+
+                    <p>
+                        因此，可以把它们简单理解为：
+                    </p>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            最新价：现在最近一次成交是多少？
+                        </div>
+
+                        <div class="checklist-item">
+                            昨收：上一交易日收盘是多少？
+                        </div>
+
+                        <div class="checklist-item">
+                            涨跌：现在比昨收变化了多少元？
+                        </div>
+
+                        <div class="checklist-item">
+                            涨跌幅：现在比昨收变化了多少比例？
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        涨跌和涨跌幅的具体计算方式，
+                        在后面的价格变化课程中会进一步展开。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     11 实时行情不是一直实时
+                ================================================== -->
+
+                <section class="article-section" id="market-status">
+
+                    <div class="section-kicker">
+                        11 · MARKET STATUS
+                    </div>
+
+                    <h2>
+                        实时行情为什么有时候不会变化？
+                    </h2>
+
+                    <p>
+                        如果实时行情代表当前市场状态，
+                        那么一个自然的问题就是：
+                        <strong>为什么股票软件中的价格有时候很长时间不动？</strong>
+                    </p>
+
+                    <p>
+                        一个重要原因是：
+                        <strong>市场并不是任何时候都在产生新的成交。</strong>
+                    </p>
+
+                    <p>
+                        在交易时间内，
+                        如果某只股票暂时没有新的成交，
+                        最新价就可能保持不变。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            没有新的成交 ≠ 数据系统停止工作
+                        </strong>
+
+                        <br><br>
+
+                        行情系统仍然可以正常运行，
+                        只是市场暂时没有产生新的价格变化。
+
+                    </div>
+
+
+                    <p>
+                        另外，股票还可能处于停牌、收市等不同交易状态。
+                    </p>
+
+                    <p>
+                        因此，判断实时行情时，
+                        不能只看价格有没有变化，
+                        还需要结合股票当前的交易状态和行情时间。
+                    </p>
+
+                    <p>
+                        交易状态会在后面的课程中单独介绍。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     12 从股票软件到行情数据
+                ================================================== -->
+
+                <section class="article-section" id="from-screen-to-data">
+
+                    <div class="section-kicker">
+                        12 · FROM SCREEN TO DATA
+                    </div>
+
+                    <h2>
+                        从股票软件看到的行情，本质上是什么？
+                    </h2>
+
+                    <p>
+                        当你打开股票软件时，
+                        看到的是经过整理和可视化之后的行情结果。
+                    </p>
+
+                    <p>
+                        但在软件背后，
+                        实际上是一组结构化的数据。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            股票行情页面
+                        </strong>
+
+                        <br><br>
+
+                        股票代码
+                        <br>
+                        股票名称
+                        <br>
+                        最新价
+                        <br>
+                        昨收
+                        <br>
+                        今开
+                        <br>
+                        最高
+                        <br>
+                        最低
+                        <br>
+                        涨跌
+                        <br>
+                        涨跌幅
+                        <br>
+                        成交量
+                        <br>
+                        成交额
+                        <br>
+                        行情时间
+
+                    </div>
+
+
+                    <p>
+                        股票软件只是把这些数据转换成了人比较容易阅读的界面。
+                    </p>
+
+                    <p>
+                        如果把股票软件去掉，
+                        从数据系统的角度来看，
+                        这些内容实际上就是一条结构化的行情记录。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            行情数据
+                        </strong>
+
+                        <br><br>
+
+                        证券
+                        ＋
+                        时间
+                        ＋
+                        最新价格
+                        ＋
+                        价格区间
+                        ＋
+                        成交信息
+                        ＋
+                        市场状态
+
+                    </div>
+
+
+                    <p>
+                        当你开始用 Python 或其他程序读取股票行情时，
+                        看到的就是这些结构化字段，而不再只是股票软件上的视觉界面。
+                    </p>
+
+                    <p>
+                        这也是从“看股票”进入“理解股票数据”的重要一步。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     13 本篇总结
+                ================================================== -->
+
+                <section class="article-section" id="summary">
+
+                    <div class="section-kicker">
+                        SUMMARY
+                    </div>
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+                    <p>
+                        实时行情描述的是股票市场当前正在发生什么。
+                        它不是一个固定的价格，而是随着市场交易不断更新的一组数据。
+                    </p>
+
+                    <p>
+                        理解实时行情，
+                        最重要的是先掌握几个核心价格之间的关系。
+                    </p>
+
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            实时行情描述的是当前市场状态，并会随着新的市场信息不断更新。
+                        </div>
+
+                        <div class="checklist-item">
+                            最新价通常表示当前时点最近一次成交对应的价格。
+                        </div>
+
+                        <div class="checklist-item">
+                            昨收是上一交易日的收盘价格，是观察当前涨跌的重要参照。
+                        </div>
+
+                        <div class="checklist-item">
+                            今开表示当前交易日开始后形成的开盘价格。
+                        </div>
+
+                        <div class="checklist-item">
+                            最高价表示当前统计区间内已经出现过的最高价格。
+                        </div>
+
+                        <div class="checklist-item">
+                            最低价表示当前统计区间内已经出现过的最低价格。
+                        </div>
+
+                        <div class="checklist-item">
+                            最新价会随着新的成交不断变化。
+                        </div>
+
+                        <div class="checklist-item">
+                            最高价和最低价也可能随着新的价格纪录不断更新。
+                        </div>
+
+                        <div class="checklist-item">
+                            涨跌表示当前价格相对于昨收的价格变化。
+                        </div>
+
+                        <div class="checklist-item">
+                            涨跌幅表示当前价格相对于昨收的比例变化。
+                        </div>
+
+                        <div class="checklist-item">
+                            没有新的成交时，实时价格可能暂时保持不变。
+                        </div>
+
+                        <div class="checklist-item">
+                            理解实时行情，本质上是在理解市场价格随时间变化的过程。
+                        </div>
+
+                    </div>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            这一课真正要记住的一句话
+                        </strong>
+
+                        <br><br>
+
+                        实时行情不是“股票现在多少钱”这么简单，
+                        <strong>而是对股票当前市场状态的持续记录。</strong>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     下一篇
+                ================================================== -->
+
+                <section class="article-section article-next">
+
+                    <div class="section-kicker">
+                        NEXT LESSON
+                    </div>
+
+                    <h2>
+                        下一篇：行情字段详解
+                    </h2>
+
+                    <p>
+                        已经理解实时行情之后，
+                        下一步就可以真正进入行情数据字段。
+                        我们将系统认识最新价、开盘、最高、最低、昨收、涨跌、成交量、成交额、换手率等常见字段，
+                        并理解每一个字段到底代表什么。
+                    </p>
+
+                    <a class="lesson-link" href="./03_quote_fields.html">
+                        阅读下一篇 →
+                    </a>
+
+                </section>
+
+            </article>
+
+
+            <!-- =================================================
+                 右侧目录
+            ================================================== -->
+
+            <aside class="article-toc">
+
+                <div class="toc-label">
+                    CONTENTS
+                </div>
+
+                <div class="toc-title">
+                    什么是实时行情？
+                </div>
+
+
+                <ul class="toc-list">
+
+                    <li>
+                        <a href="#what-is-realtime">
+                            01 · 什么是实时行情
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#latest-price">
+                            02 · 最新价
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#previous-close">
+                            03 · 昨收
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#open-price">
+                            04 · 开盘价
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#high-price">
+                            05 · 最高价
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#low-price">
+                            06 · 最低价
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#five-core-prices">
+                            07 · 五个核心价格
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#realtime-change">
+                            08 · 实时行情如何变化
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#price-relationships">
+                            09 · 价格之间的关系
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#change-and-change-percent">
+                            10 · 涨跌与涨跌幅
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#market-status">
+                            11 · 市场交易状态
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#from-screen-to-data">
+                            12 · 从股票软件到行情数据
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#summary">
+                            本篇总结
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <div class="toc-footer">
+
+                    <a class="lesson-link" href="./index.html">
+                        ← 返回课程总览
+                    </a>
+
+                    <br>
+
+                    STOCK LAB
+                    <br>
+                    股票研究与投资学习
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <!-- =====================================================
+             Footer
+        ====================================================== -->
+
+        <footer class="page-footer">
+
+            STOCK LAB · 股票研究中心
+
+        </footer>
+
+    </main>
+
+
+    <!-- =========================================================
+         目录高亮
+    ========================================================== -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const tocLinks = document.querySelectorAll(".toc-list a");
+
+            const sections = [];
+
+
+            tocLinks.forEach(link => {
+
+                const id = link.getAttribute("href");
+
+                if (!id || !id.startsWith("#")) {
+                    return;
+                }
+
+                const section = document.querySelector(id);
+
+                if (section) {
+
+                    sections.push({
+                        element: section,
+                        link: link
+                    });
+
+                }
+
+            });
+
+
+            if (!sections.length) {
+                return;
+            }
+
+
+            const observer = new IntersectionObserver(
+
+                entries => {
+
+                    entries.forEach(entry => {
+
+                        if (!entry.isIntersecting) {
+                            return;
+                        }
+
+
+                        sections.forEach(item => {
+
+                            item.link.classList.remove("active");
+
+                        });
+
+
+                        const current = sections.find(
+
+                            item => item.element === entry.target
+
+                        );
+
+
+                        if (current) {
+
+                            current.link.classList.add("active");
+
+                        }
+
+                    });
+
+                },
+
+                {
+                    root: null,
+
+                    /*
+                     * 当前章节进入阅读区域后，
+                     * 对应右侧目录自动高亮。
+                     */
+                    rootMargin: "-15% 0px -65% 0px",
+
+                    threshold: 0
+                }
+
+            );
+
+
+            sections.forEach(item => {
+
+                observer.observe(item.element);
+
+            });
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,1587 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description"
+        content="什么是股票行情数据？从股票行情的基本概念、行情字段、价格与成交、实时与历史行情、时间维度、不同类型行情数据以及行情数据在股票研究系统中的作用，系统理解股票行情数据。">
+
+    <title>什么是股票行情数据？｜STOCK LAB</title>
+
+    <link rel="stylesheet" href="../../css/article.css">
+
+</head>
+
+
+<body>
+
+    <main class="article-page">
+
+        <!-- =====================================================
+             返回课程
+        ====================================================== -->
+
+        <a class="back-link" href="./index.html">
+            ← 返回行情数据
+        </a>
+
+
+        <div class="article-layout">
+
+            <!-- =================================================
+                 主内容
+            ================================================== -->
+
+            <article class="article-main">
+
+
+                <!-- =================================================
+                     页面头部
+                ================================================== -->
+
+                <header class="article-header">
+
+                    <div class="article-eyebrow">
+                        LESSON 01 · MARKET DATA
+                    </div>
+
+                    <h1>
+                        什么是股票行情数据？
+                    </h1>
+
+                    <p class="article-lead">
+                        股票行情并不只是一个不断变化的价格数字。
+                        从本质上说，行情数据是对证券、时间、价格、成交以及交易状态等市场信息的记录。
+                        理解这些数据是什么，是学习实时行情、历史行情、K 线、Tick、盘口以及行情数据系统的基础。
+                    </p>
+
+                    <div class="article-meta">
+
+                        <span class="article-meta-item">
+                            第一阶段 · 认识行情数据
+                        </span>
+
+                        <span class="article-meta-item">
+                            基础
+                        </span>
+
+                        <span class="article-meta-item">
+                            约 20 分钟
+                        </span>
+
+                        <span class="article-meta-item">
+                            STOCK LAB
+                        </span>
+
+                    </div>
+
+                </header>
+
+
+                <!-- =================================================
+                     01 什么是股票行情数据
+                ================================================== -->
+
+                <section class="article-section" id="what-is-market-data">
+
+                    <div class="section-kicker">
+                        01 · WHAT IS MARKET DATA
+                    </div>
+
+                    <h2>
+                        股票行情数据到底是什么？
+                    </h2>
+
+                    <p>
+                        当你打开一个股票软件，看到一只股票的
+                        <strong>最新价、涨跌幅、开盘价、最高价、最低价、成交量和成交额</strong>，
+                        这些信息都属于我们通常所说的股票行情数据。
+                    </p>
+
+                    <p>
+                        例如，一只股票在交易过程中可能显示：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            贵州茅台 · 600519.SH
+                        </strong>
+
+                        <br><br>
+
+                        最新价　　1,xxx.xx 元
+                        <br>
+                        今开　　　1,xxx.xx 元
+                        <br>
+                        最高　　　1,xxx.xx 元
+                        <br>
+                        最低　　　1,xxx.xx 元
+                        <br>
+                        涨跌　　　xx.xx 元
+                        <br>
+                        涨跌幅　　x.xx%
+                        <br>
+                        成交量　　xxx 万手
+                        <br>
+                        成交额　　xxx 亿元
+
+                    </div>
+
+
+                    <p>
+                        这些数字看起来只是股票软件中的一组字段，
+                        但它们实际上是在描述股票市场当前或者过去发生的交易情况。
+                    </p>
+
+                    <p>
+                        因此，可以先用一个简单的方式理解：
+                        <strong>股票行情数据，就是对股票交易过程中产生的市场信息进行记录和表达的数据。</strong>
+                    </p>
+
+                    <p>
+                        这里的“行情”并不只是价格。
+                        它还包括成交、时间、交易状态以及与证券身份相关的各种信息。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            一个最重要的认识
+                        </strong>
+
+                        股票行情数据不是一个单独的数字，
+                        而是一组围绕证券交易形成的结构化市场数据。
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     02 一只股票的行情包含什么
+                ================================================== -->
+
+                <section class="article-section" id="market-data-components">
+
+                    <div class="section-kicker">
+                        02 · MARKET DATA COMPONENTS
+                    </div>
+
+                    <h2>
+                        一只股票的行情包含什么？
+                    </h2>
+
+                    <p>
+                        如果把一只股票的行情拆开来看，
+                        你会发现股票软件中的各种数字其实可以分成不同的类别。
+                    </p>
+
+                    <p>
+                        最基础的行情数据通常可以从几个方向理解：
+                    </p>
+
+
+                    <div class="study-principles">
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <h4>
+                                证券身份
+                            </h4>
+
+                            <p>
+                                股票代码、股票名称、交易所、市场等信息，
+                                用来说明这份行情数据属于哪一只证券。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <h4>
+                                价格
+                            </h4>
+
+                            <p>
+                                最新价、开盘价、最高价、最低价、昨收等，
+                                用来描述股票价格的变化。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+                            <h4>
+                                成交
+                            </h4>
+
+                            <p>
+                                成交量、成交额等数据，
+                                用来描述市场中实际发生了多少交易。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+                            <h4>
+                                时间与状态
+                            </h4>
+
+                            <p>
+                                行情时间、交易状态等信息，
+                                用来说明数据是在什么时候、什么市场状态下产生的。
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        在实际股票行情系统中，还会出现涨跌幅、换手率、市值、估值、
+                        买卖盘口等更多数据。
+                    </p>
+
+                    <p>
+                        这些数据虽然最终都会出现在股票行情页面中，
+                        但它们的来源、计算方式和含义并不完全相同。
+                    </p>
+
+                    <p>
+                        因此，学习行情数据的第一步不是记住所有字段，
+                        而是先建立一个整体的数据分类。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     03 行情数据不是一个价格
+                ================================================== -->
+
+                <section class="article-section" id="not-just-price">
+
+                    <div class="section-kicker">
+                        03 · MORE THAN PRICE
+                    </div>
+
+                    <h2>
+                        行情数据不是“一个价格”
+                    </h2>
+
+                    <p>
+                        对于刚开始接触股票的人来说，
+                        很容易把股票行情理解成：
+                        <strong>这只股票现在多少钱。</strong>
+                    </p>
+
+                    <p>
+                        例如看到：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            最新价：20.00 元
+                        </strong>
+
+                        <br><br>
+
+                        很容易认为：
+                        “行情就是 20 元。”
+
+                    </div>
+
+
+                    <p>
+                        但这个理解是不完整的。
+                    </p>
+
+                    <p>
+                        20 元只是某一个时间点上的价格信息。
+                        同一时刻，我们还需要知道这是哪只股票，
+                        这个价格是什么时候产生的，
+                        今天开盘是多少，
+                        最高和最低是多少，
+                        到目前为止成交了多少，
+                        股票当前是否处于正常交易状态。
+                    </p>
+
+                    <p>
+                        所以，如果只保存一个
+                        <strong>20.00</strong>，
+                        我们实际上几乎无法知道这个数字到底意味着什么。
+                    </p>
+
+
+                    <h3>
+                        数据必须有上下文
+                    </h3>
+
+                    <p>
+                        一个价格只有放进完整的市场环境中才真正有意义。
+                    </p>
+
+                    <div class="article-note">
+
+                        <strong>
+                            20.00 元
+                        </strong>
+
+                        <br><br>
+
+                        是哪只股票？
+                        <br>
+                        什么时间？
+                        <br>
+                        什么市场？
+                        <br>
+                        是最新成交价，还是收盘价？
+                        <br>
+                        当天成交了多少？
+                        <br>
+                        当时是否处于正常交易状态？
+
+                    </div>
+
+
+                    <p>
+                        这也是行情数据与普通数字数据之间一个非常重要的区别：
+                        <strong>行情数据必须放在证券、时间和交易环境中理解。</strong>
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     04 证券身份
+                ================================================== -->
+
+                <section class="article-section" id="security-identity">
+
+                    <div class="section-kicker">
+                        04 · SECURITY IDENTITY
+                    </div>
+
+                    <h2>
+                        行情首先要知道：这是谁的行情？
+                    </h2>
+
+                    <p>
+                        在任何行情数据中，第一个问题其实不是价格是多少，
+                        而是：
+                        <strong>这份数据属于哪一只证券？</strong>
+                    </p>
+
+                    <p>
+                        一只股票通常至少需要一个能够识别它的代码。
+                    </p>
+
+                    <div class="article-note">
+
+                        <strong>
+                            600519.SH
+                        </strong>
+
+                        <br><br>
+
+                        600519 是证券代码的一部分，
+                        <br>
+                        SH 用来表示上海证券交易所。
+
+                    </div>
+
+                    <p>
+                        除了代码之外，系统还可能保存股票名称、交易所、市场以及其他证券基本信息。
+                    </p>
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            Symbol：证券代码或统一证券标识
+                        </div>
+
+                        <div class="checklist-item">
+                            Name：证券名称
+                        </div>
+
+                        <div class="checklist-item">
+                            Exchange：交易所
+                        </div>
+
+                        <div class="checklist-item">
+                            Market：所属市场
+                        </div>
+
+                        <div class="checklist-item">
+                            Trading Status：当前交易状态
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        在后面的数据系统课程中，
+                        你会进一步看到为什么统一的 Symbol 非常重要。
+                    </p>
+
+                    <p>
+                        当一个股票研究系统同时接入多个数据源时，
+                        不同数据源可能对同一只股票使用不同的代码格式。
+                        因此，证券身份是建立统一行情数据模型的基础。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     05 时间
+                ================================================== -->
+
+                <section class="article-section" id="time-dimension">
+
+                    <div class="section-kicker">
+                        05 · TIME DIMENSION
+                    </div>
+
+                    <h2>
+                        行情数据还有一个核心维度：时间
+                    </h2>
+
+                    <p>
+                        股票市场最重要的特点之一，就是交易会随着时间不断发生。
+                    </p>
+
+                    <p>
+                        同一只股票的价格，在
+                        <strong>09:30、10:30、13:30 和 14:59</strong>
+                        可能完全不同。
+                    </p>
+
+                    <p>
+                        因此，行情数据不能只记录“价格是多少”，
+                        还必须记录：
+                        <strong>这个价格是什么时候产生的。</strong>
+                    </p>
+
+
+                    <h3>
+                        同一只股票，不同时间的数据
+                    </h3>
+
+                    <div class="article-note">
+
+                        <strong>
+                            600519.SH
+                        </strong>
+
+                        <br><br>
+
+                        09:30:05　　20.10 元
+                        <br>
+                        10:15:21　　20.35 元
+                        <br>
+                        11:20:08　　20.28 元
+                        <br>
+                        14:05:17　　20.52 元
+                        <br>
+                        14:59:56　　20.60 元
+
+                    </div>
+
+
+                    <p>
+                        这些数据都属于同一只股票，
+                        但它们描述的是不同时间点的市场状态。
+                    </p>
+
+                    <p>
+                        一旦加入时间这个维度，
+                        行情数据就从一个静态数字变成了一条不断变化的时间序列。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            行情数据可以理解为时间序列数据
+                        </strong>
+
+                        同一证券在不同时间不断产生新的市场数据，
+                        这些数据按照时间排列，就形成了行情时间序列。
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     06 实时行情与历史行情
+                ================================================== -->
+
+                <section class="article-section" id="realtime-and-historical">
+
+                    <div class="section-kicker">
+                        06 · REALTIME & HISTORICAL
+                    </div>
+
+                    <h2>
+                        实时行情与历史行情有什么区别？
+                    </h2>
+
+                    <p>
+                        从时间角度来看，行情数据最基础的一种区分就是：
+                        <strong>实时行情</strong>和<strong>历史行情</strong>。
+                    </p>
+
+
+                    <h3>
+                        实时行情：现在发生了什么？
+                    </h3>
+
+                    <p>
+                        实时行情关注的是当前市场状态。
+                    </p>
+
+                    <p>
+                        例如在交易时间内，股票行情可能不断更新：
+                    </p>
+
+                    <div class="article-note">
+
+                        <strong>
+                            600519.SH
+                        </strong>
+
+                        <br><br>
+
+                        最新价：1,xxx.xx
+                        <br>
+                        涨跌幅：x.xx%
+                        <br>
+                        成交量：xxx 万手
+                        <br>
+                        行情时间：14:32:08
+
+                    </div>
+
+                    <p>
+                        随着新的交易发生，这些数据还会继续变化。
+                    </p>
+
+
+                    <h3>
+                        历史行情：过去发生了什么？
+                    </h3>
+
+                    <p>
+                        历史行情则是把过去已经发生的市场数据保存下来。
+                    </p>
+
+                    <p>
+                        例如：
+                    </p>
+
+                    <div class="article-note">
+
+                        <strong>
+                            2026-09-17
+                        </strong>
+
+                        <br><br>
+
+                        开盘：1,xxx.xx
+                        <br>
+                        最高：1,xxx.xx
+                        <br>
+                        最低：1,xxx.xx
+                        <br>
+                        收盘：1,xxx.xx
+                        <br>
+                        成交量：xxx 万手
+                        <br>
+                        成交额：xxx 亿元
+
+                    </div>
+
+                    <p>
+                        历史行情让我们能够回头观察过去的市场，
+                        也是 K 线图、技术分析、回测以及大量股票研究工作的基础。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            一个简单的区分
+                        </strong>
+
+                        <br><br>
+
+                        实时行情：
+                        <strong>现在发生了什么？</strong>
+
+                        <br>
+
+                        历史行情：
+                        <strong>过去发生了什么？</strong>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     07 价格与成交
+                ================================================== -->
+
+                <section class="article-section" id="price-and-trading">
+
+                    <div class="section-kicker">
+                        07 · PRICE & TRADING
+                    </div>
+
+                    <h2>
+                        行情数据最核心的两类信息：价格与成交
+                    </h2>
+
+                    <p>
+                        如果进一步抽象，
+                        股票行情中最核心的两类信息可以理解为：
+                        <strong>价格</strong>和<strong>成交</strong>。
+                    </p>
+
+
+                    <h3>
+                        价格回答：市场价格发生了什么？
+                    </h3>
+
+                    <p>
+                        常见的价格数据包括：
+                    </p>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            最新价：当前或者最近一次成交对应的价格
+                        </div>
+
+                        <div class="checklist-item">
+                            开盘价：交易时段开始后形成的开盘价格
+                        </div>
+
+                        <div class="checklist-item">
+                            最高价：某个统计区间内达到的最高价格
+                        </div>
+
+                        <div class="checklist-item">
+                            最低价：某个统计区间内达到的最低价格
+                        </div>
+
+                        <div class="checklist-item">
+                            收盘价：某个交易时段结束时对应的收盘价格
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        成交回答：市场交易了多少？
+                    </h3>
+
+                    <p>
+                        只有价格还不够。
+                        我们还需要知道市场中到底发生了多少交易。
+                    </p>
+
+                    <p>
+                        因此行情数据通常还会记录：
+                    </p>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            成交量：一定时间内成交的证券数量
+                        </div>
+
+                        <div class="checklist-item">
+                            成交额：一定时间内成交对应的资金金额
+                        </div>
+
+                        <div class="checklist-item">
+                            换手率：股票成交活跃程度的一种常见衡量方式
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        价格和成交结合起来，
+                        才能更加完整地描述一个交易时段发生了什么。
+                    </p>
+
+                    <p>
+                        后面的课程会分别深入学习价格变化、成交量、成交额以及换手率。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     08 不同类型的行情数据
+                ================================================== -->
+
+                <section class="article-section" id="market-data-types">
+
+                    <div class="section-kicker">
+                        08 · MARKET DATA TYPES
+                    </div>
+
+                    <h2>
+                        为什么同一只股票会有很多种行情数据？
+                    </h2>
+
+                    <p>
+                        现在可以进一步提出一个问题：
+                        <strong>为什么同一只股票既有实时行情，又有日 K 线、分钟线、Tick 和盘口？</strong>
+                    </p>
+
+                    <p>
+                        因为不同的数据实际上是在用不同的时间粒度和观察方式描述同一个市场。
+                    </p>
+
+
+                    <div class="study-principles">
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <h4>
+                                实时行情
+                            </h4>
+
+                            <p>
+                                用于观察当前市场状态，
+                                例如最新价格、涨跌和实时成交。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <h4>
+                                K 线
+                            </h4>
+
+                            <p>
+                                把一个时间区间内的价格变化进行汇总，
+                                形成分钟、日、周、月等不同周期的数据。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+                            <h4>
+                                Tick / 逐笔成交
+                            </h4>
+
+                            <p>
+                                从更加细粒度的角度记录市场交易事件，
+                                用于观察更细致的价格与成交变化。
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+                            <h4>
+                                盘口
+                            </h4>
+
+                            <p>
+                                观察买卖双方当前挂单和市场深度等信息。
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        这些数据并不是互相独立的。
+                        它们都来自市场交易，只是对市场进行记录和表达的方式不同。
+                    </p>
+
+                    <p>
+                        后面的课程会分别介绍历史行情、K 线、K 线周期、Tick、逐笔成交和盘口。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            一个重要的理解
+                        </strong>
+
+                        不同行情数据，
+                        本质上是在用不同的时间粒度和观察视角描述同一个市场。
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     09 行情数据在研究系统中的作用
+                ================================================== -->
+
+                <section class="article-section" id="role-in-research">
+
+                    <div class="section-kicker">
+                        09 · MARKET DATA IN RESEARCH
+                    </div>
+
+                    <h2>
+                        行情数据在股票研究系统中有什么作用？
+                    </h2>
+
+                    <p>
+                        行情数据并不是股票研究系统中的一个孤立模块。
+                        它实际上是很多研究功能的基础。
+                    </p>
+
+                    <p>
+                        一个股票研究系统可能需要：
+                    </p>
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            展示股票当前价格和涨跌幅
+                        </div>
+
+                        <div class="checklist-item">
+                            绘制股票历史 K 线
+                        </div>
+
+                        <div class="checklist-item">
+                            计算移动平均线等技术指标
+                        </div>
+
+                        <div class="checklist-item">
+                            分析成交量和成交额变化
+                        </div>
+
+                        <div class="checklist-item">
+                            比较不同股票的历史表现
+                        </div>
+
+                        <div class="checklist-item">
+                            为量化策略提供历史行情数据
+                        </div>
+
+                        <div class="checklist-item">
+                            为 AI 股票研究提供结构化市场数据
+                        </div>
+
+                    </div>
+
+
+                    <h3>
+                        从原始行情到股票研究
+                    </h3>
+
+                    <p>
+                        可以把整个过程简单理解为：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            市场
+                        </strong>
+
+                        <br>
+                        ↓
+                        <br>
+                        交易产生数据
+                        <br>
+                        ↓
+                        <br>
+                        行情数据
+                        <br>
+                        ↓
+                        <br>
+                        数据接口
+                        <br>
+                        ↓
+                        <br>
+                        股票研究系统
+                        <br>
+                        ↓
+                        <br>
+                        图表、指标、分析与 AI
+
+                    </div>
+
+
+                    <p>
+                        这也是为什么行情数据通常被称为股票研究系统的基础数据之一。
+                    </p>
+
+                    <p>
+                        如果底层行情数据存在错误，
+                        上层的 K 线、技术指标、回测结果甚至 AI 分析都可能受到影响。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     10 为什么需要统一行情数据
+                ================================================== -->
+
+                <section class="article-section" id="data-standardization">
+
+                    <div class="section-kicker">
+                        10 · DATA STANDARDIZATION
+                    </div>
+
+                    <h2>
+                        为什么行情数据还需要统一？
+                    </h2>
+
+                    <p>
+                        到这里，你可能会发现一个新的问题：
+                        <strong>如果行情数据本身已经存在，为什么还需要数据标准化？</strong>
+                    </p>
+
+                    <p>
+                        原因很简单：
+                        <strong>不同数据源可能使用不同的数据格式。</strong>
+                    </p>
+
+                    <p>
+                        例如，同一只股票可能被不同系统表示为：
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            同一只证券
+                        </strong>
+
+                        <br><br>
+
+                        600519
+                        <br>
+                        600519.SH
+                        <br>
+                        SH.600519
+
+                    </div>
+
+
+                    <p>
+                        它们可能都在表示上海证券交易所的 600519，
+                        但如果系统直接把这些字符串当作三个不同的证券，
+                        就会产生数据重复甚至数据错误。
+                    </p>
+
+
+                    <h3>
+                        字段名称也可能不同
+                    </h3>
+
+                    <p>
+                        不同数据源还可能使用不同的字段名称：
+                    </p>
+
+                    <div class="article-note">
+
+                        <strong>
+                            同一个概念
+                        </strong>
+
+                        <br><br>
+
+                        last
+                        <br>
+                        latest_price
+                        <br>
+                        price
+
+                    </div>
+
+
+                    <p>
+                        如果一个股票研究系统需要同时接入多个数据源，
+                        就不能让上层业务直接依赖每一个数据源自己的格式。
+                    </p>
+
+                    <p>
+                        更合理的方式，是在系统内部建立统一的数据模型，
+                        将不同来源的数据转换成统一的结构。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            从不同数据源 → 统一行情模型
+                        </strong>
+
+                        <br><br>
+
+                        数据源 A
+                        <br>
+                        数据源 B
+                        <br>
+                        数据源 C
+                        <br>
+                        ↓
+                        <br>
+                        统一 Symbol / Quote / Kline
+                        <br>
+                        ↓
+                        <br>
+                        股票研究系统
+
+                    </div>
+
+
+                    <p>
+                        这一部分在后面的
+                        <strong>行情数据源、统一数据模型与数据质量</strong>
+                        课程中会进一步展开。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     11 行情数据的四个核心维度
+                ================================================== -->
+
+                <section class="article-section" id="four-dimensions">
+
+                    <div class="section-kicker">
+                        11 · FOUR CORE DIMENSIONS
+                    </div>
+
+                    <h2>
+                        用四个维度理解行情数据
+                    </h2>
+
+                    <p>
+                        如果把前面的内容重新整理，
+                        可以用四个最基础的维度来理解股票行情数据：
+                    </p>
+
+
+                    <div class="study-principles">
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                01
+                            </div>
+
+                            <h4>
+                                证券
+                            </h4>
+
+                            <p>
+                                数据属于哪一只股票、指数或者其他证券？
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                02
+                            </div>
+
+                            <h4>
+                                时间
+                            </h4>
+
+                            <p>
+                                这些市场信息是在什么时候产生的？
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                03
+                            </div>
+
+                            <h4>
+                                价格
+                            </h4>
+
+                            <p>
+                                市场价格在这个时间点或者区间发生了什么？
+                            </p>
+
+                        </div>
+
+
+                        <div class="principle-card">
+
+                            <div class="principle-icon">
+                                04
+                            </div>
+
+                            <h4>
+                                成交
+                            </h4>
+
+                            <p>
+                                市场在这个时间点或者区间发生了多少交易？
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <p>
+                        在此基础上，还需要结合交易状态等其他信息，
+                        才能更加完整地描述市场。
+                    </p>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            行情数据
+                        </strong>
+
+                        <br><br>
+
+                        证券
+                        ＋
+                        时间
+                        ＋
+                        价格
+                        ＋
+                        成交
+                        ＋
+                        交易状态
+
+                    </div>
+
+
+                    <p>
+                        这个简单的抽象非常重要。
+                        因为无论以后学习 Quote、Kline、Tick 还是盘口，
+                        最终都可以回到“证券、时间以及市场交易信息”这个基础框架。
+                    </p>
+
+                </section>
+
+
+                <!-- =================================================
+                     12 本篇总结
+                ================================================== -->
+
+                <section class="article-section" id="summary">
+
+                    <div class="section-kicker">
+                        SUMMARY
+                    </div>
+
+                    <h2>
+                        本篇总结
+                    </h2>
+
+                    <p>
+                        股票行情数据是学习股票市场和构建股票研究系统的基础。
+                        它并不只是一个不断变化的股票价格，
+                        而是一组围绕证券交易形成的结构化数据。
+                    </p>
+
+                    <p>
+                        从最基础的角度来看，
+                        我们可以从证券、时间、价格、成交和交易状态几个维度理解行情数据。
+                    </p>
+
+
+                    <div class="checklist">
+
+                        <div class="checklist-item">
+                            股票行情数据是对证券交易过程中产生的市场信息进行记录和表达的数据。
+                        </div>
+
+                        <div class="checklist-item">
+                            行情数据不只是股票价格，还包括证券身份、时间、成交和交易状态等信息。
+                        </div>
+
+                        <div class="checklist-item">
+                            股票代码和交易市场等信息用于确定一份行情数据属于哪一只证券。
+                        </div>
+
+                        <div class="checklist-item">
+                            时间是行情数据的重要维度，同一只股票在不同时间可能具有不同的市场状态。
+                        </div>
+
+                        <div class="checklist-item">
+                            实时行情主要描述当前市场状态，历史行情则记录过去已经发生的市场数据。
+                        </div>
+
+                        <div class="checklist-item">
+                            价格数据描述市场价格变化，成交数据描述市场实际发生了多少交易。
+                        </div>
+
+                        <div class="checklist-item">
+                            实时行情、K 线、Tick、逐笔成交和盘口是观察市场的不同数据形式。
+                        </div>
+
+                        <div class="checklist-item">
+                            行情数据是股票图表、技术指标、量化研究和 AI 分析等功能的重要基础。
+                        </div>
+
+                        <div class="checklist-item">
+                            不同数据源可能使用不同的证券代码和字段名称，因此系统需要进行数据标准化。
+                        </div>
+
+                        <div class="checklist-item">
+                            理解证券、时间、价格和成交四个核心维度，是进一步学习行情数据的基础。
+                        </div>
+
+                    </div>
+
+
+                    <div class="article-note">
+
+                        <strong>
+                            这一课真正要记住的一句话
+                        </strong>
+
+                        <br><br>
+
+                        股票行情数据不是一个价格数字。
+                        <strong>它是围绕证券、时间和市场交易形成的一组结构化数据。</strong>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     下一篇
+                ================================================== -->
+
+                <section class="article-section article-next">
+
+                    <div class="section-kicker">
+                        NEXT LESSON
+                    </div>
+
+                    <h2>
+                        下一篇：什么是实时行情？
+                    </h2>
+
+                    <p>
+                        理解股票行情数据的整体概念以后，
+                        下一步开始进入最常见的行情类型：
+                        实时行情。
+                        我们将进一步理解最新价、昨收、开盘、最高、最低以及行情数据在交易时间内如何变化。
+                    </p>
+
+                    <a class="lesson-link" href="./02_realtime_quote.html">
+                        阅读下一篇 →
+                    </a>
+
+                </section>
+
+            </article>
+
+
+            <!-- =====================================================
+                 右侧目录
+            ====================================================== -->
+
+            <aside class="article-toc">
+
+                <div class="toc-label">
+                    CONTENTS
+                </div>
+
+                <div class="toc-title">
+                    什么是股票行情数据？
+                </div>
+
+
+                <ul class="toc-list">
+
+                    <li>
+                        <a href="#what-is-market-data">
+                            01 · 什么是股票行情数据
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#market-data-components">
+                            02 · 一只股票的行情包含什么
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#not-just-price">
+                            03 · 行情数据不是一个价格
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#security-identity">
+                            04 · 证券身份
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#time-dimension">
+                            05 · 时间维度
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#realtime-and-historical">
+                            06 · 实时行情与历史行情
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#price-and-trading">
+                            07 · 价格与成交
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#market-data-types">
+                            08 · 不同类型的行情数据
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#role-in-research">
+                            09 · 行情数据在研究系统中的作用
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#data-standardization">
+                            10 · 为什么需要统一行情数据
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#four-dimensions">
+                            11 · 行情数据的四个核心维度
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#summary">
+                            本篇总结
+                        </a>
+                    </li>
+
+                </ul>
+
+
+                <div class="toc-footer">
+
+                    <a class="lesson-link" href="./index.html">
+                        ← 返回课程总览
+                    </a>
+
+                    <br>
+
+                    STOCK LAB
+                    <br>
+                    股票研究与投资学习
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <!-- =====================================================
+             Footer
+        ====================================================== -->
+
+        <footer class="page-footer">
+
+            STOCK LAB · 股票研究中心
+
+        </footer>
+
+    </main>
+
+
+    <!-- =========================================================
+         目录高亮
+    ========================================================== -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const tocLinks = document.querySelectorAll(".toc-list a");
+
+            const sections = [];
+
+
+            tocLinks.forEach(link => {
+
+                const id = link.getAttribute("href");
+
+                if (!id || !id.startsWith("#")) {
+                    return;
+                }
+
+                const section = document.querySelector(id);
+
+                if (section) {
+
+                    sections.push({
+                        element: section,
+                        link: link
+                    });
+
+                }
+
+            });
+
+
+            if (!sections.length) {
+                return;
+            }
+
+
+            const observer = new IntersectionObserver(
+
+                entries => {
+
+                    entries.forEach(entry => {
+
+                        if (!entry.isIntersecting) {
+                            return;
+                        }
+
+
+                        sections.forEach(item => {
+
+                            item.link.classList.remove("active");
+
+                        });
+
+
+                        const current = sections.find(
+
+                            item => item.element === entry.target
+
+                        );
+
+
+                        if (current) {
+
+                            current.link.classList.add("active");
+
+                        }
+
+                    });
+
+                },
+
+                {
+                    root: null,
+
+                    /*
+                     * 当前章节进入阅读区域后，
+                     * 对应右侧目录自动高亮。
+                     */
+                    rootMargin: "-15% 0px -65% 0px",
+
+                    threshold: 0
+                }
+
+            );
+
+
+            sections.forEach(item => {
+
+                observer.observe(item.element);
+
+            });
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>
