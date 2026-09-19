@@ -34,6 +34,12 @@ uvicorn infra.service.api:app --reload
 
 行情及相关数据需要接入券商等数据源；即使暂未接入数据源，行情资讯模块也可独立使用。
 
+下面以 YouTube 信息流为例，展示项目对外部资讯信息流的监控与聚合：
+
+<p align="center"> <img src="resources/YouTube信息流示例.jpeg" width="600"> </p>
+
+YouTube 信息流可以配置需要监控的频道，并自动获取最新视频，用于跟踪财经、科技、AI、公司及市场相关信息。
+
 
 ## 主要功能
 
@@ -149,8 +155,17 @@ uvicorn infra.service.api:app --reload
 
 通过独立测试保证各模块能够正常运行，同时降低后续扩展和修改的风险。
 
+### 组合设计
 
-[股票行业分类查看](https://artinte.github.io/stock-lab/industry.html)
+项目尽量采用组合（Composition）代替继承，将复杂功能拆分为多个职责单一的功能模块，通过组合不同模块构建完整业务能力。
+
+* 将大型类拆分为多个独立的功能模块，避免单个类承担过多职责
+* 通过组合 Gateway、Manager、Service 和 Task 等模块构建上层业务功能
+* 不同模块之间通过明确的接口和数据模型进行协作，降低模块之间的耦合
+* 各功能模块可以独立测试、替换和扩展，提高代码的复用性和可维护性
+
+通过组合设计，可以在不修改核心模块的情况下替换数据源、调整业务流程或增加新的功能，使系统能够随着业务复杂度增长而持续扩展。
+
 
 <a id="table-of-contents"></a>
 

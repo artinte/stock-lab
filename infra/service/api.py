@@ -185,6 +185,15 @@ app.mount(
     name="research",
 )
 
+app.mount(
+    "/components",
+    StaticFiles(
+        directory=FRONTEND_DIR / "components",
+        html=True,
+    ),
+    name="components",
+)
+
 
 # ============================================================
 # Root
