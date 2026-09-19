@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, Query
 from pydantic import BaseModel
 
-from service.app_state import require_youtube
+from infra.service.app_state import require_youtube
 
 
 router = APIRouter(

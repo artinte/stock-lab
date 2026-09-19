@@ -5,7 +5,11 @@ from typing import Any
 
 from fastapi import APIRouter, Query
 
-from service.app_state import app_state, require_data
+from infra.service.app_state import (
+    require_data,
+    require_financial_service,
+)
+
 
 router = APIRouter(
     prefix="/api",
@@ -13,7 +17,10 @@ router = APIRouter(
 )
 
 
-def success(symbol: str, data_value: Any = None) -> dict[str, Any]:
+def success(
+    symbol: str,
+    data_value: Any = None,
+) -> dict[str, Any]:
     return {
         "success": True,
         "symbol": symbol,
@@ -33,6 +40,32 @@ def failure(
     }
 
 
+def serialize(value: Any) -> Any:
+    """
+    将数据模型转换成 JSON 可序列化的数据。
+    """
+
+    if value is None:
+        return None
+
+    if hasattr(value, "to_dict"):
+        return value.to_dict()
+
+    if isinstance(value, list):
+        return [serialize(item) for item in value]
+
+    if isinstance(value, tuple):
+        return [serialize(item) for item in value]
+
+    if isinstance(value, dict):
+        return {
+            key: serialize(item)
+            for key, item in value.items()
+        }
+
+    return value
+
+
 @router.get("/indices")
 def get_indices():
     """获取主要指数行情。"""
@@ -44,7 +77,7 @@ def get_indices():
 
         return {
             "success": True,
-            "data": result,
+            "data": serialize(result),
         }
 
     except Exception as exc:
@@ -67,10 +100,10 @@ def get_stock(symbol: str):
         if result is None:
             return failure(symbol)
 
-        if hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -88,10 +121,10 @@ def get_industry_category(symbol: str):
         if result is None:
             return failure(symbol)
 
-        if hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -109,10 +142,10 @@ def get_quote(symbol: str):
         if result is None:
             return failure(symbol)
 
-        if hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -156,21 +189,10 @@ def get_kline(
         if result is None:
             return failure(symbol)
 
-        if isinstance(result, list):
-            normalized = []
-
-            for item in result:
-                if hasattr(item, "to_dict"):
-                    normalized.append(item.to_dict())
-                else:
-                    normalized.append(item)
-
-            result = normalized
-
-        elif hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -180,10 +202,7 @@ def get_kline(
 def get_financial(symbol: str):
     """获取股票财务数据。"""
 
-    service = app_state.financial_service
-
-    if service is None:
-        return failure(symbol, "财务服务尚未启动")
+    service = require_financial_service()
 
     try:
         result = service.get_financial(symbol)
@@ -191,7 +210,10 @@ def get_financial(symbol: str):
         if result is None:
             return failure(symbol)
 
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -209,10 +231,10 @@ def get_valuation(symbol: str):
         if result is None:
             return failure(symbol)
 
-        if hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -230,10 +252,10 @@ def get_industry(symbol: str):
         if result is None:
             return failure(symbol)
 
-        if hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -251,10 +273,10 @@ def get_technical(symbol: str):
         if result is None:
             return failure(symbol)
 
-        if hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -272,10 +294,10 @@ def get_news(symbol: str):
         if result is None:
             return failure(symbol)
 
-        if hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -293,10 +315,10 @@ def get_announcement(symbol: str):
         if result is None:
             return failure(symbol)
 
-        if hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -314,10 +336,10 @@ def get_ai(symbol: str):
         if result is None:
             return failure(symbol)
 
-        if hasattr(result, "to_dict"):
-            result = result.to_dict()
-
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))
@@ -328,13 +350,10 @@ def get_stock_financial(symbol: str):
     """
     获取股票完整财务数据。
 
-    这个接口保留原来的路径，方便前端继续使用。
+    保留原有接口，避免影响现有前端。
     """
 
-    service = app_state.financial_service
-
-    if service is None:
-        return failure(symbol, "财务服务尚未启动")
+    service = require_financial_service()
 
     try:
         result = service.get_financial(symbol)
@@ -342,7 +361,10 @@ def get_stock_financial(symbol: str):
         if result is None:
             return failure(symbol)
 
-        return success(symbol, result)
+        return success(
+            symbol,
+            serialize(result),
+        )
 
     except Exception as exc:
         return failure(symbol, str(exc))

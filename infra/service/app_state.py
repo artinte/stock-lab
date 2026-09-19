@@ -1,254 +1,53 @@
 from __future__ import annotations
 
-from contextlib import asynccontextmanager
-from pathlib import Path
-
-from fastapi import FastAPI
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
-
 from infra.data_manager import DataManager
 from infra.service.stock_financial_service import StockFinancialService
-from service.youtube_service import YouTubeService
-
-from service import app_state
-
-from service.routers.system import router as system_router
-from service.routers.stock import router as stock_router
-from service.routers.crypto import router as crypto_router
-from service.routers.youtube import router as youtube_router
+from infra.service.youtube_service import YouTubeService
 
 
 # ============================================================
-# 生命周期
+# Runtime Services
 # ============================================================
 
+data: DataManager | None = None
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
+financial_service: StockFinancialService | None = None
 
-    print()
-    print("=" * 60)
-    print("正在启动 STOCK LAB 服务...")
-    print("=" * 60)
-
-    try:
-
-        # ----------------------------------------------------
-        # 数据服务
-        # ----------------------------------------------------
-
-        app_state.data = DataManager(
-            "yinhe"
-        )
-
-        app_state.data.start()
-
-        app_state.financial_service = (
-            StockFinancialService(
-                app_state.data
-            )
-        )
-
-        print(
-            "✅ 股票 / Crypto 数据服务启动成功"
-        )
-
-        # ----------------------------------------------------
-        # YouTube
-        # ----------------------------------------------------
-
-        app_state.youtube_service = (
-            YouTubeService()
-        )
-
-        print(
-            "✅ YouTube 信息流服务启动成功"
-        )
-
-        yield
-
-    finally:
-
-        print()
-        print("=" * 60)
-        print("正在关闭 STOCK LAB 服务...")
-        print("=" * 60)
-
-        # ----------------------------------------------------
-        # YouTube
-        # ----------------------------------------------------
-
-        if app_state.youtube_service:
-
-            try:
-
-                app_state.youtube_service.stop()
-
-            except Exception as exc:
-
-                print(
-                    f"⚠️ YouTube 服务关闭失败：{exc}"
-                )
-
-            finally:
-
-                app_state.youtube_service = None
-
-        # ----------------------------------------------------
-        # 数据服务
-        # ----------------------------------------------------
-
-        if app_state.data:
-
-            try:
-
-                app_state.data.stop()
-
-            except Exception as exc:
-
-                print(
-                    f"⚠️ 数据服务关闭失败：{exc}"
-                )
-
-            finally:
-
-                app_state.data = None
-
-        app_state.financial_service = None
+youtube_service: YouTubeService | None = None
 
 
 # ============================================================
-# FastAPI
+# Dependencies
 # ============================================================
 
+def require_data() -> DataManager:
+    """
+    获取已经启动的数据服务。
+    """
 
-app = FastAPI(
-    title="STOCK LAB API",
-    description="股票、加密货币与信息流研究 API",
-    version="1.0.0",
-    lifespan=lifespan,
-)
+    if data is None:
+        raise RuntimeError("数据源尚未启动")
 
-
-# ============================================================
-# API Router
-# ============================================================
+    return data
 
 
-app.include_router(
-    system_router
-)
+def require_financial_service() -> StockFinancialService:
+    """
+    获取已经启动的财务服务。
+    """
 
-app.include_router(
-    stock_router
-)
+    if financial_service is None:
+        raise RuntimeError("财务服务尚未启动")
 
-app.include_router(
-    crypto_router
-)
-
-app.include_router(
-    youtube_router
-)
+    return financial_service
 
 
-# ============================================================
-# 静态资源
-# ============================================================
+def require_youtube() -> YouTubeService:
+    """
+    获取已经启动的 YouTube 服务。
+    """
 
+    if youtube_service is None:
+        raise RuntimeError("YouTube 服务尚未启动")
 
-FRONTEND_DIR = Path("docs")
-
-
-app.mount(
-    "/css",
-    StaticFiles(
-        directory=FRONTEND_DIR / "css"
-    ),
-    name="css",
-)
-
-app.mount(
-    "/js",
-    StaticFiles(
-        directory=FRONTEND_DIR / "js"
-    ),
-    name="js",
-)
-
-app.mount(
-    "/market",
-    StaticFiles(
-        directory=FRONTEND_DIR / "market",
-        html=True,
-    ),
-    name="market",
-)
-
-app.mount(
-    "/stock",
-    StaticFiles(
-        directory=FRONTEND_DIR / "stock",
-        html=True,
-    ),
-    name="stock",
-)
-
-app.mount(
-    "/trade",
-    StaticFiles(
-        directory=FRONTEND_DIR / "trade",
-        html=True,
-    ),
-    name="trade",
-)
-
-app.mount(
-    "/document",
-    StaticFiles(
-        directory=FRONTEND_DIR / "document",
-        html=True,
-    ),
-    name="document",
-)
-
-app.mount(
-    "/tools",
-    StaticFiles(
-        directory=FRONTEND_DIR / "tools",
-        html=True,
-    ),
-    name="tools",
-)
-
-app.mount(
-    "/news",
-    StaticFiles(
-        directory=FRONTEND_DIR / "news",
-        html=True,
-    ),
-    name="news",
-)
-
-app.mount(
-    "/research",
-    StaticFiles(
-        directory=FRONTEND_DIR / "research",
-        html=True,
-    ),
-    name="research",
-)
-
-
-# ============================================================
-# 首页
-# ============================================================
-
-
-@app.get("/")
-def index():
-
-    return FileResponse(
-        FRONTEND_DIR / "index.html"
-    )
+    return youtube_service

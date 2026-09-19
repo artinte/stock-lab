@@ -4,7 +4,8 @@ from typing import Any
 
 from fastapi import APIRouter, Query
 
-from service.app_state import require_data
+from infra.service.app_state import require_data
+
 
 router = APIRouter(
     prefix="/api/crypto",
@@ -12,7 +13,10 @@ router = APIRouter(
 )
 
 
-def success(symbol: str, data_value: Any = None) -> dict[str, Any]:
+def success(
+    symbol: str,
+    data_value: Any = None,
+) -> dict[str, Any]:
     return {
         "success": True,
         "symbol": symbol,
@@ -34,7 +38,7 @@ def failure(
 
 def serialize(value: Any) -> Any:
     """
-    将模型对象转换为可 JSON 序列化的数据。
+    将数据模型转换成 JSON 可序列化的数据。
     """
 
     if value is None:
@@ -50,7 +54,10 @@ def serialize(value: Any) -> Any:
         return [serialize(item) for item in value]
 
     if isinstance(value, dict):
-        return {key: serialize(item) for key, item in value.items()}
+        return {
+            key: serialize(item)
+            for key, item in value.items()
+        }
 
     return value
 
@@ -62,8 +69,7 @@ def get_crypto_quote(symbol: str):
 
     例如：
 
-    /api/crypto/quote/BTCUSDT
-    /api/crypto/quote/ETHUSDT
+        /api/crypto/quote/BTCUSDT
     """
 
     data = require_data()
@@ -95,18 +101,24 @@ def get_crypto_quotes(
 
     例如：
 
-    /api/crypto/quotes?symbols=BTCUSDT,ETHUSDT
+        /api/crypto/quotes?symbols=BTCUSDT,ETHUSDT
     """
 
     data = require_data()
 
     try:
-        if symbols:
-            symbol_list = [item.strip() for item in symbols.split(",") if item.strip()]
-        else:
-            symbol_list = None
+        symbol_list = None
 
-        result = data.crypto.get_crypto_quotes(symbols=symbol_list)
+        if symbols:
+            symbol_list = [
+                item.strip()
+                for item in symbols.split(",")
+                if item.strip()
+            ]
+
+        result = data.crypto.get_crypto_quotes(
+            symbols=symbol_list,
+        )
 
         return {
             "success": True,
@@ -143,11 +155,7 @@ def get_crypto_kline(
         description="返回数量",
     ),
 ):
-    """
-    获取 Crypto K 线。
-
-    symbol 使用 path 参数，支持类似 BTCUSDT。
-    """
+    """获取 Crypto K 线。"""
 
     data = require_data()
 
@@ -182,9 +190,7 @@ def get_crypto_order_book(
         description="买卖盘档位数量",
     ),
 ):
-    """
-    获取 Crypto 深度 / Order Book。
-    """
+    """获取 Crypto 深度 / Order Book。"""
 
     data = require_data()
 

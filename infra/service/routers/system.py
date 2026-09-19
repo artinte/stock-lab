@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-from service.api import data, youtube_service
+from infra.service.app_state import (
+    data,
+    youtube_service,
+)
 
 
 router = APIRouter(
@@ -12,23 +15,16 @@ router = APIRouter(
 
 
 @router.get("/health")
-def health_check():
-
-    manager = data
+def health():
+    """
+    API 健康检查。
+    """
 
     return {
         "success": True,
-        "api": "running",
-        "data_manager": manager is not None,
-        "youtube_service": youtube_service is not None,
-        "stock_provider": (
-            manager.stock_provider
-            if manager is not None
-            else None
-        ),
-        "crypto_provider": (
-            manager.crypto_provider
-            if manager is not None
-            else None
-        ),
+        "status": "ok",
+        "services": {
+            "data": data is not None,
+            "youtube": youtube_service is not None,
+        },
     }
