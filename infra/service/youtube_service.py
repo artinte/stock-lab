@@ -6,8 +6,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from crawler.schedule.youtube_monitor import YouTubeMonitor
-
+from crawler.schedule.youtube_monitor import YouTubeMonitor, load_standalone_channels
 
 class YouTubeService:
     """
@@ -498,43 +497,69 @@ class YouTubeService:
 
     def _read_channels(self) -> list[dict]:
         """
-        读取频道缓存。
+        获取完整监控频道。
+
+        默认频道：
+            由 load_standalone_channels() 加载。
+
+        用户配置：
+            由 data/youtube/channels.json 加载。
+
+        如果同一个 channel_id 同时存在于默认频道和用户配置中，
+        则用户配置覆盖默认配置。
         """
 
+        # 1. 加载默认频道
+        default_channels = load_standalone_channels()
+
+        # 2. 加载用户配置
         data = self._read_json(
             self.channels_file,
             {"channels": []},
         )
 
-        if isinstance(
-            data,
-            dict,
-        ):
-
-            channels = data.get(
-                "channels",
-                [],
-            )
-
-        elif isinstance(
-            data,
-            list,
-        ):
-
-            channels = data
-
+        if isinstance(data, dict):
+            user_channels = data.get("channels", [])
+        elif isinstance(data, list):
+            user_channels = data
         else:
+            user_channels = []
 
-            channels = []
+        if not isinstance(user_channels, list):
+            user_channels = []
 
-        if not isinstance(
-            channels,
-            list,
-        ):
+        # 3. 以 channel_id 为唯一键
+        channels_by_id: dict[str, dict] = {}
 
-            return []
+        # 默认频道先放进去
+        for channel in default_channels:
+            if not isinstance(channel, dict):
+                continue
 
-        return channels
+            channel_id = str(
+                channel.get("channel_id", "")
+            ).strip()
+
+            if not channel_id:
+                continue
+
+            channels_by_id[channel_id] = dict(channel)
+
+        # 用户配置覆盖默认配置
+        for channel in user_channels:
+            if not isinstance(channel, dict):
+                continue
+
+            channel_id = str(
+                channel.get("channel_id", "")
+            ).strip()
+
+            if not channel_id:
+                continue
+
+            channels_by_id[channel_id] = dict(channel)
+
+        return list(channels_by_id.values())
 
     def _write_channels(
         self,

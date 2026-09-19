@@ -649,21 +649,24 @@ function renderVideos(videos) {
                     >
 
                         <div class="video-thumb">
-
                             ${video.thumbnail
-                        ? `
-
+                                                ? `
                                         <img
                                             src="${escapeHTML(
-                            video.thumbnail
-                        )}"
-                                            alt=""
+                                                    video.thumbnail
+                                                )}"
+                                            alt="${escapeHTML(
+                                                    video.title || 'YouTube 视频'
+                                                )}"
+                                            loading="lazy"
                                         >
-
                                     `
-                        : '▶'
-                    }
-
+                                                : `
+                                        <span class="video-thumb-empty">
+                                            ▶
+                                        </span>
+                                    `
+                                            }
                         </div>
 
 

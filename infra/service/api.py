@@ -3,6 +3,7 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -26,6 +27,9 @@ async def lifespan(app: FastAPI):
     print("=" * 60)
 
     try:
+        load_dotenv()
+
+        
         # ====================================================
         # 股票 / Crypto 数据服务
         # ====================================================

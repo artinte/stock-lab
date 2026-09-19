@@ -10,6 +10,7 @@ from typing import Any
 import requests
 from dotenv import load_dotenv
 
+
 # ============================================================
 # YouTube Monitor
 # ============================================================
@@ -169,7 +170,10 @@ class YouTubeMonitor:
 
             if response.status_code != 200:
 
-                print("❌ YouTube API 请求失败 " f"[{response.status_code}]")
+                print(
+                    "❌ YouTube API 请求失败 "
+                    f"[{response.status_code}]"
+                )
 
                 print(response.text[:1000])
 
@@ -191,7 +195,9 @@ class YouTubeMonitor:
 
         except ValueError as exc:
 
-            print(f"❌ YouTube API 返回数据格式错误: {exc}")
+            print(
+                f"❌ YouTube API 返回数据格式错误: {exc}"
+            )
 
         return None
 
@@ -276,7 +282,8 @@ class YouTubeMonitor:
                 "title": "...",
                 "description": "...",
                 "published_at": "...",
-                "url": "..."
+                "url": "...",
+                "thumbnail": "..."
             }
         """
 
@@ -335,6 +342,39 @@ class YouTubeMonitor:
 
                 continue
 
+            # ------------------------------------------------
+            # 获取视频封面
+            # ------------------------------------------------
+
+            thumbnails = snippet.get(
+                "thumbnails",
+                {},
+            )
+
+            thumbnail = (
+                thumbnails.get(
+                    "maxres",
+                    {},
+                ).get("url")
+                or thumbnails.get(
+                    "standard",
+                    {},
+                ).get("url")
+                or thumbnails.get(
+                    "high",
+                    {},
+                ).get("url")
+                or thumbnails.get(
+                    "medium",
+                    {},
+                ).get("url")
+                or thumbnails.get(
+                    "default",
+                    {},
+                ).get("url")
+                or ""
+            )
+
             video = {
                 "video_id": str(video_id).strip(),
                 "channel_id": channel_id,
@@ -347,6 +387,7 @@ class YouTubeMonitor:
                     "",
                 ),
                 "url": self.get_video_url(video_id),
+                "thumbnail": thumbnail,
             }
 
             if save_description:
@@ -372,7 +413,10 @@ class YouTubeMonitor:
         获取 YouTube 视频链接。
         """
 
-        return "https://www.youtube.com/watch?v=" f"{video_id}"
+        return (
+            "https://www.youtube.com/watch?v="
+            f"{video_id}"
+        )
 
     # ========================================================
     # 检查频道
@@ -408,7 +452,11 @@ class YouTubeMonitor:
 
         print()
 
-        print("[" f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}" "] 开始检查")
+        print(
+            "["
+            f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+            "] 开始检查"
+        )
 
         for channel in channels:
 
@@ -442,7 +490,10 @@ class YouTubeMonitor:
 
             if not channel_id:
 
-                print(f"  ⚠️ {channel_name or '未知频道'}: " "没有配置频道 ID")
+                print(
+                    f"  ⚠️ {channel_name or '未知频道'}: "
+                    "没有配置频道 ID"
+                )
 
                 continue
 
@@ -450,13 +501,21 @@ class YouTubeMonitor:
             # 跳过占位 ID
             # ------------------------------------------------
 
-            if channel_id.endswith("_CHANNEL_ID") or channel_id.endswith("_ID"):
+            if (
+                channel_id.endswith("_CHANNEL_ID")
+                or channel_id.endswith("_ID")
+            ):
 
-                print(f"  ⚠️ {channel_name}: " "还没有配置真实频道 ID")
+                print(
+                    f"  ⚠️ {channel_name}: "
+                    "还没有配置真实频道 ID"
+                )
 
                 continue
 
-            print(f"  检查: {channel_name}")
+            print(
+                f"  检查: {channel_name}"
+            )
 
             video = self.get_latest_video(
                 channel_id,
@@ -467,7 +526,9 @@ class YouTubeMonitor:
 
             if not video:
 
-                print("    ⚠️ 没有获取到视频")
+                print(
+                    "    ⚠️ 没有获取到视频"
+                )
 
                 continue
 
@@ -481,11 +542,16 @@ class YouTubeMonitor:
 
             videos.append(video)
 
-            print(f"    ✓ {video['title']}")
+            print(
+                f"    ✓ {video['title']}"
+            )
 
         print()
 
-        print(f"检查完成，共获取 " f"{len(videos)} 个视频")
+        print(
+            f"检查完成，共获取 "
+            f"{len(videos)} 个视频"
+        )
 
         return videos
 
@@ -521,7 +587,9 @@ class YouTubeMonitor:
 
     def test_api(
         self,
-        channel_id: str = ("UCK8sQmJBp8GCxrOtXWBpyEA"),
+        channel_id: str = (
+            "UCK8sQmJBp8GCxrOtXWBpyEA"
+        ),
     ) -> bool:
         """
         测试 YouTube Data API。
@@ -535,43 +603,76 @@ class YouTubeMonitor:
 
         if not self.has_api_key():
 
-            print("❌ 没有读取到 YouTube API Key")
+            print(
+                "❌ 没有读取到 YouTube API Key"
+            )
 
             return False
 
-        print("✅ API Key 已读取")
+        print(
+            "✅ API Key 已读取"
+        )
 
-        channel = self.get_channel(channel_id)
+        channel = self.get_channel(
+            channel_id
+        )
 
         if not channel:
 
-            print("❌ 获取频道失败")
+            print(
+                "❌ 获取频道失败"
+            )
 
             return False
 
-        print(f"✅ 频道: " f"{channel['name']}")
+        print(
+            f"✅ 频道: "
+            f"{channel['name']}"
+        )
 
-        video = self.get_latest_video(channel_id)
+        video = self.get_latest_video(
+            channel_id
+        )
 
         if not video:
 
-            print("❌ 获取最新视频失败")
+            print(
+                "❌ 获取最新视频失败"
+            )
 
             return False
 
         print()
 
-        print("最新视频:")
+        print(
+            "最新视频:"
+        )
 
-        print(f"标题: " f"{video['title']}")
+        print(
+            f"标题: "
+            f"{video['title']}"
+        )
 
-        print(f"时间: " f"{video['published_at']}")
+        print(
+            f"时间: "
+            f"{video['published_at']}"
+        )
 
-        print(f"链接: " f"{video['url']}")
+        print(
+            f"链接: "
+            f"{video['url']}"
+        )
+
+        print(
+            f"封面: "
+            f"{video['thumbnail']}"
+        )
 
         print()
 
-        print("✅ YouTube API 测试成功")
+        print(
+            "✅ YouTube API 测试成功"
+        )
 
         return True
 
@@ -591,13 +692,17 @@ def load_api_key() -> str | None:
 
     load_dotenv()
 
-    key = os.getenv("youtube_api_key")
+    key = os.getenv(
+        "youtube_api_key"
+    )
 
     if key:
 
         return key.strip()
 
-    key = os.getenv("YOUTUBE_API_KEY")
+    key = os.getenv(
+        "YOUTUBE_API_KEY"
+    )
 
     if key:
 
@@ -626,11 +731,18 @@ def load_standalone_channels() -> list[dict]:
 
     project_root = Path(__file__).resolve().parents[2]
 
-    config_file = project_root / "config" / "youtube_channel.json"
+    config_file = (
+        project_root
+        / "config"
+        / "youtube_channel.json"
+    )
 
     if not config_file.exists():
 
-        print("❌ YouTube 频道配置文件不存在: " f"{config_file}")
+        print(
+            "❌ YouTube 频道配置文件不存在: "
+            f"{config_file}"
+        )
 
         return []
 
@@ -645,13 +757,19 @@ def load_standalone_channels() -> list[dict]:
 
     except json.JSONDecodeError as exc:
 
-        print("❌ YouTube 频道配置文件格式错误: " f"{exc}")
+        print(
+            "❌ YouTube 频道配置文件格式错误: "
+            f"{exc}"
+        )
 
         return []
 
     except OSError as exc:
 
-        print("❌ 读取 YouTube 频道配置失败: " f"{exc}")
+        print(
+            "❌ 读取 YouTube 频道配置失败: "
+            f"{exc}"
+        )
 
         return []
 
@@ -712,26 +830,38 @@ def main() -> None:
 
     if not api_key:
 
-        print("❌ 没有读取到 youtube_api_key")
+        print(
+            "❌ 没有读取到 youtube_api_key"
+        )
 
-        print("请检查 .env：")
+        print(
+            "请检查 .env："
+        )
 
-        print("youtube_api_key=你的API_KEY")
+        print(
+            "youtube_api_key=你的API_KEY"
+        )
 
         return
 
     monitor = YouTubeMonitor(
         api_key=api_key,
-        proxy=("http://127.0.0.1:7890"),
+        proxy="http://127.0.0.1:7890",
     )
 
-    print("✅ API Key 已读取")
+    print(
+        "✅ API Key 已读取"
+    )
 
-    print(f"代理: {monitor.proxy}")
+    print(
+        f"代理: {monitor.proxy}"
+    )
 
     channels = load_standalone_channels()
 
-    print(f"监控频道: {len(channels)}")
+    print(
+        f"监控频道: {len(channels)}"
+    )
 
     # --------------------------------------------------------
     # API 测试
@@ -740,7 +870,10 @@ def main() -> None:
     if not monitor.test_api():
 
         print()
-        print("❌ API 测试失败，停止")
+
+        print(
+            "❌ API 测试失败，停止"
+        )
 
         return
 
@@ -754,11 +887,15 @@ def main() -> None:
     print("获取监控频道")
     print("=" * 60)
 
-    videos = monitor.fetch_videos(channels)
+    videos = monitor.fetch_videos(
+        channels
+    )
 
     print()
 
-    print(f"获取完成: {len(videos)} 个视频")
+    print(
+        f"获取完成: {len(videos)} 个视频"
+    )
 
 
 if __name__ == "__main__":
