@@ -1206,7 +1206,6 @@ class YouTubeService:
         ]
 
         videos = self._read_videos()
-
         return {
             "enabled": bool(
                 config.get(

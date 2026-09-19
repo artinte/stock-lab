@@ -133,7 +133,6 @@ async function apiGet(path) {
 
 
     if (result.success === false) {
-
         throw new Error(
             result.message ||
             'API 请求失败'
@@ -169,30 +168,26 @@ async function loadStatus() {
         const data =
             await apiGet('/status');
 
-
         if (
-            data.channel_count !== undefined
+            data.channelCount !== undefined
         ) {
-
             document.getElementById(
                 'channelCount'
             ).textContent =
-                data.channel_count;
+                data.channelCount;
 
         }
 
 
         if (
-            data.today_video_count !== undefined
+            data.todayVideoCount !== undefined
         ) {
 
             document.getElementById(
                 'videoCount'
             ).textContent =
-                data.today_video_count;
-
+                data.todayVideoCount;
         }
-
 
         if (
             data.interval !== undefined
@@ -650,23 +645,23 @@ function renderVideos(videos) {
 
                         <div class="video-thumb">
                             ${video.thumbnail
-                                                ? `
+                        ? `
                                         <img
                                             src="${escapeHTML(
-                                                    video.thumbnail
-                                                )}"
+                            video.thumbnail
+                        )}"
                                             alt="${escapeHTML(
-                                                    video.title || 'YouTube 视频'
-                                                )}"
+                            video.title || 'YouTube 视频'
+                        )}"
                                             loading="lazy"
                                         >
                                     `
-                                                : `
+                        : `
                                         <span class="video-thumb-empty">
                                             ▶
                                         </span>
                                     `
-                                            }
+                    }
                         </div>
 
 

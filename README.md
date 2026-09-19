@@ -32,13 +32,13 @@ uvicorn infra.service.api:app --reload
 
 <p align="center"> <img src="resources/工商银行股票详情页.png" width="600"> </p>
 
-行情及相关数据需要接入券商等数据源；即使暂未接入数据源，行情资讯模块也可独立使用。
-
-下面以 YouTube 信息流为例，展示项目对外部资讯信息流的监控与聚合：
+行情及相关数据需要接入券商等数据源；即使暂未接入数据源，行情资讯模块也可独立使用。下面以 YouTube 信息流为例，展示项目对外部资讯信息流的监控与聚合：
 
 <p align="center"> <img src="resources/YouTube信息流示例.jpeg" width="600"> </p>
 
 YouTube 信息流可以配置需要监控的频道，并自动获取最新视频，用于跟踪财经、科技、AI、公司及市场相关信息。
+
+👉 欢迎关注 [STOCK LAB YouTube](https://www.youtube.com/@hello-stock-lab) 频道，获取 STOCK LAB 的产品更新、功能介绍、投资知识与市场研究相关内容。
 
 
 ## 主要功能
