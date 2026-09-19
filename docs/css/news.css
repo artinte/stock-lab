@@ -59,6 +59,352 @@
 
 }
 
+/* =========================================================
+   资讯入口
+========================================================= */
+
+.news-source-entry {
+    margin-top: 28px;
+    margin-bottom: 34px;
+}
+
+
+.news-source-entry-header {
+    margin-bottom: 18px;
+}
+
+
+.news-source-entry-header h2 {
+    margin: 5px 0 6px;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+
+.news-source-entry-header p {
+    margin: 0;
+    color: var(--text-secondary, #6b7280);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+
+
+/* =========================================================
+   入口 Grid
+========================================================= */
+
+.news-source-entry-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 14px;
+}
+
+
+
+/* =========================================================
+   入口卡片
+========================================================= */
+
+.news-source-entry-card {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 112px;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--border-color, #e5e7eb);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #ffffff 0%,
+            #fafbfc 100%
+        );
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+
+.news-source-entry-card:hover {
+    transform: translateY(-3px);
+
+    border-color:
+        rgba(37, 99, 235, 0.28);
+
+    box-shadow:
+        0 10px 28px
+        rgba(15, 23, 42, 0.08);
+
+    background: #ffffff;
+}
+
+
+.news-source-entry-card:active {
+    transform: translateY(-1px);
+}
+
+
+
+/* =========================================================
+   YouTube 主入口
+========================================================= */
+
+.news-source-entry-card.featured {
+    border-color:
+        rgba(220, 38, 38, 0.18);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(254, 242, 242, 0.95),
+            #ffffff
+        );
+}
+
+
+.news-source-entry-card.featured:hover {
+    border-color:
+        rgba(220, 38, 38, 0.35);
+
+    box-shadow:
+        0 12px 30px
+        rgba(220, 38, 38, 0.10);
+}
+
+
+
+/* =========================================================
+   图标
+========================================================= */
+
+.source-entry-icon {
+    flex: 0 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 46px;
+    height: 46px;
+
+    margin-right: 13px;
+
+    border-radius: 12px;
+
+    background: #f1f5f9;
+
+    color: #334155;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.source-entry-icon.youtube {
+    background:
+        rgba(220, 38, 38, 0.10);
+
+    color: #dc2626;
+
+    font-size: 18px;
+}
+
+
+.source-entry-icon.x {
+    background: #111827;
+    color: #ffffff;
+    font-size: 20px;
+}
+
+
+.source-entry-icon.rss {
+    background:
+        rgba(245, 158, 11, 0.12);
+
+    color: #d97706;
+
+    font-size: 11px;
+    letter-spacing: 0.04em;
+}
+
+
+.source-entry-icon.finance {
+    background:
+        rgba(16, 185, 129, 0.11);
+
+    color: #059669;
+
+    font-size: 20px;
+}
+
+
+.source-entry-icon.announcement {
+    background:
+        rgba(59, 130, 246, 0.10);
+
+    color: #2563eb;
+
+    font-size: 11px;
+}
+
+
+.source-entry-icon.policy {
+    background:
+        rgba(139, 92, 246, 0.10);
+
+    color: #7c3aed;
+
+    font-size: 11px;
+}
+
+
+.source-entry-icon.ai {
+    background:
+        rgba(99, 102, 241, 0.11);
+
+    color: #6366f1;
+
+    font-size: 20px;
+}
+
+
+
+/* =========================================================
+   内容
+========================================================= */
+
+.source-entry-content {
+    min-width: 0;
+    flex: 1;
+}
+
+
+.source-entry-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+.source-entry-title h3 {
+    margin: 0;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    color:
+        var(--text-primary, #111827);
+}
+
+
+.source-entry-title span {
+    padding: 2px 6px;
+
+    border-radius: 5px;
+
+    background: #f1f5f9;
+
+    color: #64748b;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.06em;
+}
+
+
+.source-entry-content p {
+    margin: 7px 0 0;
+
+    color:
+        var(--text-secondary, #6b7280);
+
+    font-size: 12px;
+
+    line-height: 1.55;
+}
+
+
+
+/* =========================================================
+   箭头
+========================================================= */
+
+.source-entry-arrow {
+    flex: 0 0 auto;
+
+    margin-left: 10px;
+
+    color: #94a3b8;
+
+    font-size: 18px;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.news-source-entry-card:hover
+.source-entry-arrow {
+    transform: translateX(3px);
+
+    color:
+        var(--primary-color, #2563eb);
+}
+
+
+
+/* =========================================================
+   响应式
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .news-source-entry-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 760px) {
+
+    .news-source-entry-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 520px) {
+
+    .news-source-entry-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
 
 /* 背景装饰 */
 

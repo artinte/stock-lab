@@ -312,7 +312,291 @@
 
         </section>
 
+        <!-- =====================================================
+        资讯入口
+        ====================================================== -->
 
+        <section class="news-source-entry">
+
+            <div class="news-source-entry-header">
+
+                <div>
+
+                    <div class="section-eyebrow">
+                        INFORMATION SOURCES
+                    </div>
+
+                    <h2>
+                        资讯入口
+                    </h2>
+
+                    <p>
+                        从视频、社交媒体、财经媒体到政策与公司公告，
+                        快速进入不同的信息流。
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="news-source-entry-grid">
+
+
+                <!-- YouTube -->
+
+                <article class="news-source-entry-card featured" onclick="window.location.href='./youtube.html'">
+
+                    <div class="source-entry-icon youtube">
+                        ▶
+                    </div>
+
+                    <div class="source-entry-content">
+
+                        <div class="source-entry-title">
+
+                            <h3>
+                                YouTube
+                            </h3>
+
+                            <span>
+                                VIDEO
+                            </span>
+
+                        </div>
+
+                        <p>
+                            监控财经、科技、AI 与全球市场视频信息流。
+                        </p>
+
+                    </div>
+
+                    <div class="source-entry-arrow">
+                        →
+                    </div>
+
+                </article>
+
+
+
+                <!-- X -->
+
+                <article class="news-source-entry-card" onclick="openExternalSource('x')">
+
+                    <div class="source-entry-icon x">
+                        𝕏
+                    </div>
+
+                    <div class="source-entry-content">
+
+                        <div class="source-entry-title">
+
+                            <h3>
+                                X
+                            </h3>
+
+                            <span>
+                                SOCIAL
+                            </span>
+
+                        </div>
+
+                        <p>
+                            关注市场、公司、科技与实时热点动态。
+                        </p>
+
+                    </div>
+
+                    <div class="source-entry-arrow">
+                        →
+                    </div>
+
+                </article>
+
+
+
+                <!-- RSS -->
+
+                <article class="news-source-entry-card" onclick="focusNewsSearch()">
+
+                    <div class="source-entry-icon rss">
+                        RSS
+                    </div>
+
+                    <div class="source-entry-content">
+
+                        <div class="source-entry-title">
+
+                            <h3>
+                                RSS 聚合
+                            </h3>
+
+                            <span>
+                                FEEDS
+                            </span>
+
+                        </div>
+
+                        <p>
+                            聚合多个财经、科技与市场信息源。
+                        </p>
+
+                    </div>
+
+                    <div class="source-entry-arrow">
+                        →
+                    </div>
+
+                </article>
+
+
+
+                <!-- 财经资讯 -->
+
+                <article class="news-source-entry-card" onclick="selectNewsSource('finance')">
+
+                    <div class="source-entry-icon finance">
+                        $
+                    </div>
+
+                    <div class="source-entry-content">
+
+                        <div class="source-entry-title">
+
+                            <h3>
+                                财经资讯
+                            </h3>
+
+                            <span>
+                                FINANCE
+                            </span>
+
+                        </div>
+
+                        <p>
+                            汇集市场行情、公司与行业最新资讯。
+                        </p>
+
+                    </div>
+
+                    <div class="source-entry-arrow">
+                        →
+                    </div>
+
+                </article>
+
+
+
+                <!-- 公司公告 -->
+
+                <article class="news-source-entry-card" onclick="selectNewsSource('announcement')">
+
+                    <div class="source-entry-icon announcement">
+                        公告
+                    </div>
+
+                    <div class="source-entry-content">
+
+                        <div class="source-entry-title">
+
+                            <h3>
+                                公司公告
+                            </h3>
+
+                            <span>
+                                FILINGS
+                            </span>
+
+                        </div>
+
+                        <p>
+                            跟踪上市公司公告、业绩与重大事项。
+                        </p>
+
+                    </div>
+
+                    <div class="source-entry-arrow">
+                        →
+                    </div>
+
+                </article>
+
+
+
+                <!-- 政策 -->
+
+                <article class="news-source-entry-card" onclick="selectNewsSource('policy')">
+
+                    <div class="source-entry-icon policy">
+                        政策
+                    </div>
+
+                    <div class="source-entry-content">
+
+                        <div class="source-entry-title">
+
+                            <h3>
+                                政策信息
+                            </h3>
+
+                            <span>
+                                POLICY
+                            </span>
+
+                        </div>
+
+                        <p>
+                            关注宏观政策、产业政策与监管动态。
+                        </p>
+
+                    </div>
+
+                    <div class="source-entry-arrow">
+                        →
+                    </div>
+
+                </article>
+
+
+
+                <!-- AI -->
+
+                <article class="news-source-entry-card" onclick="goHome('research')">
+
+                    <div class="source-entry-icon ai">
+                        ✦
+                    </div>
+
+                    <div class="source-entry-content">
+
+                        <div class="source-entry-title">
+
+                            <h3>
+                                AI Research
+                            </h3>
+
+                            <span>
+                                AI
+                            </span>
+
+                        </div>
+
+                        <p>
+                            通过 AI 对资讯进行摘要、分类与关联分析。
+                        </p>
+
+                    </div>
+
+                    <div class="source-entry-arrow">
+                        →
+                    </div>
+
+                </article>
+
+
+            </div>
+
+        </section>
 
         <!-- =====================================================
          新闻搜索
@@ -1899,6 +2183,67 @@
 
         }
 
+        /* =========================================================
+   资讯入口
+========================================================= */
+
+        function openExternalSource(source) {
+
+            if (source === 'x') {
+
+                /*
+                    后续可以接自己的 X 信息流页面。
+                    目前先作为入口占位。
+                */
+
+                console.log('打开 X 信息流');
+
+                return;
+            }
+
+        }
+
+
+        function selectNewsSource(source) {
+
+            const categoryMap = {
+
+                finance: 'market',
+
+                announcement: 'announcement',
+
+                policy: 'policy'
+
+            };
+
+
+            const category =
+                categoryMap[source];
+
+
+            if (!category) {
+                return;
+            }
+
+
+            const button =
+                document.querySelector(
+                    `.news-category[data-category="${category}"]`
+                );
+
+
+            if (button) {
+
+                button.click();
+
+                button.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center'
+                });
+
+            }
+
+        }
 
     </script>
 
