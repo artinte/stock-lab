@@ -5,7 +5,6 @@ from pydantic import BaseModel
 
 from infra.service.app_state import require_youtube
 
-
 router = APIRouter(
     prefix="/api/youtube",
     tags=["youtube"],
@@ -35,11 +34,21 @@ class ChannelUpdateRequest(BaseModel):
 class ConfigRequest(BaseModel):
 
     enabled: bool | None = None
+
     interval: int | None = None
+
     max_results: int | None = None
+
     upload_only: bool | None = None
+
     save_description: bool | None = None
+
     notification_enabled: bool | None = None
+
+    # YouTube API 网络配置
+    proxy: str | None = None
+
+    timeout: int | None = None
 
 
 # ============================================================
@@ -105,9 +114,9 @@ def update_config(
             max_results=request.max_results,
             upload_only=request.upload_only,
             save_description=request.save_description,
-            notification_enabled=(
-                request.notification_enabled
-            ),
+            notification_enabled=(request.notification_enabled),
+            proxy=request.proxy,
+            timeout=request.timeout,
         )
 
         return {
@@ -216,9 +225,7 @@ def delete_channel(
 
     try:
 
-        service.remove_channel(
-            channel_id
-        )
+        service.remove_channel(channel_id)
 
         return {
             "success": True,
@@ -302,9 +309,7 @@ def get_ai_top(
 
     service = require_youtube()
 
-    result = service.get_ai_top(
-        limit=limit
-    )
+    result = service.get_ai_top(limit=limit)
 
     return {
         "success": True,

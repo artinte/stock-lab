@@ -6,6 +6,8 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
+from crawler.schedule.youtube_monitor import YouTubeMonitor
+
 
 class YouTubeService:
     """
@@ -18,7 +20,7 @@ class YouTubeService:
     3. 管理视频 JSON 缓存
     4. 管理 AI 分析结果
     5. 提供 API 层所需要的数据
-    6. 为后续 YouTube Crawler 提供统一入口
+    6. 调用 YouTubeMonitor 获取视频
 
     注意：
 
@@ -31,7 +33,17 @@ class YouTubeService:
             ↓
         YouTubeService
             ↓
-        Crawler / JSON / AI
+        YouTubeMonitor
+            ↓
+        YouTube Data API
+
+        YouTubeMonitor
+            ↓
+        list[dict]
+            ↓
+        YouTubeService.add_videos()
+            ↓
+        videos.json
     """
 
     # ========================================================
@@ -41,8 +53,11 @@ class YouTubeService:
     DEFAULT_DATA_DIR = Path("data") / "youtube"
 
     CHANNELS_FILE = "channels.json"
+
     CONFIG_FILE = "config.json"
+
     VIDEOS_FILE = "videos.json"
+
     AI_TOP_FILE = "ai_top.json"
 
     # ========================================================
@@ -56,6 +71,7 @@ class YouTubeService:
         "upload_only": True,
         "save_description": True,
         "notification_enabled": True,
+        "proxy": "http://127.0.0.1:7890",
     }
 
     # ========================================================
@@ -90,6 +106,15 @@ class YouTubeService:
 
         self._ensure_files()
 
+        # ----------------------------------------------------
+        # YouTube Monitor
+        # ----------------------------------------------------
+
+        self.monitor = YouTubeMonitor(
+            api_key=self.get_api_key(),
+            proxy=self.get_config().get("proxy"),
+        )
+
     # ========================================================
     # 生命周期
     # ========================================================
@@ -98,7 +123,8 @@ class YouTubeService:
         """
         停止 YouTube 服务。
 
-        当前 JSON 缓存不需要额外关闭操作。
+        当前 Monitor 使用 requests，
+        不需要额外关闭操作。
 
         后续如果增加：
 
@@ -224,6 +250,7 @@ class YouTubeService:
 
                 try:
                     temp_path.unlink()
+
                 except OSError:
                     pass
 
@@ -253,24 +280,23 @@ class YouTubeService:
         key = os.getenv("YOUTUBE_API_KEY")
 
         if key:
+
             return key.strip()
 
         key = os.getenv("youtube_api_key")
 
         if key:
+
             return key.strip()
 
         # ----------------------------------------------------
-        # 如果项目没有 python-dotenv，
-        # FastAPI 启动时不会自动读取 .env。
-        #
-        # 这里提供一个轻量级 .env 读取方式，
-        # 不增加额外依赖。
+        # 轻量级 .env 读取
         # ----------------------------------------------------
 
         env_file = Path(".env")
 
         if not env_file.exists():
+
             return None
 
         try:
@@ -301,20 +327,22 @@ class YouTubeService:
                     name = name.strip()
                     value = value.strip()
 
-                    if name in {
+                    if name not in {
                         "YOUTUBE_API_KEY",
                         "youtube_api_key",
                     }:
 
-                        if value.startswith('"') and value.endswith('"'):
+                        continue
 
-                            value = value[1:-1]
+                    if value.startswith('"') and value.endswith('"'):
 
-                        if value.startswith("'") and value.endswith("'"):
+                        value = value[1:-1]
 
-                            value = value[1:-1]
+                    if value.startswith("'") and value.endswith("'"):
 
-                        return value.strip()
+                        value = value[1:-1]
+
+                    return value.strip()
 
         except OSError as exc:
 
@@ -327,9 +355,7 @@ class YouTubeService:
         判断 YouTube API Key 是否配置。
         """
 
-        key = self.get_api_key()
-
-        return bool(key)
+        return bool(self.get_api_key())
 
     # ========================================================
     # API 状态
@@ -366,10 +392,7 @@ class YouTubeService:
         """
         获取 YouTube 运行配置。
 
-        注意：
-
-        API Key 不属于 config.json，
-        也不会出现在返回结果中。
+        API Key 不属于 config.json。
         """
 
         config = self._read_json(
@@ -399,6 +422,7 @@ class YouTubeService:
         upload_only: bool | None = None,
         save_description: bool | None = None,
         notification_enabled: bool | None = None,
+        proxy: str | None = None,
     ) -> dict:
         """
         更新 YouTube 运行配置。
@@ -438,10 +462,33 @@ class YouTubeService:
 
             config["notification_enabled"] = notification_enabled
 
+        if proxy is not None:
+
+            config["proxy"] = proxy.strip()
+
         self._write_json(
             self.config_file,
             config,
         )
+
+        # ----------------------------------------------------
+        # 同步 Monitor 配置
+        # ----------------------------------------------------
+
+        self.monitor.set_api_key(self.get_api_key())
+
+        self.monitor.proxy = config.get("proxy")
+
+        if self.monitor.proxy:
+
+            self.monitor.proxies = {
+                "http": self.monitor.proxy,
+                "https": self.monitor.proxy,
+            }
+
+        else:
+
+            self.monitor.proxies = None
 
         return config
 
@@ -580,8 +627,10 @@ class YouTubeService:
         """
 
         name = name.strip()
+
         channel_id = channel_id.strip()
-        category = category.strip().lower()
+
+        category = category.strip()
 
         if not name:
 
@@ -602,7 +651,7 @@ class YouTubeService:
         channel = {
             "name": name,
             "channel_id": channel_id,
-            "category": category or "other",
+            "category": (category or "other"),
             "enabled": enabled,
         }
 
@@ -631,6 +680,7 @@ class YouTubeService:
         for channel in channels:
 
             if channel.get("channel_id") != channel_id:
+
                 continue
 
             if name is not None:
@@ -731,11 +781,9 @@ class YouTubeService:
     ) -> None:
         """
         保存视频缓存。
-        """
 
-        # ----------------------------------------------------
-        # 只保留最近 5000 条。
-        # ----------------------------------------------------
+        只保留最近 5000 条。
+        """
 
         videos = videos[:5000]
 
@@ -753,8 +801,13 @@ class YouTubeService:
 
         通过 video_id 去重。
 
-        这个方法就是未来 Crawler
-        和 Service 之间最重要的接口之一。
+        这是：
+
+            YouTubeMonitor
+                    ↓
+            YouTubeService
+
+        之间的重要接口。
         """
 
         if not videos:
@@ -771,13 +824,21 @@ class YouTubeService:
 
         for item in current:
 
+            if not isinstance(
+                item,
+                dict,
+            ):
+
+                continue
+
             video_id = item.get("video_id")
 
             if video_id:
 
-                index[video_id] = item
+                index[str(video_id)] = item
 
         added = 0
+
         updated = 0
 
         for video in videos:
@@ -801,17 +862,23 @@ class YouTubeService:
 
                 continue
 
-            video["video_id"] = video_id
+            # ------------------------------------------------
+            # 不直接修改调用方对象
+            # ------------------------------------------------
+
+            item = dict(video)
+
+            item["video_id"] = video_id
 
             if video_id in index:
 
-                index[video_id].update(video)
+                index[video_id].update(item)
 
                 updated += 1
 
             else:
 
-                index[video_id] = video
+                index[video_id] = item
 
                 added += 1
 
@@ -974,9 +1041,6 @@ class YouTubeService:
     def get_today_video_count(self) -> int:
         """
         获取今日视频数量。
-
-        数量来自 videos.json，
-        因此随着 Crawler 写入新视频会变化。
         """
 
         return len(
@@ -1036,9 +1100,6 @@ class YouTubeService:
     ) -> None:
         """
         更新 AI TOP 数据。
-
-        未来 AI Analyzer 完成分析后，
-        可以直接调用这个方法。
         """
 
         result = []
@@ -1076,15 +1137,6 @@ class YouTubeService:
     ) -> list[dict]:
         """
         获取 AI TOP 视频。
-
-        优先读取 ai_top.json。
-
-        如果 AI TOP 缓存为空，
-        则从 videos.json 中读取已有 ai_score
-        进行排序。
-
-        这样前端在 AI Analyzer 尚未完全接入时，
-        也不会直接报错。
         """
 
         videos = self._read_ai_top()
@@ -1162,17 +1214,19 @@ class YouTubeService:
         """
         立即检查监控频道。
 
-        当前版本先提供统一入口。
+        调用关系：
 
-        后续接入真正的 YouTubeCrawler：
-
-            crawler = YouTubeCrawler(...)
-
-            videos = crawler.fetch(...)
-
-            result = self.add_videos(videos)
-
-        API 层完全不需要修改。
+            YouTubeService
+                    ↓
+            YouTubeMonitor
+                    ↓
+            YouTube Data API
+                    ↓
+                videos
+                    ↓
+            add_videos()
+                    ↓
+                videos.json
         """
 
         config = self.get_config()
@@ -1189,7 +1243,9 @@ class YouTubeService:
                 "updated": 0,
             }
 
-        if not self.has_api_key():
+        api_key = self.get_api_key()
+
+        if not api_key:
 
             return {
                 "status": "not_configured",
@@ -1201,6 +1257,12 @@ class YouTubeService:
                 "added": 0,
                 "updated": 0,
             }
+
+        # ----------------------------------------------------
+        # 确保 Monitor 使用最新 API Key
+        # ----------------------------------------------------
+
+        self.monitor.set_api_key(api_key)
 
         channels = self.get_channels()
 
@@ -1223,20 +1285,37 @@ class YouTubeService:
             }
 
         # ----------------------------------------------------
-        # TODO:
-        #
-        # 这里以后接入真正的 YouTubeCrawler。
-        #
-        # 当前不直接调用 YouTube API，
-        # 防止 Service 和具体抓取实现耦合。
+        # Monitor 获取视频
         # ----------------------------------------------------
 
+        videos = self.monitor.fetch_videos(
+            enabled_channels,
+            max_results=config.get(
+                "max_results",
+                10,
+            ),
+            upload_only=config.get(
+                "upload_only",
+                True,
+            ),
+            save_description=config.get(
+                "save_description",
+                True,
+            ),
+        )
+
+        # ----------------------------------------------------
+        # Service 保存视频
+        # ----------------------------------------------------
+
+        result = self.add_videos(videos)
+
         return {
-            "status": "ready",
-            "message": ("YouTube 服务已准备好，" "等待 Crawler 接入"),
+            "status": "success",
+            "message": "YouTube 监控检查完成",
             "channelCount": len(enabled_channels),
-            "added": 0,
-            "updated": 0,
+            "fetched": len(videos),
+            **result,
         }
 
     # ========================================================
@@ -1280,11 +1359,6 @@ class YouTubeService:
                 normalized = normalized[:-1] + "+00:00"
 
             dt = datetime.fromisoformat(normalized)
-
-            # ------------------------------------------------
-            # 如果带时区：
-            # 转换到本地时间后再比较。
-            # ------------------------------------------------
 
             if dt.tzinfo is not None:
 

@@ -1,23 +1,28 @@
-
 /*
  * =========================================================
- * API
+ * YouTube Intelligence
  * =========================================================
  *
- * 这里全部通过后端 Python API 获取数据。
+ * 所有数据通过后端 Python API 获取。
  *
- * 推荐后端提供：
+ * 前端：
  *
- * GET  /api/youtube/status
- * GET  /api/youtube/channels
- * GET  /api/youtube/videos
- * GET  /api/youtube/ai-ranking
- * GET  /api/youtube/config
- * POST /api/youtube/channels
- * PUT  /api/youtube/config
- * POST /api/youtube/check
+ * HTML
+ *   ↓
+ * youtube.js
+ *   ↓
+ * FastAPI
+ *   ↓
+ * YouTubeService
+ *   ↓
+ * YouTubeMonitor
+ *   ↓
+ * YouTube Data API
  *
- * MONITOR_CHANNELS 和 API KEY 都由后端负责。
+ * 前端不直接访问 YouTube API。
+ * API Key 永远只存在后端。
+ *
+ * =========================================================
  */
 
 
@@ -27,8 +32,6 @@ const API_BASE = '/api/youtube';
 let currentCategory = 'all';
 
 let refreshTimer = null;
-
-let lastVideoIds = new Set();
 
 
 /* =========================================================
@@ -42,17 +45,18 @@ document.addEventListener(
         loadAllData();
 
         /*
-         * 前端只是刷新显示。
+         * 前端只负责刷新显示。
          *
-         * 真正的 YouTube 抓取任务应该由
-         * Python 后台定时器 / Scheduler 完成。
+         * 真正的 YouTube 抓取任务由
+         * Python 后台负责。
+         *
+         * 这里每 30 秒重新读取一次后端缓存。
          */
 
-        refreshTimer =
-            setInterval(
-                loadLiveData,
-                30000
-            );
+        refreshTimer = setInterval(
+            loadLiveData,
+            30000
+        );
 
     }
 );
@@ -104,18 +108,16 @@ async function loadLiveData() {
    通用 GET
    ========================================================= */
 
-async function apiGet(
-    path
-) {
+async function apiGet(path) {
 
-    const response =
-        await fetch(
-            API_BASE + path,
-            {
-                method: 'GET',
-                cache: 'no-store'
-            }
-        );
+    const response = await fetch(
+        API_BASE + path,
+        {
+            method: 'GET',
+            cache: 'no-store'
+        }
+    );
+
 
     if (!response.ok) {
 
@@ -125,7 +127,33 @@ async function apiGet(
 
     }
 
-    return response.json();
+
+    const result =
+        await response.json();
+
+
+    if (result.success === false) {
+
+        throw new Error(
+            result.message ||
+            'API 请求失败'
+        );
+
+    }
+
+
+    /*
+     * FastAPI 统一返回：
+     *
+     * {
+     *     success: true,
+     *     data: ...
+     * }
+     *
+     * 前端直接使用 data。
+     */
+
+    return result.data;
 
 }
 
@@ -139,9 +167,7 @@ async function loadStatus() {
     try {
 
         const data =
-            await apiGet(
-                '/status'
-            );
+            await apiGet('/status');
 
 
         if (
@@ -180,7 +206,7 @@ async function loadStatus() {
 
 
         if (
-            data.api_status
+            data.api_status !== undefined
         ) {
 
             updateAPIStatus(
@@ -222,11 +248,96 @@ async function loadStatus() {
             error
         );
 
+
         document.getElementById(
             'apiMetric'
-        ).textContent = 'OFFLINE';
+        ).textContent =
+            'OFFLINE';
 
     }
+
+}
+
+
+/* =========================================================
+   API 状态
+   ========================================================= */
+
+async function testAPI() {
+
+    const button =
+        document.querySelector(
+            '.yt-secondary'
+        );
+
+
+    button.disabled = true;
+
+    button.textContent =
+        '测试中...';
+
+
+    try {
+
+        const data =
+            await apiGet('/api-status');
+
+
+        const status =
+            data.status ||
+            data.youtube_api ||
+            data.api_status;
+
+
+        if (
+            status === 'ok' ||
+            status === 'active' ||
+            data.configured === true
+        ) {
+
+            button.textContent =
+                '✓ API 正常';
+
+        } else {
+
+            button.textContent =
+                '⚠ API 检查';
+
+        }
+
+
+        updateAPIStatus(
+            status
+        );
+
+
+        await loadStatus();
+
+    } catch (error) {
+
+        console.warn(
+            'API 测试失败：',
+            error
+        );
+
+
+        button.textContent =
+            '× API 异常';
+
+    }
+
+
+    setTimeout(
+        () => {
+
+            button.disabled = false;
+
+            button.textContent =
+                'API 测试';
+
+        },
+        1500
+    );
 
 }
 
@@ -239,20 +350,14 @@ async function loadChannels() {
 
     try {
 
-        const data =
-            await apiGet(
-                '/channels'
-            );
-
-
         const channels =
-            Array.isArray(data)
-                ? data
-                : data.channels || [];
+            await apiGet('/channels');
 
 
         renderChannels(
-            channels
+            Array.isArray(channels)
+                ? channels
+                : []
         );
 
 
@@ -283,9 +388,7 @@ async function loadChannels() {
    渲染频道
    ========================================================= */
 
-function renderChannels(
-    channels
-) {
+function renderChannels(channels) {
 
     const container =
         document.getElementById(
@@ -296,35 +399,33 @@ function renderChannels(
     if (!channels.length) {
 
         container.innerHTML = `
+            <div class="channel-row">
 
-                    <div class="channel-row">
+                <div class="channel-name">
+                    暂无监控频道
+                </div>
 
-                        <div class="channel-name">
-                            暂无监控频道
-                        </div>
+                <div class="channel-id">
+                    —
+                </div>
 
-                        <div class="channel-id">
-                            —
-                        </div>
+                <div class="channel-category">
+                    —
+                </div>
 
-                        <div class="channel-category">
-                            —
-                        </div>
+                <div class="channel-status">
+                    EMPTY
+                </div>
 
-                        <div class="channel-category">
-                            请添加频道
-                        </div>
+                <button
+                    class="channel-action"
+                    onclick="openChannelDialog()"
+                >
+                    添加
+                </button>
 
-                        <button
-                            class="channel-action"
-                            onclick="openChannelDialog()"
-                        >
-                            添加
-                        </button>
-
-                    </div>
-
-                `;
+            </div>
+        `;
 
         return;
 
@@ -336,51 +437,64 @@ function renderChannels(
             .map(
                 channel => `
 
-                            <div
-                                class="channel-row"
-                                data-category="${escapeHTML(
+                    <div
+                        class="channel-row"
+                        data-category="${escapeHTML(
                     channel.category || ''
                 )}"
-                            >
+                    >
 
-                                <div class="channel-name">
-                                    ${escapeHTML(
+                        <div class="channel-name">
+
+                            ${escapeHTML(
                     channel.name || '—'
                 )}
-                                </div>
 
-                                <div class="channel-id">
-                                    ${escapeHTML(
+                        </div>
+
+
+                        <div class="channel-id">
+
+                            ${escapeHTML(
                     channel.channel_id || '—'
                 )}
-                                </div>
 
-                                <div class="channel-category">
-                                    ${categoryLabel(
+                        </div>
+
+
+                        <div class="channel-category">
+
+                            ${categoryLabel(
                     channel.category
                 )}
-                                </div>
 
-                                <div class="channel-status">
-                                    ${channel.enabled === false
+                        </div>
+
+
+                        <div class="channel-status">
+
+                            ${channel.enabled === false
                         ? 'DISABLED'
-                        : 'ACTIVE'}
-                                </div>
+                        : 'ACTIVE'
+                    }
 
-                                <button
-                                    class="channel-action"
-                                    onclick="editChannel(
-                                        '${escapeJS(
-                            channel.name || ''
-                        )}'
-                                    )"
-                                >
-                                    编辑
-                                </button>
+                        </div>
 
-                            </div>
 
-                        `
+                        <button
+                            class="channel-action"
+                            onclick="editChannel(
+                                '${escapeJS(
+                        channel.channel_id || ''
+                    )}'
+                            )"
+                        >
+                            编辑
+                        </button>
+
+                    </div>
+
+                `
             )
             .join('');
 
@@ -395,39 +509,27 @@ async function loadVideos() {
 
     try {
 
-        const data =
+        const videos =
             await apiGet(
                 '/videos?limit=20'
             );
 
 
-        const videos =
-            Array.isArray(data)
-                ? data
-                : data.videos || [];
+        const list =
+            Array.isArray(videos)
+                ? videos
+                : [];
 
 
         renderVideos(
-            videos
+            list
         );
-
-
-        if (
-            data.today_count !== undefined
-        ) {
-
-            document.getElementById(
-                'videoCount'
-            ).textContent =
-                data.today_count;
-
-        }
 
 
         document.getElementById(
             'videoResultCount'
         ).textContent =
-            `${videos.length} 条视频`;
+            `${list.length} 条视频`;
 
     } catch (error) {
 
@@ -436,18 +538,19 @@ async function loadVideos() {
             error
         );
 
+
         document.getElementById(
             'youtubeFeed'
         ).innerHTML = `
 
-                    <div class="ai-empty">
+            <div class="ai-empty">
 
-                        暂时无法读取视频数据。
-                        请检查 Python 后端是否正在运行。
+                暂时无法读取视频数据。
+                请检查 Python 后端是否正在运行。
 
-                    </div>
+            </div>
 
-                `;
+        `;
 
     }
 
@@ -458,9 +561,7 @@ async function loadVideos() {
    渲染视频
    ========================================================= */
 
-function renderVideos(
-    videos
-) {
+function renderVideos(videos) {
 
     const feed =
         document.getElementById(
@@ -468,24 +569,28 @@ function renderVideos(
         );
 
 
+    const keyword =
+        document.getElementById(
+            'channelSearch'
+        ).value
+            .trim()
+            .toLowerCase();
+
+
     const filtered =
         videos.filter(
             video => {
 
                 const category =
-                    video.category ||
-                    'all';
+                    normalizeCategory(
+                        video.category
+                    );
+
 
                 const matchesCategory =
                     currentCategory === 'all' ||
                     category === currentCategory;
 
-                const keyword =
-                    document.getElementById(
-                        'channelSearch'
-                    ).value
-                        .trim()
-                        .toLowerCase();
 
                 const text =
                     (
@@ -518,13 +623,11 @@ function renderVideos(
 
         feed.innerHTML = `
 
-                    <div class="ai-empty">
+            <div class="ai-empty">
+                暂无符合条件的视频
+            </div>
 
-                        暂无符合条件的视频
-
-                    </div>
-
-                `;
+        `;
 
         return;
 
@@ -536,87 +639,89 @@ function renderVideos(
             .map(
                 video => `
 
-                            <article
-                                class="youtube-video"
-                                onclick="openVideo(
-                                    '${escapeJS(
+                    <article
+                        class="youtube-video"
+                        onclick="openVideo(
+                            '${escapeJS(
                     video.video_id || ''
                 )}'
-                                )"
-                            >
+                        )"
+                    >
 
-                                <div class="video-thumb">
+                        <div class="video-thumb">
 
-                                    ${video.thumbnail
+                            ${video.thumbnail
                         ? `
-                                                <img
-                                                    src="${escapeHTML(
+
+                                        <img
+                                            src="${escapeHTML(
                             video.thumbnail
                         )}"
-                                                    alt=""
-                                                >
-                                              `
+                                            alt=""
+                                        >
+
+                                    `
                         : '▶'
                     }
 
-                                </div>
+                        </div>
 
 
-                                <div class="video-info">
+                        <div class="video-info">
 
-                                    <div class="video-channel">
+                            <div class="video-channel">
 
-                                        <span class="video-channel-dot"></span>
+                                <span
+                                    class="video-channel-dot"
+                                ></span>
 
-                                        ${escapeHTML(
+                                ${escapeHTML(
                         video.channel_name ||
                         'Unknown'
                     )}
 
-                                    </div>
+                            </div>
 
 
-                                    <h3>
+                            <h3>
 
-                                        ${escapeHTML(
+                                ${escapeHTML(
                         video.title ||
                         '未命名视频'
                     )}
 
-                                    </h3>
+                            </h3>
 
 
-                                    <p>
+                            <p>
 
-                                        ${formatDate(
+                                ${formatDate(
                         video.published_at
                     )}
 
-                                        · YouTube Data API
+                                · YouTube Data API
 
-                                    </p>
+                            </p>
 
-                                </div>
+                        </div>
 
 
-                                <div class="video-time">
+                        <div class="video-time">
 
-                                    ${relativeTime(
+                            ${relativeTime(
                         video.published_at
                     )}
 
-                                </div>
+                        </div>
 
 
-                                <div class="video-arrow">
+                        <div class="video-arrow">
+                            →
+                        </div>
 
-                                    →
+                    </article>
 
-                                </div>
-
-                            </article>
-
-                        `
+                `
             )
             .join('');
 
@@ -631,43 +736,27 @@ async function loadAIRanking() {
 
     try {
 
-        const data =
+        const rankings =
             await apiGet(
-                '/ai-ranking?limit=10'
+                '/ai/top?limit=10'
             );
 
 
-        const rankings =
-            Array.isArray(data)
-                ? data
-                : data.rankings || [];
+        const list =
+            Array.isArray(rankings)
+                ? rankings
+                : [];
 
 
         renderAIRanking(
-            rankings
+            list
         );
 
 
-        if (
-            data.updated_at
-        ) {
-
-            document.getElementById(
-                'aiRankingTime'
-            ).textContent =
-                '更新：' +
-                formatTime(
-                    data.updated_at
-                );
-
-        } else {
-
-            document.getElementById(
-                'aiRankingTime'
-            ).textContent =
-                'AI ANALYSIS · LIVE';
-
-        }
+        document.getElementById(
+            'aiRankingTime'
+        ).textContent =
+            'AI ANALYSIS · LIVE';
 
     } catch (error) {
 
@@ -676,18 +765,19 @@ async function loadAIRanking() {
             error
         );
 
+
         document.getElementById(
             'aiRanking'
         ).innerHTML = `
 
-                    <div class="ai-empty">
+            <div class="ai-empty">
 
-                        暂无 AI 分析结果。
-                        等待抓取视频后进行分析。
+                暂无 AI 分析结果。
+                等待抓取视频后进行分析。
 
-                    </div>
+            </div>
 
-                `;
+        `;
 
     }
 
@@ -698,9 +788,7 @@ async function loadAIRanking() {
    渲染 AI 排名
    ========================================================= */
 
-function renderAIRanking(
-    rankings
-) {
+function renderAIRanking(rankings) {
 
     const container =
         document.getElementById(
@@ -712,13 +800,11 @@ function renderAIRanking(
 
         container.innerHTML = `
 
-                    <div class="ai-empty">
+            <div class="ai-empty">
+                当前暂无 AI 分析结果
+            </div>
 
-                        当前暂无 AI 分析结果
-
-                    </div>
-
-                `;
+        `;
 
         return;
 
@@ -727,31 +813,31 @@ function renderAIRanking(
 
     let html = `
 
-                <div class="ai-ranking-header">
+        <div class="ai-ranking-header">
 
-                    <div>
-                        RANK
-                    </div>
+            <div>
+                RANK
+            </div>
 
-                    <div>
-                        VIDEO / AI ANALYSIS
-                    </div>
+            <div>
+                VIDEO / AI ANALYSIS
+            </div>
 
-                    <div>
-                        CHANNEL
-                    </div>
+            <div>
+                CHANNEL
+            </div>
 
-                    <div>
-                        TOPIC
-                    </div>
+            <div>
+                TOPIC
+            </div>
 
-                    <div>
-                        SCORE
-                    </div>
+            <div>
+                SCORE
+            </div>
 
-                </div>
+        </div>
 
-            `;
+    `;
 
 
     rankings
@@ -765,86 +851,92 @@ function renderAIRanking(
 
                 html += `
 
-                            <div class="ai-ranking-row">
+                    <div
+                        class="ai-ranking-row"
+                    >
+
+                        <div
+                            class="
+                                ai-rank
+                                ${rank <= 3 ? 'top' : ''}
+                            "
+                        >
+                            ${String(
+                    rank
+                ).padStart(2, '0')}
+                        </div>
 
 
-                                <div
-                                    class="
-                                        ai-rank
-                                        ${rank <= 3
-                        ? 'top'
-                        : ''}
-                                    "
-                                >
-                                    ${String(rank).padStart(2, '0')}
-                                </div>
+                        <div
+                            class="ai-ranking-title"
+                        >
+
+                            <strong>
+
+                                ${escapeHTML(
+                    item.title ||
+                    '未命名视频'
+                )}
+
+                            </strong>
 
 
-                                <div class="ai-ranking-title">
+                            <span>
 
-                                    <strong>
+                                ${escapeHTML(
+                    item.reason ||
+                    item.summary ||
+                    'AI 分析中'
+                )}
 
-                                        ${escapeHTML(
-                            item.title ||
-                            '未命名视频'
-                        )}
+                            </span>
 
-                                    </strong>
-
-
-                                    <span>
-
-                                        ${escapeHTML(
-                            item.reason ||
-                            item.summary ||
-                            'AI 分析中'
-                        )}
-
-                                    </span>
-
-                                </div>
+                        </div>
 
 
-                                <div class="ai-ranking-channel">
+                        <div
+                            class="ai-ranking-channel"
+                        >
 
-                                    ${escapeHTML(
-                            item.channel_name ||
-                            '—'
-                        )}
+                            ${escapeHTML(
+                    item.channel_name ||
+                    '—'
+                )}
 
-                                </div>
-
-
-                                <div>
-
-                                    <span class="ai-topic">
-
-                                        ${escapeHTML(
-                            item.topic ||
-                            '综合'
-                        )}
-
-                                    </span>
-
-                                </div>
+                        </div>
 
 
-                                <div class="ai-score">
+                        <div>
 
-                                    ${formatScore(
-                            item.score
-                        )}
+                            <span
+                                class="ai-topic"
+                            >
 
-                                    <span>
-                                        / 100
-                                    </span>
+                                ${escapeHTML(
+                    item.topic ||
+                    '综合'
+                )}
 
-                                </div>
+                            </span>
+
+                        </div>
 
 
-                            </div>
+                        <div class="ai-score">
 
-                        `;
+                            ${formatScore(
+                    item.score
+                )}
+
+                            <span>
+                                / 100
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                `;
 
             }
         );
@@ -857,7 +949,7 @@ function renderAIRanking(
 
 
 /* =========================================================
-   抓取控制
+   立即抓取
    ========================================================= */
 
 async function checkNow() {
@@ -894,12 +986,25 @@ async function checkNow() {
         }
 
 
+        const result =
+            await response.json();
+
+
+        if (result.success === false) {
+
+            throw new Error(
+                result.message ||
+                '抓取失败'
+            );
+
+        }
+
+
         button.textContent =
             '✓ 抓取完成';
 
 
         await loadAllData();
-
 
     } catch (error) {
 
@@ -907,6 +1012,7 @@ async function checkNow() {
             '抓取失败：',
             error
         );
+
 
         button.textContent =
             '× 抓取失败';
@@ -930,73 +1036,6 @@ async function checkNow() {
 
 
 /* =========================================================
-   API 测试
-   ========================================================= */
-
-async function testAPI() {
-
-    const button =
-        document.querySelectorAll(
-            '.yt-secondary'
-        )[0];
-
-
-    button.disabled = true;
-
-    button.textContent =
-        '测试中...';
-
-
-    try {
-
-        const data =
-            await apiGet(
-                '/health'
-            );
-
-
-        if (
-            data.status === 'ok' ||
-            data.youtube_api === 'ok'
-        ) {
-
-            button.textContent =
-                '✓ API 正常';
-
-        } else {
-
-            button.textContent =
-                '⚠ API 检查';
-
-        }
-
-
-        await loadStatus();
-
-    } catch (error) {
-
-        button.textContent =
-            '× API 异常';
-
-    }
-
-
-    setTimeout(
-        () => {
-
-            button.disabled = false;
-
-            button.textContent =
-                'API 测试';
-
-        },
-        1500
-    );
-
-}
-
-
-/* =========================================================
    更新配置
    ========================================================= */
 
@@ -1008,27 +1047,79 @@ async function updateConfig() {
         ).checked;
 
 
+    const maxResults =
+        Number(
+            document.getElementById(
+                'maxResults'
+            ).value
+        );
+
+
+    const uploadOnly =
+        document.getElementById(
+            'uploadOnlySwitch'
+        ).checked;
+
+
+    const saveDescription =
+        document.getElementById(
+            'descriptionSwitch'
+        ).checked;
+
+
+    const notificationEnabled =
+        document.getElementById(
+            'notificationSwitch'
+        ).checked;
+
+
     try {
 
-        await fetch(
-            API_BASE + '/config',
-            {
-                method: 'PUT',
+        const response =
+            await fetch(
+                API_BASE + '/config',
+                {
+                    method: 'PUT',
 
-                headers: {
-                    'Content-Type':
-                        'application/json'
-                },
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
 
-                body: JSON.stringify({
+                    body: JSON.stringify({
 
-                    monitoring:
-                        enabled
+                        enabled:
+                            enabled,
 
-                })
+                        max_results:
+                            maxResults,
 
-            }
-        );
+                        upload_only:
+                            uploadOnly,
+
+                        save_description:
+                            saveDescription,
+
+                        notification_enabled:
+                            notificationEnabled
+
+                    })
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        await loadConfig();
+
+        await loadStatus();
 
     } catch (error) {
 
@@ -1055,7 +1146,9 @@ async function updateInterval() {
 
 
     const seconds =
-        Number(select.value);
+        Number(
+            select.value
+        );
 
 
     updateIntervalDisplay(
@@ -1065,25 +1158,35 @@ async function updateInterval() {
 
     try {
 
-        await fetch(
-            API_BASE + '/config',
-            {
-                method: 'PUT',
+        const response =
+            await fetch(
+                API_BASE + '/config',
+                {
+                    method: 'PUT',
 
-                headers: {
-                    'Content-Type':
-                        'application/json'
-                },
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
 
-                body: JSON.stringify({
+                    body: JSON.stringify({
+                        interval:
+                            seconds
+                    })
+                }
+            );
 
-                    interval:
-                        seconds
 
-                })
+        if (!response.ok) {
 
-            }
-        );
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+
+        }
+
+
+        await loadStatus();
 
     } catch (error) {
 
@@ -1097,9 +1200,11 @@ async function updateInterval() {
 }
 
 
-function updateIntervalDisplay(
-    seconds
-) {
+/* =========================================================
+   检查间隔显示
+   ========================================================= */
+
+function updateIntervalDisplay(seconds) {
 
     let label = '5m';
 
@@ -1115,6 +1220,13 @@ function updateIntervalDisplay(
     } else if (seconds === 1800) {
 
         label = '30m';
+
+    } else {
+
+        label =
+            `${Math.round(
+                seconds / 60
+            )}m`;
 
     }
 
@@ -1136,20 +1248,18 @@ async function loadConfig() {
     try {
 
         const data =
-            await apiGet(
-                '/config'
-            );
+            await apiGet('/config');
 
 
         if (
-            data.monitoring !== undefined
+            data.enabled !== undefined
         ) {
 
             document.getElementById(
                 'monitorSwitch'
             ).checked =
                 Boolean(
-                    data.monitoring
+                    data.enabled
                 );
 
         }
@@ -1165,6 +1275,7 @@ async function loadConfig() {
                 String(
                     data.interval
                 );
+
 
             updateIntervalDisplay(
                 Number(
@@ -1184,6 +1295,49 @@ async function loadConfig() {
             ).value =
                 String(
                     data.max_results
+                );
+
+        }
+
+
+        if (
+            data.upload_only !== undefined
+        ) {
+
+            document.getElementById(
+                'uploadOnlySwitch'
+            ).checked =
+                Boolean(
+                    data.upload_only
+                );
+
+        }
+
+
+        if (
+            data.save_description !== undefined
+        ) {
+
+            document.getElementById(
+                'descriptionSwitch'
+            ).checked =
+                Boolean(
+                    data.save_description
+                );
+
+        }
+
+
+        if (
+            data.notification_enabled !==
+            undefined
+        ) {
+
+            document.getElementById(
+                'notificationSwitch'
+            ).checked =
+                Boolean(
+                    data.notification_enabled
                 );
 
         }
@@ -1285,9 +1439,7 @@ function filterChannels() {
    打开视频
    ========================================================= */
 
-function openVideo(
-    videoId
-) {
+function openVideo(videoId) {
 
     if (!videoId) {
 
@@ -1434,14 +1586,21 @@ async function saveChannel() {
                                 true
 
                         })
-
                 }
             );
 
 
-        if (!response.ok) {
+        const result =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            result.success === false
+        ) {
 
             throw new Error(
+                result.message ||
                 `HTTP ${response.status}`
             );
 
@@ -1464,6 +1623,8 @@ async function saveChannel() {
         await loadChannels();
 
 
+        await loadStatus();
+
     } catch (error) {
 
         console.warn(
@@ -1473,6 +1634,7 @@ async function saveChannel() {
 
 
         alert(
+            error.message ||
             '添加频道失败，请检查后端 API。'
         );
 
@@ -1485,21 +1647,19 @@ async function saveChannel() {
    编辑频道
    ========================================================= */
 
-function editChannel(
-    name
-) {
+function editChannel(channelId) {
 
     /*
+     * 目前保留入口。
+     *
      * 后续可以扩展：
      *
      * PUT /api/youtube/channels/{channel_id}
-     *
-     * 目前先保留入口。
      */
 
     console.log(
         '编辑频道:',
-        name
+        channelId
     );
 
 }
@@ -1509,9 +1669,7 @@ function editChannel(
    API 状态
    ========================================================= */
 
-function updateAPIStatus(
-    status
-) {
+function updateAPIStatus(status) {
 
     const metric =
         document.getElementById(
@@ -1587,6 +1745,7 @@ function updateMonitorStatus(
         status.textContent =
             'MONITORING';
 
+
         text.textContent =
             '自动监控正在运行';
 
@@ -1595,10 +1754,90 @@ function updateMonitorStatus(
         status.textContent =
             'PAUSED';
 
+
         text.textContent =
             '自动监控已暂停';
 
     }
+
+}
+
+
+/* =========================================================
+   分类标准化
+   ========================================================= */
+
+function normalizeCategory(
+    category
+) {
+
+    if (!category) {
+
+        return '';
+
+    }
+
+
+    const value =
+        String(category)
+            .trim()
+            .toLowerCase();
+
+
+    const aliases = {
+
+        '播客':
+            'podcast',
+
+        'ai / 大模型':
+            'ai',
+
+        'ai/大模型':
+            'ai',
+
+        '半导体':
+            'chip',
+
+        '半导体/芯片':
+            'chip',
+
+        '科技公司':
+            'company',
+
+        '云计算/软件/企业服务':
+            'company',
+
+        '汽车':
+            'auto',
+
+        '汽车/新能源/自动驾驶':
+            'auto',
+
+        '航天':
+            'space',
+
+        '航天/商业航天':
+            'space',
+
+        '金融':
+            'finance',
+
+        '金融/投资机构':
+            'finance',
+
+        '财经媒体':
+            'media',
+
+        '财经媒体/宏观经济':
+            'media'
+
+    };
+
+
+    return (
+        aliases[value] ||
+        value
+    );
 
 }
 
@@ -1610,6 +1849,12 @@ function updateMonitorStatus(
 function categoryLabel(
     category
 ) {
+
+    const normalized =
+        normalizeCategory(
+            category
+        );
+
 
     const labels = {
 
@@ -1641,7 +1886,7 @@ function categoryLabel(
 
 
     return (
-        labels[category] ||
+        labels[normalized] ||
         category ||
         '其他'
     );
@@ -1731,6 +1976,10 @@ function relativeTime(
 }
 
 
+/* =========================================================
+   日期
+   ========================================================= */
+
 function formatDate(
     value
 ) {
@@ -1768,6 +2017,10 @@ function formatDate(
 
 }
 
+
+/* =========================================================
+   时间
+   ========================================================= */
 
 function formatTime(
     value
@@ -1858,6 +2111,10 @@ function escapeHTML(
 }
 
 
+/* =========================================================
+   JavaScript 字符串安全
+   ========================================================= */
+
 function escapeJS(
     value
 ) {
@@ -1883,4 +2140,3 @@ function escapeJS(
         );
 
 }
-
