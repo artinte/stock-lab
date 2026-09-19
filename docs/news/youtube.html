@@ -1,71 +1,44 @@
 <!doctype html>
-
 <html lang="zh-CN">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>YouTube 信息流 - STOCK LAB</title>
 
     <link rel="stylesheet" href="../css/global.css">
-
     <link rel="stylesheet" href="../css/youtube.css">
 
 </head>
 
-
 <body>
-
-
     <!-- =========================================================
          页面主体
          ========================================================= -->
-
     <main class="youtube-page">
-
-
         <!-- =====================================================
              Hero
              ===================================================== -->
-
         <section class="youtube-hero">
-
-
             <div>
-
-
                 <div class="youtube-eyebrow">
-
                     STOCK LAB · YOUTUBE INTELLIGENCE
-
                 </div>
 
-
                 <h1>
-
                     YouTube 信息流
-
                 </h1>
 
-
                 <p>
-
                     监控重要公司、财经媒体、投资机构、科技频道与深度播客，
                     自动发现最新视频，并将视频信息接入 STOCK LAB 的资讯研究体系。
-
                 </p>
 
 
                 <div class="youtube-hero-actions">
-
-
                     <button class="yt-primary" onclick="checkNow()">
-
                         ▶ 立即抓取
-
                     </button>
 
 
@@ -103,7 +76,6 @@
 
 
                 <div class="youtube-metric">
-
                     <span>
                         今日视频
                     </span>
@@ -115,12 +87,9 @@
                     <small>
                         NEW VIDEOS · LIVE
                     </small>
-
                 </div>
 
-
                 <div class="youtube-metric">
-
                     <span>
                         检查间隔
                     </span>
@@ -132,12 +101,10 @@
                     <small>
                         CHECK INTERVAL
                     </small>
-
                 </div>
 
 
                 <div class="youtube-metric">
-
                     <span>
                         API 状态
                     </span>
@@ -149,27 +116,17 @@
                     <small>
                         YOUTUBE DATA API
                     </small>
-
                 </div>
-
-
             </div>
-
-
         </section>
 
 
         <!-- =====================================================
              Status
              ===================================================== -->
-
         <div class="youtube-status">
-
-
             <div class="youtube-running">
-
                 <span class="running-dot"></span>
-
                 <span id="monitorStatus">
                     MONITORING
                 </span>
@@ -177,32 +134,21 @@
                 <span class="youtube-status-text" id="monitorStatusText">
                     自动监控正在运行
                 </span>
-
             </div>
 
 
             <div class="youtube-status-text" id="lastCheck">
-
                 最后检查：等待数据
-
             </div>
-
-
         </div>
-
 
         <!-- =====================================================
              抓取控制
              ===================================================== -->
 
         <section class="youtube-section">
-
-
             <div class="youtube-section-head">
-
-
                 <div>
-
                     <div class="eyebrow">
                         CRAWLER CONTROL
                     </div>
@@ -214,20 +160,13 @@
                     <p>
                         调节 YouTube 信息流监控的核心参数。
                     </p>
-
                 </div>
-
-
             </div>
 
 
             <div class="youtube-control-panel">
-
-
                 <div class="control-item">
-
                     <div class="control-label">
-
                         <strong>
                             自动监控
                         </strong>
@@ -235,34 +174,25 @@
                         <span>
                             ENABLE
                         </span>
-
                     </div>
 
 
                     <div class="control-switch">
-
                         <span>
                             自动检查频道
                         </span>
 
 
                         <label class="switch">
-
                             <input id="monitorSwitch" type="checkbox" checked onchange="updateConfig()">
-
                             <span class="switch-slider"></span>
-
                         </label>
-
                     </div>
-
                 </div>
 
 
                 <div class="control-item">
-
                     <div class="control-label">
-
                         <strong>
                             检查间隔
                         </strong>
@@ -270,12 +200,10 @@
                         <span>
                             INTERVAL
                         </span>
-
                     </div>
 
 
                     <select id="intervalSelect" onchange="updateInterval()">
-
                         <option value="60">
                             每 1 分钟
                         </option>
@@ -291,16 +219,12 @@
                         <option value="1800">
                             每 30 分钟
                         </option>
-
                     </select>
-
                 </div>
 
 
                 <div class="control-item">
-
                     <div class="control-label">
-
                         <strong>
                             每频道获取
                         </strong>
@@ -308,12 +232,10 @@
                         <span>
                             MAX RESULTS
                         </span>
-
                     </div>
 
 
                     <select id="maxResults">
-
                         <option value="5">
                             5 条
                         </option>
@@ -329,16 +251,12 @@
                         <option value="50">
                             50 条
                         </option>
-
                     </select>
-
                 </div>
 
 
                 <div class="control-item">
-
                     <div class="control-label">
-
                         <strong>
                             只抓取上传视频
                         </strong>
@@ -349,31 +267,22 @@
 
                     </div>
 
-
                     <div class="control-switch">
-
                         <span>
                             忽略其他活动
                         </span>
 
 
                         <label class="switch">
-
                             <input id="uploadOnlySwitch" type="checkbox" checked>
-
                             <span class="switch-slider"></span>
-
                         </label>
-
                     </div>
-
                 </div>
 
 
                 <div class="control-item">
-
                     <div class="control-label">
-
                         <strong>
                             保存视频描述
                         </strong>
@@ -381,34 +290,25 @@
                         <span>
                             DESCRIPTION
                         </span>
-
                     </div>
 
 
                     <div class="control-switch">
-
                         <span>
                             用于后续 AI 分析
                         </span>
 
 
                         <label class="switch">
-
                             <input id="descriptionSwitch" type="checkbox" checked>
-
                             <span class="switch-slider"></span>
-
                         </label>
-
                     </div>
-
                 </div>
 
 
                 <div class="control-item">
-
                     <div class="control-label">
-
                         <strong>
                             发现新视频
                         </strong>
@@ -416,48 +316,31 @@
                         <span>
                             NOTIFICATION
                         </span>
-
                     </div>
 
 
                     <div class="control-switch">
-
                         <span>
                             自动进入资讯流
                         </span>
 
 
                         <label class="switch">
-
                             <input id="notificationSwitch" type="checkbox" checked>
-
                             <span class="switch-slider"></span>
-
                         </label>
-
                     </div>
-
                 </div>
-
-
             </div>
-
-
         </section>
 
 
         <!-- =====================================================
              Channel Categories
              ===================================================== -->
-
         <section class="youtube-section">
-
-
             <div class="youtube-section-head">
-
-
                 <div>
-
                     <div class="eyebrow">
                         CHANNELS
                     </div>
@@ -472,88 +355,62 @@
 
                 </div>
 
-
                 <div class="youtube-search">
-
                     <span>
                         ⌕
                     </span>
 
-
                     <input id="channelSearch" placeholder="搜索频道..." oninput="filterChannels()">
-
                 </div>
-
-
             </div>
 
 
             <div class="youtube-category">
-
-
                 <button class="yt-category active" onclick="selectCategory(this,'all')">
                     全部
                 </button>
-
 
                 <button class="yt-category" onclick="selectCategory(this,'podcast')">
                     播客
                 </button>
 
-
                 <button class="yt-category" onclick="selectCategory(this,'ai')">
                     AI / 大模型
                 </button>
-
 
                 <button class="yt-category" onclick="selectCategory(this,'chip')">
                     半导体
                 </button>
 
-
                 <button class="yt-category" onclick="selectCategory(this,'company')">
                     科技公司
                 </button>
-
 
                 <button class="yt-category" onclick="selectCategory(this,'auto')">
                     汽车
                 </button>
 
-
                 <button class="yt-category" onclick="selectCategory(this,'space')">
                     航天
                 </button>
-
 
                 <button class="yt-category" onclick="selectCategory(this,'finance')">
                     金融
                 </button>
 
-
                 <button class="yt-category" onclick="selectCategory(this,'media')">
                     财经媒体
                 </button>
-
-
             </div>
-
-
         </section>
 
 
         <!-- =====================================================
              Latest Videos
              ===================================================== -->
-
         <section class="youtube-section">
-
-
             <div class="youtube-section-head">
-
-
                 <div>
-
                     <div class="eyebrow">
                         LATEST VIDEOS
                     </div>
@@ -568,18 +425,13 @@
 
                 </div>
 
-
                 <span id="videoResultCount" style="
                         color:#94a3b8;
                         font-size:10px;
                     ">
                     等待数据
                 </span>
-
-
             </div>
-
-
             <div class="youtube-feed" id="youtubeFeed">
 
                 <div class="ai-empty">
@@ -587,23 +439,15 @@
                 </div>
 
             </div>
-
-
         </section>
 
 
         <!-- =====================================================
              AI Ranking
              ===================================================== -->
-
         <section class="youtube-section">
-
-
             <div class="youtube-section-head">
-
-
                 <div>
-
                     <div class="eyebrow">
                         AI INTELLIGENCE
                     </div>
@@ -618,42 +462,29 @@
 
                 </div>
 
-
                 <span id="aiRankingTime" style="
                         color:#94a3b8;
                         font-size:10px;
                     ">
                     AI 分析等待中
                 </span>
-
-
             </div>
-
 
             <div class="ai-ranking" id="aiRanking">
 
                 <div class="ai-empty">
                     正在等待抓取数据并进行 AI 分析...
                 </div>
-
             </div>
-
-
         </section>
 
 
         <!-- =====================================================
              Channel Management
              ===================================================== -->
-
         <section class="youtube-section">
-
-
             <div class="youtube-section-head">
-
-
                 <div>
-
                     <div class="eyebrow">
                         CHANNEL MANAGEMENT
                     </div>
@@ -667,40 +498,26 @@
                     </p>
 
                 </div>
-
-
             </div>
 
 
             <div class="channel-toolbar">
-
-
                 <div class="channel-cache-status">
-
                     <span class="channel-cache-dot"></span>
-
                     <span id="channelCacheStatus">
                         JSON CACHE · MONITOR_CHANNELS
                     </span>
 
                 </div>
 
-
                 <button class="add-channel-button" onclick="openChannelDialog()">
-
                     ＋ 添加频道
-
                 </button>
-
-
             </div>
 
 
             <div class="channel-table">
-
-
                 <div class="channel-row header">
-
                     <div>
                         频道
                     </div>
@@ -723,11 +540,8 @@
 
                 </div>
 
-
                 <div id="channelRows">
-
                     <div class="channel-row">
-
                         <div class="channel-name">
                             正在加载...
                         </div>
@@ -751,26 +565,15 @@
                     </div>
 
                 </div>
-
-
             </div>
-
-
         </section>
-
 
         <!-- =====================================================
              API / System
              ===================================================== -->
-
         <section class="youtube-section">
-
-
             <div class="youtube-section-head">
-
-
                 <div>
-
                     <div class="eyebrow">
                         API / SYSTEM
                     </div>
@@ -784,155 +587,103 @@
                     </p>
 
                 </div>
-
-
             </div>
 
-
             <div class="youtube-api-panel">
-
-
                 <div class="api-card">
-
-
                     <h3>
                         YouTube Data API
                     </h3>
-
 
                     <p>
                         通过 Google YouTube Data API 获取频道信息和最新视频。
                         API Key 不放在前端，由后端 Python 读取环境变量。
                     </p>
 
-
                     <div class="api-status" id="youtubeApiStatus">
                         检查 API 状态...
                     </div>
 
-
                     <div class="api-code">
                         YOUTUBE_API_KEY=your_api_key
                     </div>
-
-
                 </div>
-
-
                 <div class="api-card">
-
-
                     <h3>
                         MONITOR_CHANNELS
                     </h3>
-
 
                     <p>
                         监控频道配置保存在 JSON 文件中。
                         后续增加、修改、删除频道均由 Python 后端完成。
                     </p>
 
-
                     <div class="api-status" id="channelJsonStatus">
                         JSON CACHE
                     </div>
 
-
                     <div class="api-code">
                         monitor_channels.json
                     </div>
-
-
                 </div>
 
-
                 <div class="api-card">
-
-
                     <h3>
                         Data Pipeline
                     </h3>
-
-
                     <p>
                         Channel → Video → News → AI Analysis。
                         抓取结果可以继续进入 STOCK LAB 的资讯与 AI 研究体系。
                     </p>
 
-
                     <div class="api-status" id="pipelineStatus">
                         MONITORING
                     </div>
 
-
                     <div class="api-code">
                         Python · Crawler · AI
                     </div>
-
-
                 </div>
-
-
             </div>
-
-
         </section>
-
-
     </main>
 
 
     <!-- =========================================================
          添加频道 Dialog
          ========================================================= -->
-
     <div class="channel-dialog" id="channelDialog" onclick="closeDialogOnBackground(event)">
-
-
         <div class="channel-dialog-card">
-
-
             <h3>
                 添加监控频道
             </h3>
-
 
             <p>
                 添加后将写入 MONITOR_CHANNELS JSON 配置，
                 后端 Python 会在下一次监控周期读取。
             </p>
 
-
             <div class="form-group">
-
                 <label>
                     频道名称
                 </label>
 
                 <input id="newChannelName" placeholder="例如：Dwarkesh Patel">
-
             </div>
 
-
             <div class="form-group">
-
                 <label>
                     YouTube Channel ID
                 </label>
-
                 <input id="newChannelId" placeholder="例如：UC...">
-
             </div>
 
 
             <div class="form-group">
-
                 <label>
                     分类
                 </label>
-
                 <select id="newChannelCategory">
-
                     <option value="podcast">
                         播客
                     </option>
@@ -964,31 +715,19 @@
                     <option value="media">
                         财经媒体
                     </option>
-
                 </select>
-
             </div>
 
-
             <div class="dialog-actions">
-
-
                 <button class="dialog-button dialog-cancel" onclick="closeChannelDialog()">
                     取消
                 </button>
 
-
                 <button class="dialog-button dialog-save" onclick="saveChannel()">
                     添加频道
                 </button>
-
-
             </div>
-
-
         </div>
-
-
     </div>
 
 

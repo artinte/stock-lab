@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import os
+from pathlib import Path
 import time
 from datetime import datetime
 import requests
@@ -9,8 +11,13 @@ from dotenv import load_dotenv
 # ============================================================
 # 配置
 # ============================================================
-
 load_dotenv()
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+CONFIG_DIR = PROJECT_ROOT / "config"
+
+YOUTUBE_CHANNEL_CONFIG = CONFIG_DIR / "youtube_channel.json"
 
 API_KEY = os.getenv("youtube_api_key")
 
@@ -20,98 +27,6 @@ PROXY = "http://127.0.0.1:7890"
 # 每 5 分钟检查一次
 CHECK_INTERVAL = 300
 
-
-# ============================================================
-# 监控频道
-# ============================================================
-
-MONITOR_CHANNELS = {
-    # =========================================================
-    # 播客
-    # =========================================================
-    "All-In Podcast": "UCESLZhusAkFfsNsApnjF_Cg",
-    "Bloomberg Originals": "UCUMZ7gohGI9HcU9VNsr2FJQ",
-    "Lex Fridman": "UCSHZKyawb77ixDdsGog4iWA",
-    "Silicon Valley Girl": "UCiq1FIgtEK7LRAOB1JXTPig",
-    
-    # =========================================================
-    # AI / 大模型
-    # =========================================================
-    "Google": "UCK8sQmJBp8GCxrOtXWBpyEA",
-    "NVIDIA": "UCHuiy8bXnmK5nisYHUd1J5g",
-    "OpenAI": "UCXZCJLdBC09xxGZ6gcdrc6A",
-    "Microsoft": "UCFtEEv80fQVKkD4h1PF-Xqw",
-    "Amazon": "UCkLXELm63_pH7L-r-548kig",
-    "Meta": "UC04FyDIvYXNecpbG8gyOw4A",
-    "Anthropic": "UCrDwWp7EBBv4NwvScIpBDOA",
-    "IBM Technology": "UCKWaEZ-_VweaEx1j62do_vQ",
-    "Google DeepMind": "UCP7jMXSY2xbc3KCAE0MHQ-A",
-    # =========================================================
-    # 半导体 / 芯片
-    # =========================================================
-    "TSMC": "UC02yNxGj2MxhynehcWSxcLg",
-    "Intel": "UCk7SjrXVXAj8m8BLgzh6dGA",
-    "AMD": "UCHQDjDDW8w2RieO-IuqYlyg",
-    "Qualcomm": "UCH6eZr6vbZ6Bx53TyuSzxrg",
-    "Broadcom Inc.": "UCTr3zah69bISSVdBcHiKhpA",
-    "Micron Technology": "UCBqcI352Dc2ExKq1uSdwZvg",
-    "Texas Instruments": "UC-EXTfLnOmCKVRJrv8xoGrQ",
-    "ASML": "UCIT9d3JjHEnsVi_w9guSXvA",
-    "Applied Materials": "UCRtDxSpmTncPvzBvXLurThA",
-    "Lam Research": "UCGBYhq34JyAzewhkas7r1OQ",
-    "Arm®": "UCvcBJFXTzCfU_sILnYVd4gg",
-    # =========================================================
-    # 云计算 / 软件 / 企业服务
-    # =========================================================
-    "Amazon News": "UCzE5rz2KHTFYAkmMksUpPLA",
-    "Google Cloud Tech": "UCJS9pqu9BzkAMNTmzNMNhvg",
-    "Microsoft Azure": "UC0m-80FnNY2Qb7obvTL_2fA",
-    "Oracle": "UCHCThmyZ-2yWkv0UVeBDdnQ",
-    "Salesforce": "UCUpquzY878NEaZm5bc7m2sQ",
-    "Cisco": "UCEWiIE6Htd8mvlOR6YQez1g",
-    "Dell Technologies": "UCZHb3OEEJ0WkizEH9ErlgvA",
-    # =========================================================
-    # 消费电子 / 互联网
-    # =========================================================
-    "Apple": "UCE_M8A5yxnLfW0KghEeajjw",
-    "Samsung": "UCWwgaK7x0_FR1goeSRazfsQ",
-    "Xiaomi": "UCCspJ6mFfCwOV4qFjZWi2wg",
-    "Huawei": "UCtjV1_XU6gvPYyreaFScxBQ",
-    "Lenovo": "UCpvg0uZH-oxmCagOWJo9p9g",
-    "Adobe": "UC5_SBQbLA9Kg7Jh5GpXoP3g",
-    # =========================================================
-    # 汽车 / 新能源 / 自动驾驶
-    # =========================================================
-    "Tesla": "UC5WjFrtBdufl6CZojX3D8dQ",
-    "Volkswagen": "UC0US_GEXVmwMH04OMcNuhpQ",
-    "Ford Motor Company": "UCKA96UxTdgFBwGZMGZ-135w",
-    # =========================================================
-    # 航天 / 商业航天
-    # =========================================================
-    "SpaceX": "UCtI0Hodo5o5dUb67FeUjDeA",
-    "NASA": "UCLA_DiR1FfKNvjuUpBHmylQ",
-    "Blue Origin": "UCVxTHEKKLxNjGcvVaZindlg",
-    "Rocket Lab": "UCsWq7LZaizhIi-c-Yo_bcpw",
-    "European Space Agency, ESA": "UCIBaDdAbGlFDeS33shmlD0A",
-    # =========================================================
-    # 金融 / 投资机构
-    # =========================================================
-    "Bank of America": "UCtHZ1qs5h4sx9TijVBQCMIA",
-    # =========================================================
-    # 财经媒体 / 宏观经济
-    # =========================================================
-    "财经风云": "UC-1F7DZmxTd1YZUJZUsA0nw",
-    "CNBC Television": "UCrp_UI8XtuYfpiqluWLD7Lw",
-    "Bloomberg Television": "UCIALMKvObZNtJ6AmdCLP7Lg",
-    "Reuters": "UChqUTb7kYRX8-EiaN3XFrSQ",
-    "Financial Times": "UCoUxsWakJucWg46KW5RsvPw",
-    "The Wall Street Journal": "UCK7tptUDHh-RYDsdxO1-5QQ",
-    "Yahoo Finance": "UCEAZeUIeJs0IjQiqTCdVSIg",
-    "Forbes": "UCmh7afBz-uWwOSSNTqUBAhg",
-    "The Economist": "UC0p5jTq6Xx_DosDFxVXnWaQ",    
-}
-
-
 # ============================================================
 # 代理
 # ============================================================
@@ -120,6 +35,119 @@ PROXIES = {
     "http": PROXY,
     "https": PROXY,
 }
+
+
+# ============================================================
+# 加载 YouTube 配置
+# ============================================================
+def load_youtube_config() -> dict:
+    """
+    加载 youtube_channel.json。
+    """
+
+    if not YOUTUBE_CHANNEL_CONFIG.exists():
+
+        print(f"❌ YouTube 频道配置文件不存在: " f"{YOUTUBE_CHANNEL_CONFIG}")
+
+        return {}
+
+    try:
+
+        with YOUTUBE_CHANNEL_CONFIG.open(
+            "r",
+            encoding="utf-8",
+        ) as f:
+
+            return json.load(f)
+
+    except json.JSONDecodeError as e:
+
+        print(f"❌ YouTube 频道配置文件格式错误: {e}")
+
+    except OSError as e:
+
+        print(f"❌ 读取 YouTube 频道配置失败: {e}")
+
+    return {}
+
+
+# ============================================================
+# 加载监控频道
+# ============================================================
+
+
+def load_monitor_channels(
+    config: dict,
+) -> dict[str, str]:
+    """
+    从 youtube_channel.json 的 monitor_channels
+    中加载所有频道。
+
+    配置：
+
+        "monitor_channels": {
+            "播客": {
+                "All-In Podcast": "UC..."
+            },
+            "AI / 大模型": {
+                "Google": "UC..."
+            }
+        }
+
+    返回：
+
+        {
+            "All-In Podcast": "UC...",
+            "Google": "UC..."
+        }
+    """
+
+    channels_config = config.get(
+        "monitor_channels",
+        {},
+    )
+
+    if not isinstance(channels_config, dict):
+
+        print("❌ monitor_channels 配置格式错误")
+
+        return {}
+
+    monitor_channels: dict[str, str] = {}
+
+    for category, channels in channels_config.items():
+
+        if not isinstance(channels, dict):
+
+            print(f"⚠️ 跳过无效分类: {category}")
+
+            continue
+
+        for name, channel_id in channels.items():
+
+            if not isinstance(channel_id, str):
+
+                print(f"⚠️ 跳过无效频道: {name}")
+
+                continue
+
+            monitor_channels[name] = channel_id
+
+    return monitor_channels
+
+
+# ============================================================
+# 加载配置
+# ============================================================
+
+YOUTUBE_CONFIG = load_youtube_config()
+
+YOUTUBE_ENABLED = YOUTUBE_CONFIG.get(
+    "enabled",
+    True,
+)
+
+MONITOR_CHANNELS = load_monitor_channels(YOUTUBE_CONFIG)
 
 
 # ============================================================
