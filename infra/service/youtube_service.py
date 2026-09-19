@@ -6,7 +6,9 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from crawler.schedule.youtube_monitor import YouTubeMonitor, load_standalone_channels
+from crawler.schedule.youtube_monitor import YouTubeMonitor
+from crawler.schedule.youtube_config import load_standalone_channels
+
 
 class YouTubeService:
     """
@@ -536,9 +538,7 @@ class YouTubeService:
             if not isinstance(channel, dict):
                 continue
 
-            channel_id = str(
-                channel.get("channel_id", "")
-            ).strip()
+            channel_id = str(channel.get("channel_id", "")).strip()
 
             if not channel_id:
                 continue
@@ -550,9 +550,7 @@ class YouTubeService:
             if not isinstance(channel, dict):
                 continue
 
-            channel_id = str(
-                channel.get("channel_id", "")
-            ).strip()
+            channel_id = str(channel.get("channel_id", "")).strip()
 
             if not channel_id:
                 continue
@@ -1318,10 +1316,6 @@ class YouTubeService:
             max_results=config.get(
                 "max_results",
                 10,
-            ),
-            upload_only=config.get(
-                "upload_only",
-                True,
             ),
             save_description=config.get(
                 "save_description",
