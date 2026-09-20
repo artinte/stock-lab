@@ -3,6 +3,12 @@
    STOCK LAB 全局页面导航
 ========================================================= */
 
+function goHome(page = "home") {
+    window.location.href =
+        `../?page=${page}`;
+}
+
+
 function navigatePage(page) {
 
     const routes = {
