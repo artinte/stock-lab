@@ -30,11 +30,11 @@ uvicorn infra.service.api:app --reload
 
 下面以工商银行（601398）为例，展示股票详情页面：
 
-<p align="center"> <img src="resources/工商银行股票详情页.png" width="600"> </p>
+<p align="center"> <img src="docs/res/工商银行股票详情页.png" width="600"> </p>
 
 行情及相关数据需要接入券商等数据源；即使暂未接入数据源，行情资讯模块也可独立使用。下面以 YouTube 信息流为例，展示项目对外部资讯信息流的监控与聚合：
 
-<p align="center"> <img src="resources/YouTube信息流示例.jpeg" width="600"> </p>
+<p align="center"> <img src="docs/res/YouTube信息流示例.jpeg" width="600"> </p>
 
 YouTube 信息流可以配置需要监控的频道，并自动获取最新视频，用于跟踪财经、科技、AI、公司及市场相关信息。
 
@@ -294,7 +294,7 @@ YouTube 信息流可以配置需要监控的频道，并自动获取最新视频
 ## 系统架构图
 
 <p align="center">
-  <img src="resources/股票系统架构.png" width="600" alt="Stock Analysis 股票系统架构">
+  <img src="docs/res/股票系统架构.png" width="600" alt="Stock Analysis 股票系统架构">
 </p>
 
 ---
@@ -557,7 +557,7 @@ stock-lab/
 │   ├── etf_list.py
 │   └── ...
 │
-├── resources/
+├── docs/res/
 │   ├── 股票系统架构.png
 │   ├── 量化界面.png
 │   └── 广合科技示例图.jpeg
@@ -870,7 +870,7 @@ python docs/quick_start.py
 从而降低传统量化工具的使用门槛。
 
 <p align="center">
-  <img src="resources/量化界面.png" width="800" alt="SmartQuant Studio 量化分析与自然语言交互界面">
+  <img src="docs/res/量化界面.png" width="800" alt="SmartQuant Studio 量化分析与自然语言交互界面">
   <br>
   <b>SmartQuant Studio 量化分析与自然语言交互界面</b>
 </p>
@@ -891,7 +891,7 @@ python docs/quick_start.py
 用于观察股价与估值之间的变化。
 
 <p align="center">
-  <img src="resources/广合科技示例图.jpeg" width="800" alt="广合科技 K线与 PE-TTM 示例">
+  <img src="docs/res/广合科技示例图.jpeg" width="800" alt="广合科技 K线与 PE-TTM 示例">
   <br>
   <b>示例分析：广合科技（001389）K 线走势与 PE-TTM 估值变化</b>
 </p>
