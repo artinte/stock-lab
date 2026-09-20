@@ -1343,9 +1343,13 @@
 
     <script src="../js/news.js"></script>
 
+    <!-- 公共组件加载器 -->
+    <script src="../js/components.js"></script>
+
+    <!-- 加载公共 Header -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            loadComponent("#site-header", "../components/header.html", "document");
+            loadComponent("#site-header", "../components/header.html", "tools");
         });
     </script>
 
