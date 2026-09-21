@@ -899,23 +899,59 @@ tr:hover td {
     align-items: center;
     justify-content: space-between;
 
+    width: 100%;
+
     padding: 13px 0;
 
     border-bottom: 1px solid var(--border-color, #e5e7eb);
+
+    color: inherit;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        padding-left 0.2s ease,
+        padding-right 0.2s ease;
 }
 
 .risk-row:last-child {
     border-bottom: 0;
 }
 
+.risk-row:hover {
+    padding-left: 4px;
+    padding-right: 4px;
+
+    background: rgba(0, 0, 0, 0.015);
+}
+
 .risk-name {
     color: var(--text-secondary, #7b818a);
     font-size: 12px;
+
+    transition: color 0.2s ease;
 }
 
 .risk-value {
+    color: var(--text-secondary, #7b818a);
+
     font-size: 13px;
     font-weight: 650;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.risk-row:hover .risk-name {
+    color: var(--text-primary, #17191d);
+}
+
+.risk-row:hover .risk-value {
+    color: var(--text-primary, #17191d);
+    transform: translateX(4px);
 }
 
 

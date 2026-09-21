@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>成交记录 - STOCK LAB</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+
+            background: #f7f8fa;
+            color: #17191d;
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "PingFang SC",
+                "Microsoft YaHei",
+                sans-serif;
+        }
+
+
+        /* ================================
+           页面
+        ================================= */
+
+        .trade-page {
+            width: min(1180px, calc(100% - 40px));
+
+            margin: 0 auto;
+
+            padding: 38px 0 80px;
+        }
+
+
+        /* ================================
+           返回
+        ================================= */
+
+        .back-link {
+            display: inline-flex;
+
+            align-items: center;
+            gap: 7px;
+
+            margin-bottom: 30px;
+
+            color: #7b818a;
+
+            font-size: 13px;
+
+            text-decoration: none;
+
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #17191d;
+        }
+
+
+        /* ================================
+           页面标题
+        ================================= */
+
+        .page-header {
+            display: flex;
+
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 30px;
+
+            margin-bottom: 28px;
+        }
+
+        .page-eyebrow {
+            margin-bottom: 9px;
+
+            color: #9298a1;
+
+            font-size: 11px;
+            font-weight: 650;
+
+            letter-spacing: 0.14em;
+        }
+
+        .page-title {
+            margin: 0;
+
+            font-size: 30px;
+            line-height: 1.2;
+
+            font-weight: 700;
+
+            letter-spacing: -0.03em;
+        }
+
+        .page-description {
+            margin: 9px 0 0;
+
+            color: #7b818a;
+
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+
+        /* ================================
+           股票信息
+        ================================= */
+
+        .stock-info {
+            display: flex;
+
+            align-items: center;
+            gap: 12px;
+
+            white-space: nowrap;
+        }
+
+        .stock-name {
+            font-size: 17px;
+            font-weight: 650;
+        }
+
+        .stock-symbol {
+            color: #9298a1;
+
+            font-size: 13px;
+        }
+
+
+        /* ================================
+           日期筛选
+        ================================= */
+
+        .date-toolbar {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 16px 20px;
+
+            margin-bottom: 18px;
+
+            border: 1px solid #e7e9ed;
+            border-radius: 12px;
+
+            background: #ffffff;
+        }
+
+        .date-tabs {
+            display: flex;
+
+            align-items: center;
+            gap: 6px;
+        }
+
+        .date-tab {
+            padding: 7px 13px;
+
+            border: 0;
+            border-radius: 7px;
+
+            background: transparent;
+
+            color: #7b818a;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .date-tab:hover {
+            background: #f3f4f6;
+        }
+
+        .date-tab.active {
+            background: #f0f1f3;
+
+            color: #17191d;
+
+            font-weight: 600;
+        }
+
+        .date-info {
+            color: #9298a1;
+
+            font-size: 12px;
+        }
+
+
+        /* ================================
+           汇总
+        ================================= */
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, minmax(0, 1fr));
+
+            gap: 1px;
+
+            margin-bottom: 20px;
+
+            overflow: hidden;
+
+            border: 1px solid #e7e9ed;
+            border-radius: 12px;
+
+            background: #e7e9ed;
+        }
+
+        .summary-item {
+            padding: 19px 20px;
+
+            background: #ffffff;
+        }
+
+        .summary-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #9298a1;
+
+            font-size: 11px;
+        }
+
+        .summary-value {
+            display: block;
+
+            color: #17191d;
+
+            font-size: 19px;
+            font-weight: 650;
+
+            letter-spacing: -0.02em;
+        }
+
+
+        /* ================================
+           成交记录卡片
+        ================================= */
+
+        .trade-card {
+            overflow: hidden;
+
+            border: 1px solid #e7e9ed;
+            border-radius: 12px;
+
+            background: #ffffff;
+        }
+
+        .trade-card-header {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 18px 20px;
+
+            border-bottom: 1px solid #eceef1;
+        }
+
+        .trade-card-title {
+            margin: 0;
+
+            font-size: 15px;
+            font-weight: 650;
+        }
+
+        .trade-card-count {
+            color: #9298a1;
+
+            font-size: 12px;
+        }
+
+
+        /* ================================
+           表格
+        ================================= */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        .trade-table {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            font-size: 13px;
+        }
+
+        .trade-table th {
+            padding: 12px 20px;
+
+            border-bottom: 1px solid #eceef1;
+
+            background: #fafbfc;
+
+            color: #9298a1;
+
+            font-size: 11px;
+            font-weight: 500;
+
+            text-align: right;
+
+            white-space: nowrap;
+        }
+
+        .trade-table th:first-child {
+            text-align: left;
+        }
+
+        .trade-table td {
+            padding: 15px 20px;
+
+            border-bottom: 1px solid #f0f1f3;
+
+            color: #4c5159;
+
+            text-align: right;
+
+            white-space: nowrap;
+
+            font-variant-numeric: tabular-nums;
+        }
+
+        .trade-table td:first-child {
+            text-align: left;
+        }
+
+        .trade-table tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        .trade-table tbody tr:hover {
+            background: #fafbfc;
+        }
+
+        .trade-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+
+        /* ================================
+           时间
+        ================================= */
+
+        .trade-time {
+            color: #707680 !important;
+
+            font-size: 12px;
+        }
+
+
+        /* ================================
+           买卖方向
+        ================================= */
+
+        .trade-side {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-width: 42px;
+
+            padding: 4px 9px;
+
+            border-radius: 5px;
+
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .trade-buy {
+            background: #fff0f0;
+
+            color: #d14d4d;
+        }
+
+        .trade-sell {
+            background: #eef8f1;
+
+            color: #318653;
+        }
+
+
+        /* ================================
+           成交价格
+        ================================= */
+
+        .trade-price {
+            color: #17191d !important;
+
+            font-weight: 650;
+        }
+
+
+        /* ================================
+           成交金额
+        ================================= */
+
+        .trade-amount {
+            color: #30343a !important;
+
+            font-weight: 500;
+        }
+
+
+        /* ================================
+           状态
+        ================================= */
+
+        .trade-status {
+            color: #318653;
+
+            font-size: 12px;
+        }
+
+        .trade-status::before {
+            content: "";
+
+            display: inline-block;
+
+            width: 5px;
+            height: 5px;
+
+            margin-right: 6px;
+
+            border-radius: 50%;
+
+            background: currentColor;
+
+            vertical-align: middle;
+        }
+
+
+        /* ================================
+           订单编号
+        ================================= */
+
+        .order-id {
+            color: #9298a1 !important;
+
+            font-size: 11px;
+        }
+
+
+        /* ================================
+           底部
+        ================================= */
+
+        .trade-footer {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 15px 20px;
+
+            border-top: 1px solid #eceef1;
+
+            color: #9298a1;
+
+            font-size: 11px;
+        }
+
+
+        /* ================================
+           响应式
+        ================================= */
+
+        @media (max-width: 850px) {
+
+            .page-header {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .trade-page {
+                width: min(100% - 24px,
+                        1180px);
+
+                padding-top: 24px;
+            }
+
+            .page-title {
+                font-size: 26px;
+            }
+
+            .date-toolbar {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 12px;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stock-info {
+                flex-wrap: wrap;
+            }
+
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <main class="trade-page">
+
+
+        <!-- ================================
+         返回
+    ================================= -->
+
+        <a class="back-link" href="javascript:history.back()">
+            ← 返回股票详情
+        </a>
+
+
+        <!-- ================================
+         页面标题
+    ================================= -->
+
+        <header class="page-header">
+
+            <div>
+
+                <div class="page-eyebrow">
+                    STOCK LAB · MY TRADES
+                </div>
+
+                <h1 class="page-title">
+                    成交记录
+                </h1>
+
+                <p class="page-description">
+                    查看当前账户的股票买卖成交记录。
+                </p>
+
+            </div>
+
+
+            <div class="stock-info">
+
+                <span class="stock-name">
+                    工商银行
+                </span>
+
+                <span class="stock-symbol">
+                    601398.SH
+                </span>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================================
+         日期筛选
+    ================================= -->
+
+        <section class="date-toolbar">
+
+            <div class="date-tabs">
+
+                <button class="date-tab active" type="button">
+                    全部
+                </button>
+
+                <button class="date-tab" type="button">
+                    今日
+                </button>
+
+                <button class="date-tab" type="button">
+                    近 7 日
+                </button>
+
+                <button class="date-tab" type="button">
+                    近 30 日
+                </button>
+
+            </div>
+
+
+            <span class="date-info">
+                2026-09-21
+            </span>
+
+        </section>
+
+
+        <!-- ================================
+         成交汇总
+    ================================= -->
+
+        <section class="summary-grid">
+
+            <div class="summary-item">
+
+                <span class="summary-label">
+                    成交笔数
+                </span>
+
+                <strong class="summary-value">
+                    12
+                </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <span class="summary-label">
+                    买入成交
+                </span>
+
+                <strong class="summary-value">
+                    8
+                </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <span class="summary-label">
+                    卖出成交
+                </span>
+
+                <strong class="summary-value">
+                    4
+                </strong>
+
+            </div>
+
+
+            <div class="summary-item">
+
+                <span class="summary-label">
+                    成交金额
+                </span>
+
+                <strong class="summary-value">
+                    ¥86,420
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================================
+         成交记录
+    ================================= -->
+
+        <section class="trade-card">
+
+
+            <header class="trade-card-header">
+
+                <h2 class="trade-card-title">
+                    我的成交
+                </h2>
+
+                <span class="trade-card-count">
+                    共 12 笔
+                </span>
+
+            </header>
+
+
+            <div class="table-wrap">
+
+                <table class="trade-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                成交时间
+                            </th>
+
+                            <th>
+                                方向
+                            </th>
+
+                            <th>
+                                成交价格
+                            </th>
+
+                            <th>
+                                成交数量
+                            </th>
+
+                            <th>
+                                成交金额
+                            </th>
+
+                            <th>
+                                手续费
+                            </th>
+
+                            <th>
+                                状态
+                            </th>
+
+                            <th>
+                                订单编号
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+
+                        <!-- 买入 -->
+
+                        <tr>
+
+                            <td class="trade-time">
+                                09:42:16
+                            </td>
+
+                            <td>
+
+                                <span class="trade-side trade-buy">
+                                    买入
+                                </span>
+
+                            </td>
+
+                            <td class="trade-price">
+                                7.24
+                            </td>
+
+                            <td>
+                                5,000
+                            </td>
+
+                            <td class="trade-amount">
+                                ¥36,200
+                            </td>
+
+                            <td>
+                                ¥10.86
+                            </td>
+
+                            <td>
+
+                                <span class="trade-status">
+                                    已成交
+                                </span>
+
+                            </td>
+
+                            <td class="order-id">
+                                202609210001
+                            </td>
+
+                        </tr>
+
+
+                        <!-- 买入 -->
+
+                        <tr>
+
+                            <td class="trade-time">
+                                10:15:32
+                            </td>
+
+                            <td>
+
+                                <span class="trade-side trade-buy">
+                                    买入
+                                </span>
+
+                            </td>
+
+                            <td class="trade-price">
+                                7.23
+                            </td>
+
+                            <td>
+                                3,000
+                            </td>
+
+                            <td class="trade-amount">
+                                ¥21,690
+                            </td>
+
+                            <td>
+                                ¥6.51
+                            </td>
+
+                            <td>
+
+                                <span class="trade-status">
+                                    已成交
+                                </span>
+
+                            </td>
+
+                            <td class="order-id">
+                                202609210002
+                            </td>
+
+                        </tr>
+
+
+                        <!-- 卖出 -->
+
+                        <tr>
+
+                            <td class="trade-time">
+                                11:08:45
+                            </td>
+
+                            <td>
+
+                                <span class="trade-side trade-sell">
+                                    卖出
+                                </span>
+
+                            </td>
+
+                            <td class="trade-price">
+                                7.28
+                            </td>
+
+                            <td>
+                                2,000
+                            </td>
+
+                            <td class="trade-amount">
+                                ¥14,560
+                            </td>
+
+                            <td>
+                                ¥4.37
+                            </td>
+
+                            <td>
+
+                                <span class="trade-status">
+                                    已成交
+                                </span>
+
+                            </td>
+
+                            <td class="order-id">
+                                202609210003
+                            </td>
+
+                        </tr>
+
+
+                        <!-- 买入 -->
+
+                        <tr>
+
+                            <td class="trade-time">
+                                13:24:18
+                            </td>
+
+                            <td>
+
+                                <span class="trade-side trade-buy">
+                                    买入
+                                </span>
+
+                            </td>
+
+                            <td class="trade-price">
+                                7.22
+                            </td>
+
+                            <td>
+                                1,500
+                            </td>
+
+                            <td class="trade-amount">
+                                ¥10,830
+                            </td>
+
+                            <td>
+                                ¥3.25
+                            </td>
+
+                            <td>
+
+                                <span class="trade-status">
+                                    已成交
+                                </span>
+
+                            </td>
+
+                            <td class="order-id">
+                                202609210004
+                            </td>
+
+                        </tr>
+
+
+                        <!-- 卖出 -->
+
+                        <tr>
+
+                            <td class="trade-time">
+                                14:16:52
+                            </td>
+
+                            <td>
+
+                                <span class="trade-side trade-sell">
+                                    卖出
+                                </span>
+
+                            </td>
+
+                            <td class="trade-price">
+                                7.27
+                            </td>
+
+                            <td>
+                                1,000
+                            </td>
+
+                            <td class="trade-amount">
+                                ¥7,270
+                            </td>
+
+                            <td>
+                                ¥2.18
+                            </td>
+
+                            <td>
+
+                                <span class="trade-status">
+                                    已成交
+                                </span>
+
+                            </td>
+
+                            <td class="order-id">
+                                202609210005
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <footer class="trade-footer">
+
+                <span>
+                    显示 5 条成交记录
+                </span>
+
+                <span>
+                    数据更新时间：14:16:52
+                </span>
+
+            </footer>
+
+
+        </section>
+
+
+    </main>
+
+
+    <script>
+
+        /*
+         * 日期筛选
+         * 后续接入 API 后，可以根据选择的时间范围
+         * 重新请求成交记录。
+         */
+
+        const dateTabs =
+            document.querySelectorAll(".date-tab");
+
+
+        dateTabs.forEach(tab => {
+
+            tab.addEventListener("click", () => {
+
+                dateTabs.forEach(item => {
+
+                    item.classList.remove("active");
+
+                });
+
+                tab.classList.add("active");
+
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
