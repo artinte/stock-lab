@@ -30,22 +30,22 @@
         }
 
 
-        /* ================================
-           页面
-        ================================= */
+        /* ========================================
+           Page
+        ======================================== */
 
         .trade-page {
-            width: min(1180px, calc(100% - 40px));
+            width: min(1400px, calc(100% - 48px));
 
             margin: 0 auto;
 
-            padding: 38px 0 80px;
+            padding: 38px 0 70px;
         }
 
 
-        /* ================================
-           返回
-        ================================= */
+        /* ========================================
+           Back
+        ======================================== */
 
         .back-link {
             display: inline-flex;
@@ -69,9 +69,9 @@
         }
 
 
-        /* ================================
-           页面标题
-        ================================= */
+        /* ========================================
+           Header
+        ======================================== */
 
         .page-header {
             display: flex;
@@ -98,12 +98,12 @@
         .page-title {
             margin: 0;
 
-            font-size: 30px;
+            font-size: 32px;
             line-height: 1.2;
 
             font-weight: 700;
 
-            letter-spacing: -0.03em;
+            letter-spacing: -0.035em;
         }
 
         .page-description {
@@ -116,82 +116,85 @@
         }
 
 
-        /* ================================
-           股票信息
-        ================================= */
+        /* ========================================
+           Filter Card
+        ======================================== */
 
-        .stock-info {
-            display: flex;
-
-            align-items: center;
-            gap: 12px;
-
-            white-space: nowrap;
-        }
-
-        .stock-name {
-            font-size: 17px;
-            font-weight: 650;
-        }
-
-        .stock-symbol {
-            color: #9298a1;
-
-            font-size: 13px;
-        }
-
-
-        /* ================================
-           日期筛选
-        ================================= */
-
-        .date-toolbar {
-            display: flex;
-
-            align-items: center;
-            justify-content: space-between;
-
-            padding: 16px 20px;
-
+        .filter-card {
             margin-bottom: 18px;
 
-            border: 1px solid #e7e9ed;
-            border-radius: 12px;
+            padding: 20px;
+
+            border: 1px solid #e6e8ec;
+            border-radius: 14px;
 
             background: #ffffff;
         }
 
-        .date-tabs {
+
+        .filter-row {
             display: flex;
 
             align-items: center;
+
+            gap: 14px;
+
+            margin-bottom: 14px;
+        }
+
+        .filter-row:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .filter-label {
+            flex: 0 0 56px;
+
+            color: #8a9099;
+
+            font-size: 12px;
+        }
+
+
+        .filter-options {
+            display: flex;
+
+            align-items: center;
+            flex-wrap: wrap;
+
             gap: 6px;
         }
 
-        .date-tab {
+
+        .filter-button {
             padding: 7px 13px;
 
-            border: 0;
+            border: 1px solid transparent;
             border-radius: 7px;
 
             background: transparent;
 
-            color: #7b818a;
+            color: #727780;
 
             font-size: 12px;
 
             cursor: pointer;
 
             transition:
+                color 0.2s ease,
                 background 0.2s ease,
-                color 0.2s ease;
+                border-color 0.2s ease;
         }
 
-        .date-tab:hover {
-            background: #f3f4f6;
+        .filter-button:hover {
+            background: #f4f5f7;
+
+            color: #33373d;
         }
 
-        .date-tab.active {
+        .filter-button.active {
+            border-color: #e0e2e6;
+
             background: #f0f1f3;
 
             color: #17191d;
@@ -199,16 +202,115 @@
             font-weight: 600;
         }
 
-        .date-info {
-            color: #9298a1;
+
+        /* ========================================
+           Search
+        ======================================== */
+
+        .search-area {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin-left: auto;
+        }
+
+
+        .search-input {
+            width: 230px;
+
+            height: 34px;
+
+            padding: 0 12px;
+
+            border: 1px solid #e1e3e7;
+            border-radius: 7px;
+
+            outline: none;
+
+            background: #fafbfc;
+
+            color: #17191d;
+
+            font-size: 12px;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: #bfc4cb;
+
+            background: #ffffff;
+        }
+
+
+        .reset-button {
+            height: 34px;
+
+            padding: 0 12px;
+
+            border: 1px solid #e1e3e7;
+            border-radius: 7px;
+
+            background: #ffffff;
+
+            color: #707680;
+
+            font-size: 12px;
+
+            cursor: pointer;
+        }
+
+        .reset-button:hover {
+            background: #f5f6f7;
+
+            color: #17191d;
+        }
+
+
+        /* ========================================
+           Date Range
+        ======================================== */
+
+        .date-range {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+        }
+
+        .date-input {
+            height: 34px;
+
+            padding: 0 10px;
+
+            border: 1px solid #e1e3e7;
+            border-radius: 7px;
+
+            outline: none;
+
+            background: #fafbfc;
+
+            color: #4d5259;
+
+            font-size: 12px;
+        }
+
+        .date-separator {
+            color: #a0a5ad;
 
             font-size: 12px;
         }
 
 
-        /* ================================
-           汇总
-        ================================= */
+        /* ========================================
+           Summary
+        ======================================== */
 
         .summary-grid {
             display: grid;
@@ -218,21 +320,23 @@
 
             gap: 1px;
 
-            margin-bottom: 20px;
+            margin-bottom: 18px;
 
             overflow: hidden;
 
-            border: 1px solid #e7e9ed;
-            border-radius: 12px;
+            border: 1px solid #e6e8ec;
+            border-radius: 14px;
 
-            background: #e7e9ed;
+            background: #e6e8ec;
         }
 
+
         .summary-item {
-            padding: 19px 20px;
+            padding: 19px 22px;
 
             background: #ffffff;
         }
+
 
         .summary-label {
             display: block;
@@ -244,32 +348,45 @@
             font-size: 11px;
         }
 
+
         .summary-value {
             display: block;
 
-            color: #17191d;
-
-            font-size: 19px;
+            font-size: 20px;
             font-weight: 650;
 
             letter-spacing: -0.02em;
+
+            font-variant-numeric: tabular-nums;
         }
 
 
-        /* ================================
-           成交记录卡片
-        ================================= */
+        .summary-sub {
+            display: block;
 
-        .trade-card {
+            margin-top: 5px;
+
+            color: #a0a5ad;
+
+            font-size: 11px;
+        }
+
+
+        /* ========================================
+           Table Card
+        ======================================== */
+
+        .table-card {
             overflow: hidden;
 
-            border: 1px solid #e7e9ed;
-            border-radius: 12px;
+            border: 1px solid #e6e8ec;
+            border-radius: 14px;
 
             background: #ffffff;
         }
 
-        .trade-card-header {
+
+        .table-header {
             display: flex;
 
             align-items: center;
@@ -280,27 +397,30 @@
             border-bottom: 1px solid #eceef1;
         }
 
-        .trade-card-title {
+
+        .table-title {
             margin: 0;
 
             font-size: 15px;
             font-weight: 650;
         }
 
-        .trade-card-count {
+
+        .table-count {
             color: #9298a1;
 
             font-size: 12px;
         }
 
 
-        /* ================================
-           表格
-        ================================= */
+        /* ========================================
+           Table
+        ======================================== */
 
         .table-wrap {
             overflow-x: auto;
         }
+
 
         .trade-table {
             width: 100%;
@@ -310,8 +430,9 @@
             font-size: 13px;
         }
 
+
         .trade-table th {
-            padding: 12px 20px;
+            padding: 12px 18px;
 
             border-bottom: 1px solid #eceef1;
 
@@ -327,12 +448,15 @@
             white-space: nowrap;
         }
 
-        .trade-table th:first-child {
+
+        .trade-table th:first-child,
+        .trade-table th:nth-child(2) {
             text-align: left;
         }
 
+
         .trade-table td {
-            padding: 15px 20px;
+            padding: 14px 18px;
 
             border-bottom: 1px solid #f0f1f3;
 
@@ -345,26 +469,31 @@
             font-variant-numeric: tabular-nums;
         }
 
-        .trade-table td:first-child {
+
+        .trade-table td:first-child,
+        .trade-table td:nth-child(2) {
             text-align: left;
         }
+
 
         .trade-table tbody tr {
             transition: background 0.15s ease;
         }
 
+
         .trade-table tbody tr:hover {
             background: #fafbfc;
         }
+
 
         .trade-table tbody tr:last-child td {
             border-bottom: 0;
         }
 
 
-        /* ================================
-           时间
-        ================================= */
+        /* ========================================
+           Time
+        ======================================== */
 
         .trade-time {
             color: #707680 !important;
@@ -373,9 +502,36 @@
         }
 
 
-        /* ================================
-           买卖方向
-        ================================= */
+        /* ========================================
+           Stock
+        ======================================== */
+
+        .stock-cell {
+            display: flex;
+
+            align-items: center;
+
+            gap: 9px;
+        }
+
+
+        .stock-name {
+            color: #25292e;
+
+            font-weight: 600;
+        }
+
+
+        .stock-symbol {
+            color: #9a9fa7;
+
+            font-size: 11px;
+        }
+
+
+        /* ========================================
+           Buy / Sell
+        ======================================== */
 
         .trade-side {
             display: inline-flex;
@@ -393,11 +549,13 @@
             font-weight: 600;
         }
 
+
         .trade-buy {
             background: #fff0f0;
 
             color: #d14d4d;
         }
+
 
         .trade-sell {
             background: #eef8f1;
@@ -406,9 +564,9 @@
         }
 
 
-        /* ================================
-           成交价格
-        ================================= */
+        /* ========================================
+           Price
+        ======================================== */
 
         .trade-price {
             color: #17191d !important;
@@ -417,48 +575,59 @@
         }
 
 
-        /* ================================
-           成交金额
-        ================================= */
+        /* ========================================
+           Amount
+        ======================================== */
 
         .trade-amount {
             color: #30343a !important;
 
-            font-weight: 500;
+            font-weight: 550;
         }
 
 
-        /* ================================
-           状态
-        ================================= */
+        /* ========================================
+           Status
+        ======================================== */
 
         .trade-status {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 6px;
+
             color: #318653;
 
             font-size: 12px;
         }
 
+
         .trade-status::before {
             content: "";
-
-            display: inline-block;
 
             width: 5px;
             height: 5px;
 
-            margin-right: 6px;
-
             border-radius: 50%;
 
             background: currentColor;
-
-            vertical-align: middle;
         }
 
 
-        /* ================================
-           订单编号
-        ================================= */
+        .trade-status.partial {
+            color: #b27b28;
+        }
+
+
+        .trade-status.cancelled {
+            color: #9298a1;
+        }
+
+
+        /* ========================================
+           Order ID
+        ======================================== */
 
         .order-id {
             color: #9298a1 !important;
@@ -467,11 +636,11 @@
         }
 
 
-        /* ================================
-           底部
-        ================================= */
+        /* ========================================
+           Pagination
+        ======================================== */
 
-        .trade-footer {
+        .table-footer {
             display: flex;
 
             align-items: center;
@@ -480,18 +649,131 @@
             padding: 15px 20px;
 
             border-top: 1px solid #eceef1;
+        }
 
+
+        .result-info {
             color: #9298a1;
 
             font-size: 11px;
         }
 
 
-        /* ================================
-           响应式
-        ================================= */
+        .pagination {
+            display: flex;
 
-        @media (max-width: 850px) {
+            align-items: center;
+
+            gap: 5px;
+        }
+
+
+        .page-button {
+            min-width: 30px;
+            height: 30px;
+
+            padding: 0 8px;
+
+            border: 1px solid #e1e3e7;
+            border-radius: 6px;
+
+            background: #ffffff;
+
+            color: #737981;
+
+            font-size: 11px;
+
+            cursor: pointer;
+        }
+
+
+        .page-button:hover {
+            background: #f5f6f7;
+
+            color: #17191d;
+        }
+
+
+        .page-button.active {
+            border-color: #d9dce1;
+
+            background: #f0f1f3;
+
+            color: #17191d;
+
+            font-weight: 600;
+        }
+
+
+        .page-button:disabled {
+            opacity: 0.45;
+
+            cursor: not-allowed;
+        }
+
+
+        /* ========================================
+           Empty
+        ======================================== */
+
+        .empty-state {
+            display: none;
+
+            padding: 70px 20px;
+
+            text-align: center;
+
+            color: #9298a1;
+        }
+
+
+        .empty-title {
+            margin-bottom: 7px;
+
+            color: #656b73;
+
+            font-size: 14px;
+        }
+
+
+        .empty-description {
+            font-size: 12px;
+        }
+
+
+        /* ========================================
+           Responsive
+        ======================================== */
+
+        @media (max-width: 1000px) {
+
+            .filter-row {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 9px;
+            }
+
+            .filter-label {
+                flex-basis: auto;
+            }
+
+            .search-area {
+                margin-left: 0;
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .trade-page {
+                width: min(100% - 28px,
+                        1400px);
+
+                padding-top: 25px;
+            }
 
             .page-header {
                 align-items: flex-start;
@@ -504,36 +786,43 @@
                     repeat(2, minmax(0, 1fr));
             }
 
+            .search-input {
+                width: 200px;
+            }
+
         }
 
 
-        @media (max-width: 600px) {
-
-            .trade-page {
-                width: min(100% - 24px,
-                        1180px);
-
-                padding-top: 24px;
-            }
-
-            .page-title {
-                font-size: 26px;
-            }
-
-            .date-toolbar {
-                align-items: flex-start;
-
-                flex-direction: column;
-
-                gap: 12px;
-            }
+        @media (max-width: 560px) {
 
             .summary-grid {
                 grid-template-columns: 1fr 1fr;
             }
 
-            .stock-info {
+            .date-range {
                 flex-wrap: wrap;
+            }
+
+            .date-input {
+                width: 130px;
+            }
+
+            .search-area {
+                width: 100%;
+            }
+
+            .search-input {
+                flex: 1;
+
+                width: auto;
+            }
+
+            .table-footer {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 12px;
             }
 
         }
@@ -547,18 +836,18 @@
     <main class="trade-page">
 
 
-        <!-- ================================
+        <!-- ========================================
          返回
-    ================================= -->
+    ========================================= -->
 
         <a class="back-link" href="javascript:history.back()">
-            ← 返回股票详情
+            ← 返回
         </a>
 
 
-        <!-- ================================
-         页面标题
-    ================================= -->
+        <!-- ========================================
+         Header
+    ========================================= -->
 
         <header class="page-header">
 
@@ -573,66 +862,182 @@
                 </h1>
 
                 <p class="page-description">
-                    查看当前账户的股票买卖成交记录。
+                    查看账户历史买卖成交，支持按股票、时间、方向和状态筛选。
                 </p>
-
-            </div>
-
-
-            <div class="stock-info">
-
-                <span class="stock-name">
-                    工商银行
-                </span>
-
-                <span class="stock-symbol">
-                    601398.SH
-                </span>
 
             </div>
 
         </header>
 
 
-        <!-- ================================
-         日期筛选
-    ================================= -->
+        <!-- ========================================
+         Filters
+    ========================================= -->
 
-        <section class="date-toolbar">
+        <section class="filter-card">
 
-            <div class="date-tabs">
 
-                <button class="date-tab active" type="button">
-                    全部
-                </button>
+            <!-- 股票 -->
 
-                <button class="date-tab" type="button">
-                    今日
-                </button>
+            <div class="filter-row">
 
-                <button class="date-tab" type="button">
-                    近 7 日
-                </button>
+                <span class="filter-label">
+                    股票
+                </span>
 
-                <button class="date-tab" type="button">
-                    近 30 日
-                </button>
+
+                <div class="filter-options">
+
+                    <button class="filter-button active" data-stock="all" type="button">
+                        全部
+                    </button>
+
+                    <button class="filter-button" data-stock="601398" type="button">
+                        工商银行
+                    </button>
+
+                    <button class="filter-button" data-stock="600519" type="button">
+                        贵州茅台
+                    </button>
+
+                    <button class="filter-button" data-stock="000001" type="button">
+                        平安银行
+                    </button>
+
+                    <button class="filter-button" data-stock="300750" type="button">
+                        宁德时代
+                    </button>
+
+                </div>
+
+
+                <div class="search-area">
+
+                    <input id="searchInput" class="search-input" type="search" placeholder="搜索股票、代码、订单号...">
+
+                    <button id="resetButton" class="reset-button" type="button">
+                        重置
+                    </button>
+
+                </div>
 
             </div>
 
 
-            <span class="date-info">
-                2026-09-21
-            </span>
+            <!-- 时间 -->
+
+            <div class="filter-row">
+
+                <span class="filter-label">
+                    时间
+                </span>
+
+
+                <div class="filter-options">
+
+                    <button class="filter-button active" data-date="all" type="button">
+                        全部
+                    </button>
+
+                    <button class="filter-button" data-date="today" type="button">
+                        今日
+                    </button>
+
+                    <button class="filter-button" data-date="7" type="button">
+                        近 7 日
+                    </button>
+
+                    <button class="filter-button" data-date="30" type="button">
+                        近 30 日
+                    </button>
+
+                </div>
+
+
+                <div class="date-range">
+
+                    <input id="startDate" class="date-input" type="date">
+
+                    <span class="date-separator">
+                        至
+                    </span>
+
+                    <input id="endDate" class="date-input" type="date">
+
+                </div>
+
+            </div>
+
+
+            <!-- 方向 -->
+
+            <div class="filter-row">
+
+                <span class="filter-label">
+                    方向
+                </span>
+
+
+                <div class="filter-options">
+
+                    <button class="filter-button active" data-side="all" type="button">
+                        全部
+                    </button>
+
+                    <button class="filter-button" data-side="BUY" type="button">
+                        买入
+                    </button>
+
+                    <button class="filter-button" data-side="SELL" type="button">
+                        卖出
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- 状态 -->
+
+            <div class="filter-row">
+
+                <span class="filter-label">
+                    状态
+                </span>
+
+
+                <div class="filter-options">
+
+                    <button class="filter-button active" data-status="all" type="button">
+                        全部
+                    </button>
+
+                    <button class="filter-button" data-status="FILLED" type="button">
+                        已成交
+                    </button>
+
+                    <button class="filter-button" data-status="PARTIAL" type="button">
+                        部分成交
+                    </button>
+
+                    <button class="filter-button" data-status="CANCELLED" type="button">
+                        已撤单
+                    </button>
+
+                </div>
+
+            </div>
+
 
         </section>
 
 
-        <!-- ================================
-         成交汇总
-    ================================= -->
+        <!-- ========================================
+         Summary
+    ========================================= -->
 
         <section class="summary-grid">
+
 
             <div class="summary-item">
 
@@ -640,9 +1045,13 @@
                     成交笔数
                 </span>
 
-                <strong class="summary-value">
-                    12
+                <strong id="totalCount" class="summary-value">
+                    0
                 </strong>
+
+                <span class="summary-sub">
+                    当前筛选结果
+                </span>
 
             </div>
 
@@ -650,59 +1059,72 @@
             <div class="summary-item">
 
                 <span class="summary-label">
+                    买入金额
+                </span>
+
+                <strong id="buyAmount" class="summary-value">
+                    ¥0
+                </strong>
+
+                <span class="summary-sub">
                     买入成交
                 </span>
 
-                <strong class="summary-value">
-                    8
-                </strong>
-
             </div>
 
 
             <div class="summary-item">
 
                 <span class="summary-label">
+                    卖出金额
+                </span>
+
+                <strong id="sellAmount" class="summary-value">
+                    ¥0
+                </strong>
+
+                <span class="summary-sub">
                     卖出成交
                 </span>
 
-                <strong class="summary-value">
-                    4
-                </strong>
-
             </div>
 
 
             <div class="summary-item">
 
                 <span class="summary-label">
-                    成交金额
+                    成交总额
                 </span>
 
-                <strong class="summary-value">
-                    ¥86,420
+                <strong id="totalAmount" class="summary-value">
+                    ¥0
                 </strong>
 
+                <span class="summary-sub">
+                    买入 + 卖出
+                </span>
+
             </div>
+
 
         </section>
 
 
-        <!-- ================================
-         成交记录
-    ================================= -->
+        <!-- ========================================
+         Table
+    ========================================= -->
 
-        <section class="trade-card">
+        <section class="table-card">
 
 
-            <header class="trade-card-header">
+            <header class="table-header">
 
-                <h2 class="trade-card-title">
+                <h2 class="table-title">
                     我的成交
                 </h2>
 
-                <span class="trade-card-count">
-                    共 12 笔
+                <span id="tableCount" class="table-count">
+                    0 条记录
                 </span>
 
             </header>
@@ -718,6 +1140,10 @@
 
                             <th>
                                 成交时间
+                            </th>
+
+                            <th>
+                                股票
                             </th>
 
                             <th>
@@ -753,260 +1179,50 @@
                     </thead>
 
 
-                    <tbody>
-
-
-                        <!-- 买入 -->
-
-                        <tr>
-
-                            <td class="trade-time">
-                                09:42:16
-                            </td>
-
-                            <td>
-
-                                <span class="trade-side trade-buy">
-                                    买入
-                                </span>
-
-                            </td>
-
-                            <td class="trade-price">
-                                7.24
-                            </td>
-
-                            <td>
-                                5,000
-                            </td>
-
-                            <td class="trade-amount">
-                                ¥36,200
-                            </td>
-
-                            <td>
-                                ¥10.86
-                            </td>
-
-                            <td>
-
-                                <span class="trade-status">
-                                    已成交
-                                </span>
-
-                            </td>
-
-                            <td class="order-id">
-                                202609210001
-                            </td>
-
-                        </tr>
-
-
-                        <!-- 买入 -->
-
-                        <tr>
-
-                            <td class="trade-time">
-                                10:15:32
-                            </td>
-
-                            <td>
-
-                                <span class="trade-side trade-buy">
-                                    买入
-                                </span>
-
-                            </td>
-
-                            <td class="trade-price">
-                                7.23
-                            </td>
-
-                            <td>
-                                3,000
-                            </td>
-
-                            <td class="trade-amount">
-                                ¥21,690
-                            </td>
-
-                            <td>
-                                ¥6.51
-                            </td>
-
-                            <td>
-
-                                <span class="trade-status">
-                                    已成交
-                                </span>
-
-                            </td>
-
-                            <td class="order-id">
-                                202609210002
-                            </td>
-
-                        </tr>
-
-
-                        <!-- 卖出 -->
-
-                        <tr>
-
-                            <td class="trade-time">
-                                11:08:45
-                            </td>
-
-                            <td>
-
-                                <span class="trade-side trade-sell">
-                                    卖出
-                                </span>
-
-                            </td>
-
-                            <td class="trade-price">
-                                7.28
-                            </td>
-
-                            <td>
-                                2,000
-                            </td>
-
-                            <td class="trade-amount">
-                                ¥14,560
-                            </td>
-
-                            <td>
-                                ¥4.37
-                            </td>
-
-                            <td>
-
-                                <span class="trade-status">
-                                    已成交
-                                </span>
-
-                            </td>
-
-                            <td class="order-id">
-                                202609210003
-                            </td>
-
-                        </tr>
-
-
-                        <!-- 买入 -->
-
-                        <tr>
-
-                            <td class="trade-time">
-                                13:24:18
-                            </td>
-
-                            <td>
-
-                                <span class="trade-side trade-buy">
-                                    买入
-                                </span>
-
-                            </td>
-
-                            <td class="trade-price">
-                                7.22
-                            </td>
-
-                            <td>
-                                1,500
-                            </td>
-
-                            <td class="trade-amount">
-                                ¥10,830
-                            </td>
-
-                            <td>
-                                ¥3.25
-                            </td>
-
-                            <td>
-
-                                <span class="trade-status">
-                                    已成交
-                                </span>
-
-                            </td>
-
-                            <td class="order-id">
-                                202609210004
-                            </td>
-
-                        </tr>
-
-
-                        <!-- 卖出 -->
-
-                        <tr>
-
-                            <td class="trade-time">
-                                14:16:52
-                            </td>
-
-                            <td>
-
-                                <span class="trade-side trade-sell">
-                                    卖出
-                                </span>
-
-                            </td>
-
-                            <td class="trade-price">
-                                7.27
-                            </td>
-
-                            <td>
-                                1,000
-                            </td>
-
-                            <td class="trade-amount">
-                                ¥7,270
-                            </td>
-
-                            <td>
-                                ¥2.18
-                            </td>
-
-                            <td>
-
-                                <span class="trade-status">
-                                    已成交
-                                </span>
-
-                            </td>
-
-                            <td class="order-id">
-                                202609210005
-                            </td>
-
-                        </tr>
-
+                    <tbody id="tradeTableBody">
 
                     </tbody>
 
                 </table>
 
+
+                <div id="emptyState" class="empty-state">
+
+                    <div class="empty-title">
+                        没有找到成交记录
+                    </div>
+
+                    <div class="empty-description">
+                        可以尝试调整筛选条件或搜索关键词。
+                    </div>
+
+                </div>
+
             </div>
 
 
-            <footer class="trade-footer">
+            <!-- Pagination -->
 
-                <span>
-                    显示 5 条成交记录
+            <footer class="table-footer">
+
+                <span id="resultInfo" class="result-info">
+                    -
                 </span>
 
-                <span>
-                    数据更新时间：14:16:52
-                </span>
+
+                <div class="pagination">
+
+                    <button id="prevPage" class="page-button" type="button">
+                        ‹
+                    </button>
+
+                    <div id="pageNumbers"></div>
+
+                    <button id="nextPage" class="page-button" type="button">
+                        ›
+                    </button>
+
+                </div>
 
             </footer>
 
@@ -1020,30 +1236,1165 @@
     <script>
 
         /*
-         * 日期筛选
-         * 后续接入 API 后，可以根据选择的时间范围
-         * 重新请求成交记录。
+         * ========================================
+         * Mock Data
+         * ========================================
+         *
+         * 后续接入 Python API 时，
+         * 可以直接用 API 返回的数据替换这里。
+         *
          */
 
-        const dateTabs =
-            document.querySelectorAll(".date-tab");
+        const tradeRecords = [
+
+            {
+                id: "202609210001",
+                time: "2026-09-21 09:42:16",
+                symbol: "601398",
+                name: "工商银行",
+                side: "BUY",
+                price: 7.24,
+                quantity: 5000,
+                amount: 36200,
+                commission: 10.86,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609210002",
+                time: "2026-09-21 10:15:32",
+                symbol: "600519",
+                name: "贵州茅台",
+                side: "BUY",
+                price: 1428.50,
+                quantity: 100,
+                amount: 142850,
+                commission: 42.86,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609210003",
+                time: "2026-09-21 11:08:45",
+                symbol: "601398",
+                name: "工商银行",
+                side: "SELL",
+                price: 7.28,
+                quantity: 2000,
+                amount: 14560,
+                commission: 4.37,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609210004",
+                time: "2026-09-21 11:26:18",
+                symbol: "000001",
+                name: "平安银行",
+                side: "BUY",
+                price: 11.36,
+                quantity: 3000,
+                amount: 34080,
+                commission: 10.22,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609210005",
+                time: "2026-09-21 13:24:18",
+                symbol: "300750",
+                name: "宁德时代",
+                side: "BUY",
+                price: 312.80,
+                quantity: 500,
+                amount: 156400,
+                commission: 46.92,
+                status: "PARTIAL"
+            },
+
+            {
+                id: "202609210006",
+                time: "2026-09-20 09:35:26",
+                symbol: "600519",
+                name: "贵州茅台",
+                side: "SELL",
+                price: 1442.00,
+                quantity: 50,
+                amount: 72100,
+                commission: 21.63,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609200007",
+                time: "2026-09-20 10:18:42",
+                symbol: "601398",
+                name: "工商银行",
+                side: "BUY",
+                price: 7.20,
+                quantity: 3000,
+                amount: 21600,
+                commission: 6.48,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609200008",
+                time: "2026-09-20 10:52:14",
+                symbol: "000001",
+                name: "平安银行",
+                side: "SELL",
+                price: 11.42,
+                quantity: 1500,
+                amount: 17130,
+                commission: 5.14,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609190009",
+                time: "2026-09-19 09:41:12",
+                symbol: "300750",
+                name: "宁德时代",
+                side: "BUY",
+                price: 309.60,
+                quantity: 800,
+                amount: 247680,
+                commission: 74.30,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609190010",
+                time: "2026-09-19 14:08:32",
+                symbol: "600519",
+                name: "贵州茅台",
+                side: "BUY",
+                price: 1436.80,
+                quantity: 100,
+                amount: 143680,
+                commission: 43.10,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609180011",
+                time: "2026-09-18 09:32:16",
+                symbol: "601398",
+                name: "工商银行",
+                side: "BUY",
+                price: 7.18,
+                quantity: 6000,
+                amount: 43080,
+                commission: 12.92,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609180012",
+                time: "2026-09-18 14:22:45",
+                symbol: "300750",
+                name: "宁德时代",
+                side: "SELL",
+                price: 315.20,
+                quantity: 300,
+                amount: 94560,
+                commission: 28.37,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609170013",
+                time: "2026-09-17 10:05:32",
+                symbol: "000001",
+                name: "平安银行",
+                side: "BUY",
+                price: 11.28,
+                quantity: 2000,
+                amount: 22560,
+                commission: 6.77,
+                status: "FILLED"
+            },
+
+            {
+                id: "202609170014",
+                time: "2026-09-17 13:16:48",
+                symbol: "600519",
+                name: "贵州茅台",
+                side: "SELL",
+                price: 1451.00,
+                quantity: 50,
+                amount: 72550,
+                commission: 21.77,
+                status: "CANCELLED"
+            }
+
+        ];
 
 
-        dateTabs.forEach(tab => {
+        /*
+         * ========================================
+         * State
+         * ========================================
+         */
 
-            tab.addEventListener("click", () => {
+        const state = {
 
-                dateTabs.forEach(item => {
+            stock: "all",
 
-                    item.classList.remove("active");
+            date: "all",
 
-                });
+            side: "all",
 
-                tab.classList.add("active");
+            status: "all",
+
+            search: "",
+
+            page: 1,
+
+            pageSize: 8
+
+        };
+
+
+        /*
+         * ========================================
+         * Elements
+         * ========================================
+         */
+
+        const tableBody =
+            document.getElementById("tradeTableBody");
+
+        const emptyState =
+            document.getElementById("emptyState");
+
+        const totalCount =
+            document.getElementById("totalCount");
+
+        const buyAmount =
+            document.getElementById("buyAmount");
+
+        const sellAmount =
+            document.getElementById("sellAmount");
+
+        const totalAmount =
+            document.getElementById("totalAmount");
+
+        const tableCount =
+            document.getElementById("tableCount");
+
+        const resultInfo =
+            document.getElementById("resultInfo");
+
+        const pageNumbers =
+            document.getElementById("pageNumbers");
+
+        const prevPage =
+            document.getElementById("prevPage");
+
+        const nextPage =
+            document.getElementById("nextPage");
+
+        const searchInput =
+            document.getElementById("searchInput");
+
+
+        /*
+         * ========================================
+         * Format
+         * ========================================
+         */
+
+        function formatNumber(value) {
+
+            return Number(value).toLocaleString(
+                "zh-CN"
+            );
+
+        }
+
+
+        function formatMoney(value) {
+
+            return "¥" + Number(value).toLocaleString(
+                "zh-CN",
+                {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }
+            );
+
+        }
+
+
+        function getStatusText(status) {
+
+            const statusMap = {
+
+                FILLED: "已成交",
+
+                PARTIAL: "部分成交",
+
+                CANCELLED: "已撤单"
+
+            };
+
+            return statusMap[status] || status;
+
+        }
+
+
+        /*
+         * ========================================
+         * Date Filter
+         * ========================================
+         */
+
+        function matchDate(record) {
+
+            if (state.date === "all") {
+                return true;
+            }
+
+            const recordDate =
+                new Date(record.time);
+
+            const today =
+                new Date("2026-09-21T23:59:59");
+
+            if (state.date === "today") {
+
+                return (
+                    recordDate.toDateString() ===
+                    today.toDateString()
+                );
+
+            }
+
+            const days =
+                Number(state.date);
+
+            const start =
+                new Date(today);
+
+            start.setDate(
+                start.getDate() - days + 1
+            );
+
+            start.setHours(0, 0, 0, 0);
+
+            return recordDate >= start;
+
+        }
+
+
+        /*
+         * ========================================
+         * Filter
+         * ========================================
+         */
+
+        function getFilteredRecords() {
+
+            return tradeRecords.filter(record => {
+
+                if (
+                    state.stock !== "all" &&
+                    record.symbol !== state.stock
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    state.side !== "all" &&
+                    record.side !== state.side
+                ) {
+                    return false;
+                }
+
+
+                if (
+                    state.status !== "all" &&
+                    record.status !== state.status
+                ) {
+                    return false;
+                }
+
+
+                if (!matchDate(record)) {
+                    return false;
+                }
+
+
+                if (state.search) {
+
+                    const keyword =
+                        state.search.toLowerCase();
+
+                    const content = [
+
+                        record.name,
+
+                        record.symbol,
+
+                        record.id
+
+                    ]
+                        .join(" ")
+                        .toLowerCase();
+
+
+                    if (
+                        !content.includes(keyword)
+                    ) {
+                        return false;
+                    }
+
+                }
+
+
+                return true;
 
             });
 
-        });
+        }
+
+
+        /*
+         * ========================================
+         * Summary
+         * ========================================
+         */
+
+        function updateSummary(records) {
+
+            const buyRecords =
+                records.filter(
+                    record => record.side === "BUY"
+                );
+
+            const sellRecords =
+                records.filter(
+                    record => record.side === "SELL"
+                );
+
+
+            const buyTotal =
+                buyRecords.reduce(
+                    (sum, record) =>
+                        sum + record.amount,
+                    0
+                );
+
+
+            const sellTotal =
+                sellRecords.reduce(
+                    (sum, record) =>
+                        sum + record.amount,
+                    0
+                );
+
+
+            totalCount.textContent =
+                formatNumber(records.length);
+
+            buyAmount.textContent =
+                formatMoney(buyTotal);
+
+            sellAmount.textContent =
+                formatMoney(sellTotal);
+
+            totalAmount.textContent =
+                formatMoney(
+                    buyTotal + sellTotal
+                );
+
+            tableCount.textContent =
+                `${records.length} 条记录`;
+
+        }
+
+
+        /*
+         * ========================================
+         * Render Table
+         * ========================================
+         */
+
+        function renderTable(records) {
+
+            tableBody.innerHTML = "";
+
+
+            if (!records.length) {
+
+                emptyState.style.display =
+                    "block";
+
+                return;
+
+            }
+
+
+            emptyState.style.display =
+                "none";
+
+
+            const start =
+                (state.page - 1) *
+                state.pageSize;
+
+            const end =
+                start + state.pageSize;
+
+
+            const pageRecords =
+                records.slice(start, end);
+
+
+            pageRecords.forEach(record => {
+
+                const tr =
+                    document.createElement("tr");
+
+
+                const sideClass =
+                    record.side === "BUY"
+                        ? "trade-buy"
+                        : "trade-sell";
+
+
+                const sideText =
+                    record.side === "BUY"
+                        ? "买入"
+                        : "卖出";
+
+
+                let statusClass =
+                    "";
+
+                if (record.status === "PARTIAL") {
+                    statusClass = "partial";
+                }
+
+                if (record.status === "CANCELLED") {
+                    statusClass = "cancelled";
+                }
+
+
+                tr.innerHTML = `
+
+                <td class="trade-time">
+                    ${record.time}
+                </td>
+
+                <td>
+
+                    <div class="stock-cell">
+
+                        <span class="stock-name">
+                            ${record.name}
+                        </span>
+
+                        <span class="stock-symbol">
+                            ${record.symbol}
+                        </span>
+
+                    </div>
+
+                </td>
+
+                <td>
+
+                    <span
+                        class="trade-side ${sideClass}"
+                    >
+                        ${sideText}
+                    </span>
+
+                </td>
+
+                <td class="trade-price">
+                    ${record.price.toLocaleString(
+                    "zh-CN",
+                    {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }
+                )}
+                </td>
+
+                <td>
+                    ${formatNumber(record.quantity)}
+                </td>
+
+                <td class="trade-amount">
+                    ${formatMoney(record.amount)}
+                </td>
+
+                <td>
+                    ${formatMoney(record.commission)}
+                </td>
+
+                <td>
+
+                    <span
+                        class="trade-status ${statusClass}"
+                    >
+                        ${getStatusText(record.status)}
+                    </span>
+
+                </td>
+
+                <td class="order-id">
+                    ${record.id}
+                </td>
+
+            `;
+
+
+                tableBody.appendChild(tr);
+
+            });
+
+        }
+
+
+        /*
+         * ========================================
+         * Pagination
+         * ========================================
+         */
+
+        function renderPagination(records) {
+
+            const totalPages =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        records.length /
+                        state.pageSize
+                    )
+                );
+
+
+            if (state.page > totalPages) {
+                state.page = totalPages;
+            }
+
+
+            pageNumbers.innerHTML = "";
+
+
+            for (
+                let page = 1;
+                page <= totalPages;
+                page++
+            ) {
+
+                if (
+                    totalPages > 7 &&
+                    page > 3 &&
+                    page < totalPages - 2
+                ) {
+
+                    if (
+                        page === 4
+                    ) {
+
+                        const dots =
+                            document.createElement(
+                                "span"
+                            );
+
+                        dots.textContent = "...";
+
+                        dots.style.padding =
+                            "0 5px";
+
+                        dots.style.color =
+                            "#a0a5ad";
+
+                        pageNumbers.appendChild(
+                            dots
+                        );
+
+                    }
+
+                    continue;
+
+                }
+
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                button.className =
+                    "page-button";
+
+
+                if (
+                    page === state.page
+                ) {
+
+                    button.classList.add(
+                        "active"
+                    );
+
+                }
+
+
+                button.type =
+                    "button";
+
+
+                button.textContent =
+                    page;
+
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        state.page = page;
+
+                        render();
+
+                    }
+                );
+
+
+                pageNumbers.appendChild(
+                    button
+                );
+
+            }
+
+
+            prevPage.disabled =
+                state.page <= 1;
+
+
+            nextPage.disabled =
+                state.page >= totalPages;
+
+
+            const start =
+                records.length === 0
+                    ? 0
+                    : (
+                        (state.page - 1) *
+                        state.pageSize
+                    ) + 1;
+
+
+            const end =
+                Math.min(
+                    state.page *
+                    state.pageSize,
+                    records.length
+                );
+
+
+            resultInfo.textContent =
+                records.length
+                    ? `显示 ${start}-${end} 条，共 ${records.length} 条`
+                    : "暂无记录";
+
+        }
+
+
+        /*
+         * ========================================
+         * Render
+         * ========================================
+         */
+
+        function render() {
+
+            const records =
+                getFilteredRecords();
+
+
+            const totalPages =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        records.length /
+                        state.pageSize
+                    )
+                );
+
+
+            if (
+                state.page > totalPages
+            ) {
+
+                state.page =
+                    totalPages;
+
+            }
+
+
+            updateSummary(records);
+
+            renderTable(records);
+
+            renderPagination(records);
+
+        }
+
+
+        /*
+         * ========================================
+         * Stock Filter
+         * ========================================
+         */
+
+        document
+            .querySelectorAll(
+                "[data-stock]"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                "[data-stock]"
+                            )
+                            .forEach(item => {
+
+                                item.classList.remove(
+                                    "active"
+                                );
+
+                            });
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        state.stock =
+                            button.dataset.stock;
+
+                        state.page = 1;
+
+                        render();
+
+                    }
+                );
+
+            });
+
+
+        /*
+         * ========================================
+         * Date Filter
+         * ========================================
+         */
+
+        document
+            .querySelectorAll(
+                "[data-date]"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                "[data-date]"
+                            )
+                            .forEach(item => {
+
+                                item.classList.remove(
+                                    "active"
+                                );
+
+                            });
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        state.date =
+                            button.dataset.date;
+
+                        state.page = 1;
+
+                        render();
+
+                    }
+                );
+
+            });
+
+
+        /*
+         * ========================================
+         * Side Filter
+         * ========================================
+         */
+
+        document
+            .querySelectorAll(
+                "[data-side]"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                "[data-side]"
+                            )
+                            .forEach(item => {
+
+                                item.classList.remove(
+                                    "active"
+                                );
+
+                            });
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        state.side =
+                            button.dataset.side;
+
+                        state.page = 1;
+
+                        render();
+
+                    }
+                );
+
+            });
+
+
+        /*
+         * ========================================
+         * Status Filter
+         * ========================================
+         */
+
+        document
+            .querySelectorAll(
+                "[data-status]"
+            )
+            .forEach(button => {
+
+                button.addEventListener(
+                    "click",
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                "[data-status]"
+                            )
+                            .forEach(item => {
+
+                                item.classList.remove(
+                                    "active"
+                                );
+
+                            });
+
+
+                        button.classList.add(
+                            "active"
+                        );
+
+
+                        state.status =
+                            button.dataset.status;
+
+                        state.page = 1;
+
+                        render();
+
+                    }
+                );
+
+            });
+
+
+        /*
+         * ========================================
+         * Search
+         * ========================================
+         */
+
+        searchInput.addEventListener(
+            "input",
+            event => {
+
+                state.search =
+                    event.target.value.trim();
+
+                state.page = 1;
+
+                render();
+
+            }
+        );
+
+
+        /*
+         * ========================================
+         * Reset
+         * ========================================
+         */
+
+        document
+            .getElementById("resetButton")
+            .addEventListener(
+                "click",
+                () => {
+
+                    state.stock = "all";
+                    state.date = "all";
+                    state.side = "all";
+                    state.status = "all";
+                    state.search = "";
+                    state.page = 1;
+
+
+                    searchInput.value = "";
+
+
+                    document
+                        .querySelectorAll(
+                            ".filter-button"
+                        )
+                        .forEach(button => {
+
+                            button.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    document
+                        .querySelector(
+                            '[data-stock="all"]'
+                        )
+                        .classList.add(
+                            "active"
+                        );
+
+
+                    document
+                        .querySelector(
+                            '[data-date="all"]'
+                        )
+                        .classList.add(
+                            "active"
+                        );
+
+
+                    document
+                        .querySelector(
+                            '[data-side="all"]'
+                        )
+                        .classList.add(
+                            "active"
+                        );
+
+
+                    document
+                        .querySelector(
+                            '[data-status="all"]'
+                        )
+                        .classList.add(
+                            "active"
+                        );
+
+
+                    render();
+
+                }
+            );
+
+
+        /*
+         * ========================================
+         * Pagination Buttons
+         * ========================================
+         */
+
+        prevPage.addEventListener(
+            "click",
+            () => {
+
+                if (state.page > 1) {
+
+                    state.page--;
+
+                    render();
+
+                }
+
+            }
+        );
+
+
+        nextPage.addEventListener(
+            "click",
+            () => {
+
+                const records =
+                    getFilteredRecords();
+
+                const totalPages =
+                    Math.ceil(
+                        records.length /
+                        state.pageSize
+                    );
+
+
+                if (
+                    state.page <
+                    totalPages
+                ) {
+
+                    state.page++;
+
+                    render();
+
+                }
+
+            }
+        );
+
+
+        /*
+         * ========================================
+         * Initial Render
+         * ========================================
+         */
+
+        render();
 
     </script>
 
