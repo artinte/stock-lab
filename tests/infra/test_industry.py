@@ -18,7 +18,7 @@ def run_industry_test(
     print(f"【行业信息】{symbol}")
 
     try:
-        industry: Industry | None = manager.get_industry(symbol)
+        industry: Industry | None = manager.get_industry_category(symbol)
 
         if industry is None:
             print("❌ 未获取到行业信息")

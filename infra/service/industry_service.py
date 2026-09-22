@@ -24,7 +24,7 @@ class IndustryService:
     ):
         self.provider = provider
 
-    def get_industry(
+    def get_industry_category(
         self,
         symbol: str,
     ) -> Industry:
@@ -37,7 +37,7 @@ class IndustryService:
     ) -> list[Industry]:
         industries: list[Industry] = []
         for symbol in symbols:
-            industry = self.get_industry(symbol)
+            industry = self.get_industry_category(symbol)
             if industry is not None:
                 industries.append(industry)
         return industries

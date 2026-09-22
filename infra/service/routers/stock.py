@@ -240,8 +240,8 @@ def get_valuation(symbol: str):
         return failure(symbol, str(exc))
 
 
-@router.get("/industry/{symbol}")
-def get_industry(symbol: str):
+@router.get("/industry_category/{symbol}")
+def get_industry_category(symbol: str):
     """获取股票行业信息。"""
 
     data = require_data()

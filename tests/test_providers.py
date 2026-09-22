@@ -313,7 +313,7 @@ def test_provider(
         print()
         print("正在获取行业分类...")
 
-        industry = data.get_industry(symbol)
+        industry = data.get_industry_category(symbol)
         print(industry.display())
 
     except NotImplementedError:
