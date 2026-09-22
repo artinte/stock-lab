@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 from infra.data_manager import DataManager
+from infra.service.industry_performance_service import (
+    IndustryPerformanceService,
+)
 from infra.service.stock_financial_service import StockFinancialService
 from infra.service.youtube_service import YouTubeService
-
 
 # ============================================================
 # Runtime Services
@@ -13,12 +15,15 @@ data: DataManager | None = None
 
 financial_service: StockFinancialService | None = None
 
+industry_performance_service: IndustryPerformanceService | None = None
+
 youtube_service: YouTubeService | None = None
 
 
 # ============================================================
 # Dependencies
 # ============================================================
+
 
 def require_data() -> DataManager:
     """
@@ -40,6 +45,17 @@ def require_financial_service() -> StockFinancialService:
         raise RuntimeError("财务服务尚未启动")
 
     return financial_service
+
+
+def require_industry_performance_service() -> IndustryPerformanceService:
+    """
+    获取已经启动的行业行情服务。
+    """
+
+    if industry_performance_service is None:
+        raise RuntimeError("行业行情服务尚未启动")
+
+    return industry_performance_service
 
 
 def require_youtube() -> YouTubeService:

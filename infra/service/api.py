@@ -9,12 +9,16 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from infra.data_manager import DataManager
+from infra.service.industry_performance_service import (
+    IndustryPerformanceService,
+)
 from infra.service.stock_financial_service import StockFinancialService
 from infra.service.youtube_service import YouTubeService
 
 from infra.service import app_state
 
 from infra.service.routers.system import router as system_router
+from infra.service.routers.industry import router as industry_router
 from infra.service.routers.stock import router as stock_router
 from infra.service.routers.crypto import router as crypto_router
 from infra.service.routers.youtube import router as youtube_router
@@ -29,7 +33,6 @@ async def lifespan(app: FastAPI):
     try:
         load_dotenv()
 
-        
         # ====================================================
         # 股票 / Crypto 数据服务
         # ====================================================
@@ -37,11 +40,17 @@ async def lifespan(app: FastAPI):
         app_state.data = DataManager("yinhe")
         app_state.data.start()
 
-        app_state.financial_service = StockFinancialService(
-            app_state.data
-        )
+        app_state.financial_service = StockFinancialService(app_state.data)
 
         print("✅ 股票 / Crypto 数据服务启动成功")
+
+        # ====================================================
+        # 行业行情服务
+        # ====================================================
+
+        app_state.industry_performance_service = IndustryPerformanceService()
+
+        print("✅ 行业行情服务启动成功")
 
         # ====================================================
         # YouTube 信息流服务
@@ -69,6 +78,12 @@ async def lifespan(app: FastAPI):
                 print(f"⚠️ YouTube 服务关闭失败：{exc}")
             finally:
                 app_state.youtube_service = None
+
+        # ====================================================
+        # 行业行情服务
+        # ====================================================
+
+        app_state.industry_performance_service = None
 
         # ====================================================
         # 数据服务
@@ -101,6 +116,7 @@ app.include_router(system_router)
 app.include_router(stock_router)
 app.include_router(crypto_router)
 app.include_router(youtube_router)
+app.include_router(industry_router)
 
 
 # ============================================================
@@ -199,8 +215,7 @@ app.mount(
 # Root
 # ============================================================
 
+
 @app.get("/")
 def index():
-    return FileResponse(
-        FRONTEND_DIR / "index.html"
-    )
+    return FileResponse(FRONTEND_DIR / "index.html")

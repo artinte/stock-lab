@@ -1,388 +1,46 @@
-
-
 /* ===============================================================
    STOCK LAB · Industry Performance
- 
-   当前：
-       使用 mockData
- 
-   后续：
-       将 loadData() 替换为 FastAPI 请求即可。
- 
-   推荐 API：
- 
+
+   FastAPI：
+
        GET /api/industry/performance
- 
-   参数：
- 
-       level
-       parent
-       period
-       method
-       start_date
-       end_date
- 
-   例如：
- 
-       /api/industry/performance
-           ?level=2
-           &period=20
-           &method=weighted
- 
+
+       参数：
+           date
+           level
+           method
+
+
+       GET /api/industry/performance/range
+
+       参数：
+           start_date
+           end_date
+           level
+           method
+
+
+   当前前端职责：
+
+       API
+          ↓
+       获取行业数据
+          ↓
+       前端筛选
+          ↓
+       前端排序
+          ↓
+       页面展示
+
+
+   后端负责：
+
+       行业行情计算
+       加权 / 等权
+       JSON Cache
+
+
    =============================================================== */
-
-
-/* ===============================================================
-   Mock Data
-   =============================================================== */
-
-const mockData = {
-
-    date: "2026-09-22",
-
-    update_time: "2026-09-22 15:10",
-
-    industries: [
-
-        {
-            code: "A01",
-            name: "农林牧渔",
-            level: 1,
-            parent_code: null,
-            pct: 2.18,
-            stocks: 87,
-            up: 61,
-            down: 21,
-            flat: 5
-        },
-
-        {
-            code: "A02",
-            name: "基础化工",
-            level: 1,
-            parent_code: null,
-            pct: 1.64,
-            stocks: 312,
-            up: 224,
-            down: 77,
-            flat: 11
-        },
-
-        {
-            code: "A03",
-            name: "钢铁",
-            level: 1,
-            parent_code: null,
-            pct: 0.72,
-            stocks: 45,
-            up: 29,
-            down: 14,
-            flat: 2
-        },
-
-        {
-            code: "A04",
-            name: "有色金属",
-            level: 1,
-            parent_code: null,
-            pct: 2.84,
-            stocks: 98,
-            up: 77,
-            down: 18,
-            flat: 3
-        },
-
-        {
-            code: "A05",
-            name: "电子",
-            level: 1,
-            parent_code: null,
-            pct: 1.93,
-            stocks: 361,
-            up: 260,
-            down: 86,
-            flat: 15
-        },
-
-        {
-            code: "A06",
-            name: "汽车",
-            level: 1,
-            parent_code: null,
-            pct: 1.21,
-            stocks: 183,
-            up: 127,
-            down: 49,
-            flat: 7
-        },
-
-        {
-            code: "A07",
-            name: "机械设备",
-            level: 1,
-            parent_code: null,
-            pct: 0.96,
-            stocks: 265,
-            up: 166,
-            down: 89,
-            flat: 10
-        },
-
-        {
-            code: "A08",
-            name: "医药生物",
-            level: 1,
-            parent_code: null,
-            pct: -0.42,
-            stocks: 318,
-            up: 127,
-            down: 177,
-            flat: 14
-        },
-
-        {
-            code: "A09",
-            name: "食品饮料",
-            level: 1,
-            parent_code: null,
-            pct: -0.76,
-            stocks: 124,
-            up: 39,
-            down: 81,
-            flat: 4
-        },
-
-        {
-            code: "A10",
-            name: "计算机",
-            level: 1,
-            parent_code: null,
-            pct: 1.38,
-            stocks: 282,
-            up: 196,
-            down: 76,
-            flat: 10
-        },
-
-        {
-            code: "A11",
-            name: "传媒",
-            level: 1,
-            parent_code: null,
-            pct: 0.53,
-            stocks: 152,
-            up: 91,
-            down: 55,
-            flat: 6
-        },
-
-        {
-            code: "A12",
-            name: "通信",
-            level: 1,
-            parent_code: null,
-            pct: 2.37,
-            stocks: 119,
-            up: 89,
-            down: 27,
-            flat: 3
-        },
-
-        {
-            code: "A13",
-            name: "银行",
-            level: 1,
-            parent_code: null,
-            pct: -0.18,
-            stocks: 42,
-            up: 16,
-            down: 23,
-            flat: 3
-        },
-
-        {
-            code: "A14",
-            name: "非银金融",
-            level: 1,
-            parent_code: null,
-            pct: 0.34,
-            stocks: 81,
-            up: 44,
-            down: 33,
-            flat: 4
-        },
-
-        {
-            code: "A15",
-            name: "房地产",
-            level: 1,
-            parent_code: null,
-            pct: -1.28,
-            stocks: 108,
-            up: 24,
-            down: 78,
-            flat: 6
-        },
-
-        {
-            code: "A16",
-            name: "建筑材料",
-            level: 1,
-            parent_code: null,
-            pct: -0.34,
-            stocks: 76,
-            up: 30,
-            down: 42,
-            flat: 4
-        },
-
-        {
-            code: "A17",
-            name: "电力设备",
-            level: 1,
-            parent_code: null,
-            pct: 1.76,
-            stocks: 229,
-            up: 167,
-            down: 56,
-            flat: 6
-        },
-
-        {
-            code: "A18",
-            name: "公用事业",
-            level: 1,
-            parent_code: null,
-            pct: 0.18,
-            stocks: 94,
-            up: 45,
-            down: 43,
-            flat: 6
-        },
-
-        {
-            code: "A19",
-            name: "交通运输",
-            level: 1,
-            parent_code: null,
-            pct: 0.62,
-            stocks: 119,
-            up: 70,
-            down: 44,
-            flat: 5
-        },
-
-        {
-            code: "A20",
-            name: "商贸零售",
-            level: 1,
-            parent_code: null,
-            pct: -0.21,
-            stocks: 109,
-            up: 46,
-            down: 57,
-            flat: 6
-        },
-
-        {
-            code: "A21",
-            name: "社会服务",
-            level: 1,
-            parent_code: null,
-            pct: 0.41,
-            stocks: 68,
-            up: 39,
-            down: 26,
-            flat: 3
-        },
-
-        {
-            code: "A22",
-            name: "美容护理",
-            level: 1,
-            parent_code: null,
-            pct: -0.62,
-            stocks: 31,
-            up: 10,
-            down: 19,
-            flat: 2
-        },
-
-        {
-            code: "A23",
-            name: "家用电器",
-            level: 1,
-            parent_code: null,
-            pct: 0.86,
-            stocks: 92,
-            up: 57,
-            down: 31,
-            flat: 4
-        },
-
-        {
-            code: "A24",
-            name: "纺织服饰",
-            level: 1,
-            parent_code: null,
-            pct: -0.16,
-            stocks: 87,
-            up: 40,
-            down: 42,
-            flat: 5
-        },
-
-        {
-            code: "A25",
-            name: "轻工制造",
-            level: 1,
-            parent_code: null,
-            pct: 0.37,
-            stocks: 113,
-            up: 62,
-            down: 46,
-            flat: 5
-        },
-
-        {
-            code: "A26",
-            name: "国防军工",
-            level: 1,
-            parent_code: null,
-            pct: 2.06,
-            stocks: 83,
-            up: 63,
-            down: 18,
-            flat: 2
-        },
-
-        {
-            code: "A27",
-            name: "计算机应用",
-            level: 1,
-            parent_code: null,
-            pct: 1.44,
-            stocks: 141,
-            up: 101,
-            down: 36,
-            flat: 4
-        },
-
-        {
-            code: "A28",
-            name: "综合",
-            level: 1,
-            parent_code: null,
-            pct: 0.12,
-            stocks: 37,
-            up: 17,
-            down: 18,
-            flat: 2
-        }
-
-    ]
-
-};
 
 
 /* ===============================================================
@@ -409,7 +67,15 @@ const state = {
 
     customEnd: null,
 
-    data: mockData
+    data: {
+
+        date: null,
+
+        update_time: null,
+
+        industries: []
+
+    }
 
 };
 
@@ -453,53 +119,86 @@ const detailContent =
    Helpers
    =============================================================== */
 
+
+/**
+ * 格式化百分比
+ */
 function formatPct(value) {
 
-    if (value === null || value === undefined) {
+    if (
+        value === null ||
+        value === undefined ||
+        Number.isNaN(Number(value))
+    ) {
         return "--";
     }
 
-    const number = Number(value);
+    const number =
+        Number(value);
+
 
     if (number > 0) {
-        return "+" + number.toFixed(2) + "%";
+        return "+" +
+            number.toFixed(2) +
+            "%";
     }
 
+
     if (number < 0) {
-        return number.toFixed(2) + "%";
+        return number.toFixed(2) +
+            "%";
     }
+
 
     return "0.00%";
 }
 
 
+/**
+ * 涨跌颜色
+ */
 function pctClass(value) {
 
-    if (value > 0) {
+    const number =
+        Number(value);
+
+
+    if (number > 0) {
         return "up";
     }
 
-    if (value < 0) {
+
+    if (number < 0) {
         return "down";
     }
+
 
     return "flat";
 }
 
 
+/**
+ * 行业层级名称
+ */
 function levelName(level) {
 
     const names = {
+
         1: "一级",
         2: "二级",
         3: "三级",
         4: "四级"
+
     };
+
 
     return names[level] || "";
 }
 
 
+/**
+ * HTML 转义
+ */
 function escapeHtml(value) {
 
     return String(value)
@@ -511,45 +210,494 @@ function escapeHtml(value) {
 }
 
 
+/**
+ * 获取今天日期
+ *
+ * YYYY-MM-DD
+ */
+function getToday() {
+
+    const now =
+        new Date();
+
+
+    const year =
+        now.getFullYear();
+
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(2, "0");
+
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(2, "0");
+
+
+    return `${year}-${month}-${day}`;
+}
+
+
+/**
+ * 获取过去 N 天日期
+ *
+ * 这里按自然日计算。
+ *
+ * 后端目前的 Mock 数据每天都能生成，
+ * 后续接真实交易数据后，Service 会处理交易日。
+ */
+function getDateBefore(
+    dateString,
+    days
+) {
+
+    const date =
+        new Date(
+            `${dateString}T00:00:00`
+        );
+
+
+    date.setDate(
+        date.getDate() - days
+    );
+
+
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+
+    return `${year}-${month}-${day}`;
+}
+
+
 /* ===============================================================
-   Generate mock chart
-   后续由 API 返回真实历史数据。
- 
-   推荐：
- 
-   history: [
-       {
-           date: "2026-09-01",
-           pct: 1.21
-       }
-   ]
- 
+   API
    =============================================================== */
 
-function generateHistory(basePct) {
 
-    const result = [];
+/**
+ * 获取单日行业行情
+ *
+ * GET
+ * /api/industry/performance
+ */
+async function fetchDailyData() {
 
-    let current = 0;
+    const params =
+        new URLSearchParams();
 
-    for (let i = 0; i < 20; i++) {
 
-        const random =
-            (Math.random() - 0.46) * 0.8;
+    params.set(
+        "level",
+        state.level
+    );
 
-        current += random;
 
-        if (i === 19) {
-            current = basePct;
-        }
+    params.set(
+        "method",
+        state.method
+    );
 
-        result.push({
-            date: `09-${String(i + 1).padStart(2, "0")}`,
-            pct: current
-        });
+
+    /*
+     * 如果用户选择了自定义日期，
+     * 单日模式直接使用开始日期。
+     */
+
+    let date =
+        getToday();
+
+
+    if (
+        state.period === "custom" &&
+        state.customStart
+    ) {
+
+        date =
+            state.customStart;
+
     }
 
-    return result;
+
+    params.set(
+        "date",
+        date
+    );
+
+
+    const response =
+        await fetch(
+            `/api/industry/performance?${params.toString()}`,
+            {
+                method: "GET",
+                headers: {
+                    "Accept":
+                        "application/json"
+                }
+            }
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            `行业行情请求失败：HTTP ${response.status}`
+        );
+
+    }
+
+
+    return await response.json();
+}
+
+
+/**
+ * 获取区间行业行情
+ *
+ * GET
+ * /api/industry/performance/range
+ */
+async function fetchRangeData(
+    startDate,
+    endDate
+) {
+
+    const params =
+        new URLSearchParams();
+
+
+    params.set(
+        "start_date",
+        startDate
+    );
+
+
+    params.set(
+        "end_date",
+        endDate
+    );
+
+
+    params.set(
+        "level",
+        state.level
+    );
+
+
+    params.set(
+        "method",
+        state.method
+    );
+
+
+    const response =
+        await fetch(
+            `/api/industry/performance/range?${params.toString()}`,
+            {
+                method: "GET",
+                headers: {
+                    "Accept":
+                        "application/json"
+                }
+            }
+        );
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            `行业区间行情请求失败：HTTP ${response.status}`
+        );
+
+    }
+
+
+    return await response.json();
+}
+
+
+/* ===============================================================
+   Load Data
+   =============================================================== */
+
+
+/**
+ * 加载行业行情
+ *
+ * 根据当前 period 自动选择：
+ *
+ * 1 日
+ *     → /performance
+ *
+ * 5 / 10 / 20 日
+ *     → /performance/range
+ *
+ * 自定义
+ *     → /performance/range
+ */
+async function loadData() {
+
+    /*
+     * 防止重复请求期间状态混乱
+     */
+
+    try {
+
+        let result;
+
+
+        /* =====================================================
+           单日
+           ===================================================== */
+
+        if (
+            state.period === 1
+        ) {
+
+            result =
+                await fetchDailyData();
+
+
+            state.data = {
+
+                date:
+                    result.date,
+
+                update_time:
+                    result.update_time ||
+                    null,
+
+                industries:
+                    result.industries || []
+
+            };
+
+        }
+
+
+        /* =====================================================
+           自定义日期
+           ===================================================== */
+
+        else if (
+            state.period === "custom"
+        ) {
+
+            if (
+                !state.customStart ||
+                !state.customEnd
+            ) {
+
+                return;
+
+            }
+
+
+            result =
+                await fetchRangeData(
+                    state.customStart,
+                    state.customEnd
+                );
+
+
+            state.data = {
+
+                date:
+                    `${result.start_date} ~ ${result.end_date}`,
+
+                update_time:
+                    null,
+
+                industries:
+                    result.industries || []
+
+            };
+
+        }
+
+
+        /* =====================================================
+           快捷区间
+           ===================================================== */
+
+        else {
+
+            const endDate =
+                getToday();
+
+
+            /*
+             * 这里 period 表示区间长度。
+             *
+             * 例如：
+             *
+             * 5
+             * 10
+             * 20
+             */
+
+            const startDate =
+                getDateBefore(
+                    endDate,
+                    Number(state.period) - 1
+                );
+
+
+            result =
+                await fetchRangeData(
+                    startDate,
+                    endDate
+                );
+
+
+            state.data = {
+
+                date:
+                    `${result.start_date} ~ ${result.end_date}`,
+
+                update_time:
+                    null,
+
+                industries:
+                    result.industries || []
+
+            };
+
+        }
+
+
+        /*
+         * 如果当前选中的行业已经不存在，
+         * 后面的 renderTable 会自动选择第一项。
+         */
+
+        renderParentOptions();
+
+        renderTable();
+
+
+        /*
+         * 更新顶部日期
+         */
+
+        const dataDate =
+            document.getElementById(
+                "dataDate"
+            );
+
+
+        if (dataDate) {
+
+            dataDate.textContent =
+                state.data.date || "--";
+
+        }
+
+
+        const updateTime =
+            document.getElementById(
+                "updateTime"
+            );
+
+
+        if (updateTime) {
+
+            updateTime.textContent =
+                state.data.update_time || "--";
+
+        }
+
+
+    } catch (error) {
+
+        console.error(
+            "加载行业行情失败：",
+            error
+        );
+
+
+        renderError(
+            error.message
+        );
+
+    }
+
+}
+
+
+/* ===============================================================
+   Error
+   =============================================================== */
+
+function renderError(message) {
+
+    industryTable.innerHTML = `
+
+        <tr>
+
+            <td
+                colspan="7"
+                style="
+                    height:180px;
+                    text-align:center;
+                    color:var(--text-muted);
+                "
+            >
+
+                <div
+                    style="
+                        margin-bottom:8px;
+                        font-weight:600;
+                    "
+                >
+                    行业行情加载失败
+                </div>
+
+                <div
+                    style="
+                        font-size:12px;
+                        opacity:.7;
+                    "
+                >
+                    ${escapeHtml(message)}
+                </div>
+
+            </td>
+
+        </tr>
+
+    `;
+
+
+    detailContent.innerHTML = `
+
+        <div
+            style="
+                padding:40px;
+                text-align:center;
+                color:var(--text-muted);
+            "
+        >
+            暂无行业详情
+        </div>
+
+    `;
+
 }
 
 
@@ -561,39 +709,60 @@ function getFilteredData() {
 
     let list =
         state.data.industries
-            .filter(item =>
-                item.level === Number(state.level)
+            .filter(
+                item =>
+                    item.level ===
+                    Number(state.level)
             );
 
 
-    if (state.parent !== "all") {
+    /*
+     * 父行业筛选
+     */
+
+    if (
+        state.parent !== "all"
+    ) {
 
         list =
             list.filter(
                 item =>
-                    item.parent_code === state.parent
+                    item.parent_code ===
+                    state.parent
             );
+
     }
 
 
-    if (state.search.trim()) {
+    /*
+     * 搜索
+     */
+
+    if (
+        state.search.trim()
+    ) {
 
         const keyword =
             state.search
                 .trim()
                 .toLowerCase();
 
+
         list =
             list.filter(item => {
 
                 return (
-                    item.name
+
+                    String(item.name)
                         .toLowerCase()
                         .includes(keyword)
+
                     ||
-                    item.code
+
+                    String(item.code)
                         .toLowerCase()
                         .includes(keyword)
+
                 );
 
             });
@@ -601,18 +770,36 @@ function getFilteredData() {
     }
 
 
-    list.sort((a, b) => {
+    /*
+     * 排序
+     */
 
-        if (state.sort === "desc") {
-            return b.pct - a.pct;
+    list.sort(
+        (a, b) => {
+
+            if (
+                state.sort === "desc"
+            ) {
+
+                return (
+                    Number(b.pct) -
+                    Number(a.pct)
+                );
+
+            }
+
+
+            return (
+                Number(a.pct) -
+                Number(b.pct)
+            );
+
         }
-
-        return a.pct - b.pct;
-
-    });
+    );
 
 
     return list;
+
 }
 
 
@@ -625,33 +812,92 @@ function renderParentOptions() {
     const targetLevel =
         Number(state.level);
 
-    if (targetLevel <= 1) {
+
+    /*
+     * 一级行业没有父行业
+     */
+
+    if (
+        targetLevel <= 1
+    ) {
 
         parentSelect.innerHTML = `
+
             <option value="all">
                 全部行业
             </option>
+
         `;
 
-        parentSelect.disabled = true;
+
+        parentSelect.disabled =
+            true;
+
+
+        state.parent =
+            "all";
+
 
         return;
+
     }
 
 
-    parentSelect.disabled = false;
+    parentSelect.disabled =
+        false;
 
 
     const parentLevel =
         targetLevel - 1;
 
 
+    /*
+     * 从当前 API 数据中寻找父行业。
+     *
+     * 注意：
+     *
+     * 如果当前后端只返回当前 level，
+     * 那么这里可能拿不到父行业。
+     *
+     * MVP 阶段暂时保持兼容。
+     */
+
     const parents =
         state.data.industries
             .filter(
                 item =>
-                    item.level === parentLevel
+                    item.level ===
+                    parentLevel
             );
+
+
+    /*
+     * 如果 API 没有返回父级数据，
+     * 暂时保留“全部行业”。
+     */
+
+    if (!parents.length) {
+
+        parentSelect.innerHTML = `
+
+            <option value="all">
+                全部行业
+            </option>
+
+        `;
+
+
+        parentSelect.value =
+            "all";
+
+
+        state.parent =
+            "all";
+
+
+        return;
+
+    }
 
 
     parentSelect.innerHTML = `
@@ -662,7 +908,9 @@ function renderParentOptions() {
 
         ${parents.map(item => `
 
-            <option value="${escapeHtml(item.code)}">
+            <option
+                value="${escapeHtml(item.code)}"
+            >
                 ${escapeHtml(item.name)}
             </option>
 
@@ -673,6 +921,7 @@ function renderParentOptions() {
 
     parentSelect.value =
         state.parent;
+
 }
 
 
@@ -688,39 +937,72 @@ function renderSummary(list) {
 
     const up =
         list.filter(
-            item => item.pct > 0
+            item =>
+                Number(item.pct) > 0
         ).length;
 
 
     const down =
         list.filter(
-            item => item.pct < 0
+            item =>
+                Number(item.pct) < 0
         ).length;
 
 
     const average =
         count
             ? list.reduce(
-                (sum, item) =>
-                    sum + item.pct,
+                (
+                    sum,
+                    item
+                ) =>
+                    sum +
+                    Number(item.pct),
                 0
             ) / count
             : 0;
 
 
-    document.getElementById(
-        "industryCount"
-    ).textContent = count;
+    const industryCount =
+        document.getElementById(
+            "industryCount"
+        );
 
 
-    document.getElementById(
-        "upIndustryCount"
-    ).textContent = up;
+    if (industryCount) {
+
+        industryCount.textContent =
+            count;
+
+    }
 
 
-    document.getElementById(
-        "downIndustryCount"
-    ).textContent = down;
+    const upIndustryCount =
+        document.getElementById(
+            "upIndustryCount"
+        );
+
+
+    if (upIndustryCount) {
+
+        upIndustryCount.textContent =
+            up;
+
+    }
+
+
+    const downIndustryCount =
+        document.getElementById(
+            "downIndustryCount"
+        );
+
+
+    if (downIndustryCount) {
+
+        downIndustryCount.textContent =
+            down;
+
+    }
 
 
     const averageElement =
@@ -729,13 +1011,17 @@ function renderSummary(list) {
         );
 
 
-    averageElement.textContent =
-        formatPct(average);
+    if (averageElement) {
+
+        averageElement.textContent =
+            formatPct(average);
 
 
-    averageElement.className =
-        "summary-value " +
-        pctClass(average);
+        averageElement.className =
+            "summary-value " +
+            pctClass(average);
+
+    }
 
 }
 
@@ -774,7 +1060,22 @@ function renderTable() {
 
         `;
 
+        detailContent.innerHTML = `
+
+            <div
+                style="
+                    padding:40px;
+                    text-align:center;
+                    color:var(--text-muted);
+                "
+            >
+                暂无行业数据
+            </div>
+
+        `;
+
         return;
+
     }
 
 
@@ -782,7 +1083,9 @@ function renderTable() {
         Math.max(
             ...list.map(
                 item =>
-                    Math.abs(item.pct)
+                    Math.abs(
+                        Number(item.pct)
+                    )
             ),
             1
         );
@@ -799,8 +1102,10 @@ function renderTable() {
                 const width =
                     Math.min(
                         Math.abs(pct)
-                        / maxAbs
-                        * 100,
+                        /
+                        maxAbs
+                        *
+                        100,
                         100
                     );
 
@@ -867,7 +1172,7 @@ function renderTable() {
                         <td>
 
                             <span class="count-up">
-                                ${item.up}
+                                ${item.up ?? "--"}
                             </span>
 
                         </td>
@@ -876,14 +1181,14 @@ function renderTable() {
                         <td>
 
                             <span class="count-down">
-                                ${item.down}
+                                ${item.down ?? "--"}
                             </span>
 
                         </td>
 
 
                         <td>
-                            ${item.stocks}
+                            ${item.stocks ?? "--"}
                         </td>
 
 
@@ -909,6 +1214,7 @@ function renderTable() {
                                 class="expand-button"
                                 data-detail="${escapeHtml(item.code)}"
                                 title="查看详情"
+                                type="button"
                             >
                                 →
                             </button>
@@ -923,6 +1229,10 @@ function renderTable() {
         ).join("");
 
 
+    /*
+     * 详情按钮
+     */
+
     document
         .querySelectorAll(
             "[data-detail]"
@@ -935,8 +1245,10 @@ function renderTable() {
 
                     event.stopPropagation();
 
+
                     const code =
                         button.dataset.detail;
+
 
                     selectIndustry(code);
 
@@ -945,6 +1257,10 @@ function renderTable() {
 
         });
 
+
+    /*
+     * 行点击
+     */
 
     document
         .querySelectorAll(
@@ -970,10 +1286,12 @@ function renderTable() {
      * 自动选择第一项
      */
 
-    if (!state.selectedCode ||
+    if (
+        !state.selectedCode ||
         !list.some(
             item =>
-                item.code === state.selectedCode
+                item.code ===
+                state.selectedCode
         )
     ) {
 
@@ -981,7 +1299,94 @@ function renderTable() {
             list[0].code
         );
 
+    } else {
+
+        selectIndustry(
+            state.selectedCode
+        );
+
     }
+
+}
+
+
+/* ===============================================================
+   History
+   =============================================================== */
+
+
+/**
+ * 当前后端 MVP 的 range API
+ * 返回的是区间累计涨跌幅，
+ * 还没有返回每天的 history。
+ *
+ * 因此这里暂时使用一个轻量展示数据，
+ * 避免详情区域因为 API 没有 history 而无法显示。
+ *
+ * 后续 Service 可以直接增加：
+ *
+ * history: [
+ *     {
+ *         date: "2026-09-01",
+ *         pct: 1.21
+ *     }
+ * ]
+ *
+ * 到时候只需要把这里替换成：
+ *
+ * renderChart(item.history)
+ */
+function generateHistory(
+    basePct
+) {
+
+    const result = [];
+
+
+    let current = 0;
+
+
+    for (
+        let i = 0;
+        i < 20;
+        i++
+    ) {
+
+        const random =
+            (
+                Math.random() -
+                0.46
+            ) * 0.8;
+
+
+        current += random;
+
+
+        if (
+            i === 19
+        ) {
+
+            current =
+                Number(basePct);
+
+        }
+
+
+        result.push({
+
+            date:
+                String(i + 1)
+                    .padStart(2, "0"),
+
+            pct:
+                current
+
+        });
+
+    }
+
+
+    return result;
 
 }
 
@@ -997,10 +1402,15 @@ function renderChart(history) {
     const height = 190;
 
     const padding = {
+
         left: 12,
+
         right: 12,
+
         top: 12,
+
         bottom: 22
+
     };
 
 
@@ -1078,7 +1488,10 @@ function renderChart(history) {
 
     const points =
         history.map(
-            (item, index) =>
+            (
+                item,
+                index
+            ) =>
                 `${x(index)},${y(item.pct)}`
         );
 
@@ -1102,8 +1515,11 @@ function renderChart(history) {
     const first =
         history[0];
 
+
     const last =
-        history[history.length - 1];
+        history[
+        history.length - 1
+        ];
 
 
     return `
@@ -1164,7 +1580,7 @@ function renderChart(history) {
                 x="${padding.left}"
                 y="${height - 5}"
             >
-                ${first.date}
+                ${escapeHtml(first.date)}
             </text>
 
 
@@ -1174,7 +1590,7 @@ function renderChart(history) {
                 x="${width - padding.right}"
                 y="${height - 5}"
             >
-                ${last.date}
+                ${escapeHtml(last.date)}
             </text>
 
         </svg>
@@ -1198,7 +1614,9 @@ function selectIndustry(code) {
 
 
     if (!item) {
+
         return;
+
     }
 
 
@@ -1206,31 +1624,55 @@ function selectIndustry(code) {
         code;
 
 
+    /*
+     * 当前 MVP 后端没有返回历史曲线。
+     *
+     * 暂时生成展示曲线。
+     *
+     * 后续 API 增加 history 后，
+     * 这里直接使用 item.history。
+     */
+
     const history =
-        generateHistory(
-            item.pct
-        );
+        item.history &&
+            item.history.length
+            ? item.history
+            : generateHistory(
+                item.pct
+            );
 
 
     const total =
-        item.stocks;
+        Number(item.stocks) || 0;
+
+
+    const up =
+        Number(item.up) || 0;
+
+
+    const down =
+        Number(item.down) || 0;
+
+
+    const flat =
+        Number(item.flat) || 0;
 
 
     const upPct =
         total
-            ? item.up / total * 100
+            ? up / total * 100
             : 0;
 
 
     const downPct =
         total
-            ? item.down / total * 100
+            ? down / total * 100
             : 0;
 
 
     const flatPct =
         total
-            ? item.flat / total * 100
+            ? flat / total * 100
             : 0;
 
 
@@ -1265,9 +1707,12 @@ function selectIndustry(code) {
                 </div>
 
                 <div class="detail-pct-label">
+
                     ${state.period === 1
             ? "当日涨跌"
-            : `近 ${state.period} 日涨跌`}
+            : "区间涨跌"
+        }
+
                 </div>
 
             </div>
@@ -1284,12 +1729,18 @@ function selectIndustry(code) {
                 </div>
 
                 <div class="chart-period">
+
                     ${state.period === 1
             ? "当日"
-            : `近 ${state.period} 个交易日`}
+            : state.period === "custom"
+                ? `${state.customStart || "--"} ~ ${state.customEnd || "--"}`
+                : `近 ${state.period} 个交易日`
+        }
+
                 </div>
 
             </div>
+
 
             ${renderChart(history)}
 
@@ -1306,7 +1757,7 @@ function selectIndustry(code) {
                 </div>
 
                 <div class="detail-stat-value">
-                    ${item.stocks}
+                    ${item.stocks ?? "--"}
                 </div>
 
             </div>
@@ -1324,7 +1775,7 @@ function selectIndustry(code) {
                         count-up
                     "
                 >
-                    ${item.up}
+                    ${item.up ?? "--"}
                 </div>
 
             </div>
@@ -1342,7 +1793,7 @@ function selectIndustry(code) {
                         count-down
                     "
                 >
-                    ${item.down}
+                    ${item.down ?? "--"}
                 </div>
 
             </div>
@@ -1355,7 +1806,7 @@ function selectIndustry(code) {
                 </div>
 
                 <div class="detail-stat-value">
-                    ${item.flat}
+                    ${item.flat ?? "--"}
                 </div>
 
             </div>
@@ -1394,15 +1845,15 @@ function selectIndustry(code) {
             <div class="distribution-legend">
 
                 <span>
-                    上涨 ${item.up}
+                    上涨 ${item.up ?? "--"}
                 </span>
 
                 <span>
-                    平盘 ${item.flat}
+                    平盘 ${item.flat ?? "--"}
                 </span>
 
                 <span>
-                    下跌 ${item.down}
+                    下跌 ${item.down ?? "--"}
                 </span>
 
             </div>
@@ -1410,84 +1861,6 @@ function selectIndustry(code) {
         </div>
 
     `;
-
-}
-
-
-/* ===============================================================
-   Load Data
-   =============================================================== */
-
-async function loadData() {
-
-    /*
-     * ============================================================
-     * 未来接 FastAPI 时，主要修改这里。
-     *
-     * const params = new URLSearchParams({
-     *
-     *     level: state.level,
-     *     parent: state.parent,
-     *     period: state.period,
-     *     method: state.method
-     *
-     * });
-     *
-     * if (state.period === "custom") {
-     *
-     *     params.set(
-     *         "start_date",
-     *         state.customStart
-     *     );
-     *
-     *     params.set(
-     *         "end_date",
-     *         state.customEnd
-     *     );
-     *
-     * }
-     *
-     * const response =
-     *     await fetch(
-     *         `/api/industry/performance?${params}`
-     *     );
-     *
-     * state.data =
-     *     await response.json();
-     *
-     * ============================================================
-     */
-
-
-    /*
-     * MVP 阶段直接使用本地数据。
-     */
-
-    await new Promise(
-        resolve =>
-            setTimeout(resolve, 180)
-    );
-
-
-    state.data =
-        mockData;
-
-
-    document.getElementById(
-        "dataDate"
-    ).textContent =
-        state.data.date;
-
-
-    document.getElementById(
-        "updateTime"
-    ).textContent =
-        state.data.update_time;
-
-
-    renderParentOptions();
-
-    renderTable();
 
 }
 
@@ -1505,10 +1878,17 @@ levelSelect.addEventListener(
                 levelSelect.value
             );
 
+
         state.parent =
             "all";
 
+
+        state.selectedCode =
+            null;
+
+
         renderParentOptions();
+
 
         loadData();
 
@@ -1527,7 +1907,17 @@ parentSelect.addEventListener(
         state.parent =
             parentSelect.value;
 
-        loadData();
+
+        state.selectedCode =
+            null;
+
+
+        /*
+         * Parent 是前端筛选，
+         * 不需要重新请求 API。
+         */
+
+        renderTable();
 
     }
 );
@@ -1570,8 +1960,16 @@ periodSelect.addEventListener(
             });
 
 
-        if (state.period !== "custom") {
+        if (
+            state.period !== "custom"
+        ) {
+
+            state.selectedCode =
+                null;
+
+
             loadData();
+
         }
 
     }
@@ -1624,6 +2022,10 @@ document
                     });
 
 
+                state.selectedCode =
+                    null;
+
+
                 loadData();
 
             }
@@ -1668,6 +2070,10 @@ document
                     button.dataset.method;
 
 
+                state.selectedCode =
+                    null;
+
+
                 loadData();
 
             }
@@ -1686,6 +2092,7 @@ searchInput.addEventListener(
 
         state.search =
             searchInput.value;
+
 
         renderTable();
 
@@ -1752,6 +2159,7 @@ refreshButton.addEventListener(
             refreshButton.textContent =
                 originalText;
 
+
             refreshButton.disabled =
                 false;
 
@@ -1772,10 +2180,15 @@ startDate.addEventListener(
         state.customStart =
             startDate.value;
 
+
         if (
             state.customStart &&
             state.customEnd
         ) {
+
+            state.selectedCode =
+                null;
+
 
             loadData();
 
@@ -1792,10 +2205,15 @@ endDate.addEventListener(
         state.customEnd =
             endDate.value;
 
+
         if (
             state.customStart &&
             state.customEnd
         ) {
+
+            state.selectedCode =
+                null;
+
 
             loadData();
 
@@ -1811,4 +2229,8 @@ endDate.addEventListener(
 
 renderParentOptions();
 
-renderTable();
+/*
+ * 页面第一次进入：
+ * 直接请求 FastAPI。
+ */
+loadData();
