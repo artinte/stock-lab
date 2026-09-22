@@ -200,157 +200,191 @@
                 </div>
             </div>
 
+
             <div class="discover-grid">
-                <article class="discover-card discover-card-primary" onclick="scrollToScreening()">
-                    <div class="discover-card-top">
 
-                        <span class="discover-number">
-                            01
-                        </span>
+                <!-- 股票筛选 -->
+                <a class="discover-card discover-card-screen" href="stock_screening.html">
 
-                        <span class="discover-status">
-                            AVAILABLE
-                        </span>
+                    <div class="card-glow"></div>
+
+                    <div class="card-top">
+                        <span class="card-index">01</span>
+                        <span class="card-kicker">SCREEN</span>
+                    </div>
+
+                    <div class="card-body">
+                        <h3>股票筛选</h3>
+                        <p>从全市场找到值得研究的股票</p>
+                    </div>
+
+                    <div class="screen-visual">
+                        <div class="screen-ring ring-1"></div>
+                        <div class="screen-ring ring-2"></div>
+                        <div class="screen-ring ring-3"></div>
+
+                        <div class="screen-cross"></div>
+
+                        <i class="screen-point point-1"></i>
+                        <i class="screen-point point-2"></i>
+                        <i class="screen-point point-3"></i>
+                        <i class="screen-point point-4"></i>
+
+                        <div class="screen-target"></div>
+                    </div>
+
+                    <div class="card-bottom">
+                        <span>开始筛选</span>
+                        <span class="card-arrow">↗</span>
+                    </div>
+
+                </a>
+
+
+                <!-- 行业行情 -->
+                <a class="discover-card discover-card-industry" href="industry_performance.html">
+
+                    <div class="card-glow"></div>
+
+                    <div class="card-top">
+                        <span class="card-index">02</span>
+                        <span class="card-kicker">INDUSTRY</span>
+                    </div>
+
+                    <div class="card-body">
+                        <h3>行业行情</h3>
+                        <p>观察行业强弱与市场轮动</p>
+                    </div>
+
+                    <div class="industry-visual">
+
+                        <div class="industry-line"></div>
+
+                        <div class="industry-bars">
+                            <i style="height:38%"></i>
+                            <i style="height:52%"></i>
+                            <i style="height:44%"></i>
+                            <i style="height:67%"></i>
+                            <i style="height:61%"></i>
+                            <i style="height:82%"></i>
+                            <i style="height:74%"></i>
+                            <i style="height:94%"></i>
+                        </div>
+
+                        <div class="industry-dot"></div>
 
                     </div>
 
-                    <div class="discover-icon">
-                        ◇
+                    <div class="card-bottom">
+                        <span>浏览行业</span>
+                        <span class="card-arrow">↗</span>
                     </div>
 
-
-                    <h3>
-                        股票筛选
-                    </h3>
+                </a>
 
 
-                    <p>
-                        根据行业、市值、估值、盈利能力、
-                        成长能力和技术指标筛选股票。
-                    </p>
+                <!-- 市场热点 -->
+                <a class="discover-card discover-card-hot" href="market_hotspots.html">
 
+                    <div class="card-glow"></div>
 
-                    <strong>
-                        开始筛选 →
-                    </strong>
-
-                </article>
-
-                <article class="discover-card" onclick="filterByCategory('technology')">
-
-                    <div class="discover-card-top">
-
-                        <span class="discover-number">
-                            02
-                        </span>
-
-                        <span class="discover-status">
-                            MARKET
-                        </span>
-
+                    <div class="card-top">
+                        <span class="card-index">03</span>
+                        <span class="card-kicker">MARKET</span>
                     </div>
 
-
-                    <div class="discover-icon">
-                        ◎
+                    <div class="card-body">
+                        <h3>市场热点</h3>
+                        <p>捕捉正在发生的市场变化</p>
                     </div>
 
+                    <div class="hot-visual">
 
-                    <h3>
-                        行业与主题
-                    </h3>
+                        <div class="hot-wave wave-1"></div>
+                        <div class="hot-wave wave-2"></div>
+                        <div class="hot-wave wave-3"></div>
 
+                        <div class="hot-signal">
+                            <span></span>
+                        </div>
 
-                    <p>
-                        从半导体、人工智能、新能源、
-                        医药、金融等方向寻找股票。
-                    </p>
-
-
-                    <strong>
-                        浏览行业 →
-                    </strong>
-
-                </article>
-
-
-
-                <article class="discover-card" onclick="showStockPool('hot')">
-
-                    <div class="discover-card-top">
-
-                        <span class="discover-number">
-                            03
-                        </span>
-
-                        <span class="discover-status">
-                            LIVE
-                        </span>
+                        <i class="hot-point hp-1"></i>
+                        <i class="hot-point hp-2"></i>
+                        <i class="hot-point hp-3"></i>
+                        <i class="hot-point hp-4"></i>
 
                     </div>
 
-
-                    <div class="discover-icon">
-                        ↗
+                    <div class="card-bottom">
+                        <span>发现热点</span>
+                        <span class="card-arrow">↗</span>
                     </div>
 
-
-                    <h3>
-                        市场热点
-                    </h3>
+                </a>
 
 
-                    <p>
-                        查看当前市场关注度较高、
-                        活跃度较高的股票和主题方向。
-                    </p>
+                <!-- 我的股票池 -->
+                <a class="discover-card discover-card-pool" href="stock_pool.html">
 
+                    <div class="card-glow"></div>
 
-                    <strong>
-                        查看热点 →
-                    </strong>
+                    <div class="card-top">
+                        <span class="card-index">04</span>
+                        <span class="card-kicker">WATCHLIST</span>
+                    </div>
 
-                </article>
+                    <div class="card-body">
+                        <h3>我的股票池</h3>
+                        <p>把值得关注的股票放在一起</p>
+                    </div>
 
+                    <div class="pool-visual">
 
+                        <div class="pool-sheet sheet-back"></div>
+                        <div class="pool-sheet sheet-mid"></div>
 
-                <article class="discover-card" onclick="showStockPool('watchlist')">
+                        <div class="pool-sheet sheet-front">
 
-                    <div class="discover-card-top">
+                            <div class="pool-head">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
 
-                        <span class="discover-number">
-                            04
-                        </span>
+                            <div class="pool-row">
+                                <i></i>
+                                <b></b>
+                            </div>
 
-                        <span class="discover-status">
-                            PERSONAL
-                        </span>
+                            <div class="pool-row">
+                                <i></i>
+                                <b></b>
+                            </div>
+
+                            <div class="pool-row">
+                                <i></i>
+                                <b></b>
+                            </div>
+
+                            <div class="pool-chart">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+
+                        </div>
 
                     </div>
 
-
-                    <div class="discover-icon">
-                        ☆
+                    <div class="card-bottom">
+                        <span>进入股票池</span>
+                        <span class="card-arrow">↗</span>
                     </div>
 
-
-                    <h3>
-                        我的股票池
-                    </h3>
-
-
-                    <p>
-                        保存你关注的股票，
-                        建立自己的长期研究列表。
-                    </p>
-
-
-                    <strong>
-                        查看自选 →
-                    </strong>
-
-                </article>
-
+                </a>
 
             </div>
 

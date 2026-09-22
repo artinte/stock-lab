@@ -546,152 +546,840 @@
 }
 
 
+/* =========================================================
+   Stock Lab · Discover Cards
+   四个功能入口
+   ========================================================= */
 
+.discover-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
 
 
 /* =========================================================
-   Discover
-========================================================= */
-
-.discover-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 16px;
-
-}
-
+   Card
+   ========================================================= */
 
 .discover-card {
+    position: relative;
+    display: block;
 
-    min-height: 240px;
+    height: 285px;
+    padding: 23px 22px;
 
-    padding: 22px;
+    overflow: hidden;
 
-    border:
-        1px solid var(--border-color);
+    border: 1px solid rgba(20, 28, 45, 0.07);
+    border-radius: 22px;
 
-    background:
-        var(--panel-bg);
+    background: #ffffff;
+
+    color: inherit;
+    text-decoration: none;
 
     cursor: pointer;
 
+    box-shadow:
+        0 6px 24px rgba(24, 32, 48, 0.035);
+
     transition:
-        transform .18s ease,
-        border-color .18s ease,
-        box-shadow .18s ease;
-
+        transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1),
+        box-shadow 0.38s ease,
+        border-color 0.38s ease;
 }
-
 
 .discover-card:hover {
+    transform: translateY(-6px);
 
-    transform:
-        translateY(-3px);
-
-    border-color: #9da4ad;
+    border-color: rgba(20, 28, 45, 0.10);
 
     box-shadow:
-        0 12px 28px rgba(0, 0, 0, .05);
-
+        0 16px 42px rgba(24, 32, 48, 0.09);
 }
 
 
-.discover-card-primary {
+/* =========================================================
+   Card Top
+   ========================================================= */
 
-    background:
-        linear-gradient(145deg,
-            #f9fafb,
-            #f1f3f5);
+.card-top {
+    position: relative;
+    z-index: 10;
 
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+}
+
+.card-index {
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+
+    letter-spacing: 0.04em;
+
+    color: #1b2230;
+}
+
+.card-kicker {
+    padding-left: 9px;
+
+    border-left: 1px solid #dfe3e9;
+
+    font-size: 8px;
+    font-weight: 650;
+    line-height: 1;
+
+    letter-spacing: 0.12em;
+
+    color: #969da8;
 }
 
 
-.discover-card-top {
+/* =========================================================
+   Card Content
+   ========================================================= */
 
+.card-body {
+    position: relative;
+    z-index: 10;
+
+    margin-top: 45px;
+}
+
+.card-body h3 {
+    margin: 0;
+
+    font-size: 24px;
+    font-weight: 720;
+    line-height: 1.2;
+
+    letter-spacing: -0.045em;
+
+    color: #151a24;
+}
+
+.card-body p {
+    max-width: 155px;
+
+    margin: 10px 0 0;
+
+    font-size: 11px;
+    line-height: 1.7;
+
+    color: #9299a5;
+}
+
+
+/* =========================================================
+   Card Bottom
+   ========================================================= */
+
+.card-bottom {
+    position: absolute;
+    z-index: 12;
+
+    left: 22px;
+    right: 22px;
+    bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    font-size: 11px;
+    font-weight: 650;
+
+    color: #252c39;
+}
+
+.card-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    background: #f4f5f7;
+
+    font-size: 14px;
+
+    transition:
+        transform 0.35s ease,
+        background 0.35s ease;
+}
+
+.discover-card:hover .card-arrow {
+    transform: translate(3px, -3px);
+
+    background: #eceef2;
+}
+
+
+/* =========================================================
+   Background Glow
+   ========================================================= */
+
+.card-glow {
+    position: absolute;
+
+    width: 210px;
+    height: 210px;
+
+    right: -85px;
+    bottom: -105px;
+
+    border-radius: 50%;
+
+    filter: blur(8px);
+
+    opacity: 0.7;
+
+    pointer-events: none;
+
+    transition:
+        transform 0.6s ease,
+        opacity 0.4s ease;
+}
+
+.discover-card:hover .card-glow {
+    transform: scale(1.2);
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   01 · 股票筛选
+   ========================================================= */
+
+.discover-card-screen .card-glow {
+    background: rgba(91, 104, 255, 0.16);
+}
+
+.screen-visual {
+    position: absolute;
+
+    right: -18px;
+    bottom: -12px;
+
+    width: 175px;
+    height: 175px;
+
+    opacity: 0.95;
+
+    pointer-events: none;
+
+    transition:
+        transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.discover-card-screen:hover .screen-visual {
+    transform: scale(1.05) rotate(3deg);
+}
+
+
+/* 圆环 */
+
+.screen-ring {
+    position: absolute;
+
+    border: 1px solid rgba(94, 107, 242, 0.17);
+
+    border-radius: 50%;
+}
+
+.ring-1 {
+    width: 160px;
+    height: 160px;
+
+    right: 0;
+    bottom: 0;
+}
+
+.ring-2 {
+    width: 113px;
+    height: 113px;
+
+    right: 24px;
+    bottom: 24px;
+}
+
+.ring-3 {
+    width: 68px;
+    height: 68px;
+
+    right: 46px;
+    bottom: 46px;
+}
+
+
+/* 斜线 */
+
+.screen-cross {
+    position: absolute;
+
+    width: 135px;
+    height: 1px;
+
+    right: 13px;
+    bottom: 87px;
+
+    background: rgba(94, 107, 242, 0.13);
+
+    transform: rotate(-34deg);
+}
+
+
+/* 中心目标 */
+
+.screen-target {
+    position: absolute;
+
+    right: 73px;
+    bottom: 73px;
+
+    width: 17px;
+    height: 17px;
+
+    border: 5px solid #6573ef;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 0 7px rgba(101, 115, 239, 0.08),
+        0 0 28px rgba(101, 115, 239, 0.24);
+
+    transition: transform 0.35s ease;
+}
+
+.discover-card-screen:hover .screen-target {
+    transform: scale(1.18);
+}
+
+
+/* 节点 */
+
+.screen-point {
+    position: absolute;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #8a96ff;
+}
+
+.point-1 {
+    right: 131px;
+    bottom: 130px;
+}
+
+.point-2 {
+    right: 29px;
+    bottom: 125px;
+}
+
+.point-3 {
+    right: 136px;
+    bottom: 36px;
+}
+
+.point-4 {
+    right: 32px;
+    bottom: 37px;
+}
+
+
+/* =========================================================
+   02 · 行业行情
+   ========================================================= */
+
+.discover-card-industry .card-glow {
+    background: rgba(25, 188, 143, 0.15);
+}
+
+.industry-visual {
+    position: absolute;
+
+    right: -8px;
+    bottom: 13px;
+
+    width: 185px;
+    height: 145px;
+
+    pointer-events: none;
+
+    transition:
+        transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.discover-card-industry:hover .industry-visual {
+    transform: translateY(-5px);
+}
+
+
+/* 柱状图 */
+
+.industry-bars {
+    position: absolute;
+
+    right: 8px;
+    bottom: 10px;
+
+    display: flex;
+    align-items: flex-end;
+
+    gap: 7px;
+
+    width: 170px;
+    height: 125px;
+
+    padding-bottom: 1px;
+
+    border-bottom: 1px solid rgba(31, 178, 138, 0.15);
+}
+
+.industry-bars i {
+    display: block;
+
+    width: 15px;
+
+    border-radius: 6px 6px 2px 2px;
+
+    background: linear-gradient(
+        to top,
+        rgba(35, 184, 142, 0.10),
+        rgba(35, 184, 142, 0.38)
+    );
+
+    transform-origin: bottom;
+
+    transition:
+        transform 0.35s ease;
+}
+
+.discover-card-industry:hover .industry-bars i {
+    transform: scaleY(1.08);
+}
+
+.industry-bars i:nth-child(8) {
+    background: linear-gradient(
+        to top,
+        rgba(35, 184, 142, 0.18),
+        rgba(35, 184, 142, 0.62)
+    );
+}
+
+
+/* 趋势线 */
+
+.industry-line {
+    position: absolute;
+
+    right: 11px;
+    bottom: 57px;
+
+    width: 163px;
+    height: 58px;
+
+    border-top: 1.5px solid rgba(29, 179, 139, 0.46);
+
+    transform: skewY(-18deg);
+
+    opacity: 0.8;
+}
+
+
+/* 最高点 */
+
+.industry-dot {
+    position: absolute;
+
+    right: 19px;
+    bottom: 101px;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #25b58c;
+
+    box-shadow:
+        0 0 0 6px rgba(37, 181, 140, 0.08),
+        0 0 18px rgba(37, 181, 140, 0.22);
+}
+
+
+/* =========================================================
+   03 · 市场热点
+   ========================================================= */
+
+.discover-card-hot .card-glow {
+    background: rgba(255, 137, 66, 0.16);
+}
+
+.hot-visual {
+    position: absolute;
+
+    right: -17px;
+    bottom: -10px;
+
+    width: 185px;
+    height: 175px;
+
+    pointer-events: none;
+
+    transition:
+        transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.discover-card-hot:hover .hot-visual {
+    transform: scale(1.04);
+}
+
+
+/* 热点波纹 */
+
+.hot-wave {
+    position: absolute;
+
+    border: 1px solid rgba(255, 137, 67, 0.18);
+
+    border-radius: 50%;
+}
+
+.wave-1 {
+    width: 165px;
+    height: 105px;
+
+    right: 4px;
+    bottom: 30px;
+
+    transform: rotate(-20deg);
+}
+
+.wave-2 {
+    width: 125px;
+    height: 79px;
+
+    right: 24px;
+    bottom: 42px;
+
+    transform: rotate(-20deg);
+}
+
+.wave-3 {
+    width: 83px;
+    height: 52px;
+
+    right: 45px;
+    bottom: 56px;
+
+    transform: rotate(-20deg);
+}
+
+
+/* 中心信号 */
+
+.hot-signal {
+    position: absolute;
+
+    right: 77px;
+    bottom: 71px;
+
+    width: 19px;
+    height: 19px;
+
+    border-radius: 50%;
+
+    background: #ff8d4e;
+
+    box-shadow:
+        0 0 0 8px rgba(255, 141, 78, 0.08),
+        0 0 35px rgba(255, 141, 78, 0.3);
+
+    transition: transform 0.35s ease;
+}
+
+.discover-card-hot:hover .hot-signal {
+    transform: scale(1.16);
+}
+
+.hot-signal span {
+    position: absolute;
+
+    inset: 6px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+}
+
+
+/* 热点节点 */
+
+.hot-point {
+    position: absolute;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: #ffad7e;
+}
+
+.hp-1 {
+    right: 151px;
+    bottom: 106px;
+}
+
+.hp-2 {
+    right: 120px;
+    bottom: 141px;
+}
+
+.hp-3 {
+    right: 36px;
+    bottom: 117px;
+}
+
+.hp-4 {
+    right: 26px;
+    bottom: 44px;
+}
+
+
+/* =========================================================
+   04 · 我的股票池
+   ========================================================= */
+
+.discover-card-pool .card-glow {
+    background: rgba(142, 93, 235, 0.16);
+}
+
+.pool-visual {
+    position: absolute;
+
+    right: -5px;
+    bottom: 5px;
+
+    width: 190px;
+    height: 165px;
+
+    pointer-events: none;
+
+    transition:
+        transform 0.55s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.discover-card-pool:hover .pool-visual {
+    transform: translateY(-6px) rotate(-2deg);
+}
+
+
+/* 股票卡片 */
+
+.pool-sheet {
+    position: absolute;
+
+    width: 128px;
+    height: 98px;
+
+    right: 22px;
+    bottom: 22px;
+
+    border: 1px solid rgba(137, 92, 225, 0.13);
+    border-radius: 14px;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    box-shadow:
+        0 12px 30px rgba(94, 66, 143, 0.06);
+}
+
+.sheet-back {
+    transform: rotate(10deg);
+
+    opacity: 0.32;
+}
+
+.sheet-mid {
+    transform: rotate(3deg);
+
+    opacity: 0.6;
+}
+
+.sheet-front {
+    padding: 13px;
+
+    transform: rotate(-6deg);
+
+    background: rgba(255, 255, 255, 0.97);
+
+    transition:
+        transform 0.45s ease;
+}
+
+.discover-card-pool:hover .sheet-front {
+    transform: rotate(-2deg) translate(4px, -3px);
+}
+
+
+/* 顶部圆点 */
+
+.pool-head {
+    display: flex;
+
+    gap: 4px;
+
+    margin-bottom: 9px;
+}
+
+.pool-head span {
+    width: 5px;
+    height: 5px;
+
+    border-radius: 50%;
+
+    background: #9564e7;
+}
+
+
+/* 股票行 */
+
+.pool-row {
     display: flex;
 
     align-items: center;
-
     justify-content: space-between;
 
+    margin-bottom: 6px;
 }
 
-
-.discover-number {
-
-    color: #a1a7af;
-
-    font-size: 11px;
-
-    font-weight: 700;
-
-}
-
-
-.discover-status {
-
-    color: #9299a3;
-
-    font-size: 9px;
-
-    font-weight: 700;
-
-    letter-spacing: .1em;
-
-}
-
-
-.discover-icon {
-
-    margin:
-        25px 0 14px;
-
-    font-size: 25px;
-
-}
-
-
-.discover-card h3 {
-
-    margin: 0 0 9px;
-
-    font-size: 18px;
-
-}
-
-
-.discover-card p {
-
-    min-height: 62px;
-
-    margin: 0;
-
-    color: #7d858f;
-
-    font-size: 12px;
-
-    line-height: 1.75;
-
-}
-
-
-.discover-card>strong {
-
+.pool-row i {
     display: block;
 
-    margin-top: 16px;
+    width: 43px;
+    height: 4px;
 
-    color: #343a40;
+    border-radius: 4px;
 
-    font-size: 12px;
+    background: rgba(105, 83, 147, 0.12);
+}
+
+.pool-row b {
+    display: block;
+
+    width: 17px;
+    height: 4px;
+
+    border-radius: 4px;
+
+    background: rgba(149, 100, 231, 0.25);
+}
+
+
+/* 小图表 */
+
+.pool-chart {
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 4px;
+
+    height: 29px;
+
+    margin-top: 8px;
+}
+
+.pool-chart span {
+    width: 7px;
+
+    border-radius: 3px 3px 1px 1px;
+
+    background: rgba(149, 100, 231, 0.3);
+}
+
+.pool-chart span:nth-child(1) {
+    height: 32%;
+}
+
+.pool-chart span:nth-child(2) {
+    height: 47%;
+}
+
+.pool-chart span:nth-child(3) {
+    height: 38%;
+}
+
+.pool-chart span:nth-child(4) {
+    height: 65%;
+}
+
+.pool-chart span:nth-child(5) {
+    height: 58%;
+}
+
+.pool-chart span:nth-child(6) {
+    height: 82%;
+}
+
+
+/* =========================================================
+   Large Tablet
+   ========================================================= */
+
+@media (max-width: 1150px) {
+
+    .discover-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .discover-card {
+        height: 285px;
+    }
 
 }
 
 
+/* =========================================================
+   Mobile
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+    .discover-grid {
+        grid-template-columns: 1fr;
+
+        gap: 14px;
+    }
+
+    .discover-card {
+        height: 265px;
+    }
+
+    .card-body {
+        margin-top: 42px;
+    }
+
+    .card-body h3 {
+        font-size: 25px;
+    }
+
+}
 
 
 
@@ -835,9 +1523,6 @@
     margin-left: 8px;
 
 }
-
-
-
 
 
 /* =========================================================

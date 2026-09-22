@@ -1,0 +1,3703 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>行业行情 · STOCK LAB</title>
+
+    <style>
+
+        /* =========================================================
+           Base
+        ========================================================= */
+
+        :root {
+            --bg: #f6f8fb;
+            --surface: #ffffff;
+            --surface-soft: #f8fafc;
+
+            --text: #172033;
+            --text-secondary: #687386;
+            --text-muted: #98a2b3;
+
+            --border: #e8edf3;
+            --border-strong: #dfe5ec;
+
+            --accent: #3867ff;
+            --accent-soft: #edf2ff;
+
+            --up: #ef4444;
+            --up-soft: #fff1f1;
+
+            --down: #16a34a;
+            --down-soft: #effbf3;
+
+            --warning: #f59e0b;
+            --warning-soft: #fff8e8;
+
+            --shadow:
+                0 8px 30px rgba(20, 32, 56, 0.045);
+
+            --radius: 14px;
+            --radius-small: 9px;
+
+            --max-width: 1440px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                "PingFang SC",
+                "Hiragino Sans GB",
+                "Microsoft YaHei",
+                Arial,
+                sans-serif;
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        button,
+        input,
+        select {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* =========================================================
+           Page
+        ========================================================= */
+
+        .page {
+            min-height: 100vh;
+        }
+
+        .container {
+            width: min(
+                calc(100% - 48px),
+                var(--max-width)
+            );
+
+            margin: 0 auto;
+        }
+
+        /* =========================================================
+           Header
+        ========================================================= */
+
+        .top-header {
+            height: 68px;
+
+            background: rgba(255, 255, 255, 0.94);
+            border-bottom: 1px solid var(--border);
+
+            display: flex;
+            align-items: center;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            backdrop-filter: blur(14px);
+        }
+
+        .header-inner {
+            width: min(
+                calc(100% - 48px),
+                var(--max-width)
+            );
+
+            margin: 0 auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            height: 100%;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+
+            border-radius: 10px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #3867ff,
+                    #6d8cff
+                );
+
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            box-shadow:
+                0 5px 14px rgba(56, 103, 255, 0.20);
+        }
+
+        .brand-name {
+            font-size: 16px;
+            font-weight: 750;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-subtitle {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-left: 4px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            padding: 7px 11px;
+
+            border: 1px solid var(--border);
+            border-radius: 999px;
+
+            background: white;
+
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+        }
+
+        /* =========================================================
+           Main
+        ========================================================= */
+
+        main {
+            padding: 34px 0 60px;
+        }
+
+        /* =========================================================
+           Hero
+        ========================================================= */
+
+        .hero {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 30px;
+
+            margin-bottom: 26px;
+        }
+
+        .hero-left {
+            max-width: 760px;
+        }
+
+        .eyebrow {
+            color: var(--accent);
+
+            font-size: 11px;
+            font-weight: 800;
+
+            letter-spacing: 0.14em;
+
+            margin-bottom: 8px;
+        }
+
+        .hero h1 {
+            margin: 0;
+
+            font-size: 30px;
+            line-height: 1.2;
+
+            letter-spacing: -0.035em;
+        }
+
+        .hero-description {
+            margin: 10px 0 0;
+
+            color: var(--text-secondary);
+
+            font-size: 14px;
+        }
+
+        .hero-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        /* =========================================================
+           Filter Panel
+        ========================================================= */
+
+        .filter-panel {
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            padding: 18px 20px;
+
+            box-shadow: var(--shadow);
+
+            margin-bottom: 18px;
+        }
+
+        .filter-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-bottom: 16px;
+        }
+
+        .filter-title {
+            font-size: 14px;
+            font-weight: 750;
+        }
+
+        .filter-hint {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .filter-grid {
+            display: grid;
+
+            grid-template-columns:
+                150px
+                150px
+                150px
+                150px
+                1fr
+                auto;
+
+            gap: 10px;
+        }
+
+        .field {
+            min-width: 0;
+        }
+
+        .field-label {
+            display: block;
+
+            color: var(--text-muted);
+
+            font-size: 11px;
+            margin-bottom: 6px;
+        }
+
+        .select,
+        .date-input {
+            width: 100%;
+
+            height: 38px;
+
+            padding: 0 11px;
+
+            border:
+                1px solid var(--border-strong);
+
+            border-radius: var(--radius-small);
+
+            background: white;
+
+            color: var(--text);
+
+            outline: none;
+
+            transition:
+                border-color .18s ease,
+                box-shadow .18s ease;
+        }
+
+        .select:focus,
+        .date-input:focus {
+            border-color: rgba(56, 103, 255, .45);
+
+            box-shadow:
+                0 0 0 3px rgba(56, 103, 255, .08);
+        }
+
+        .method-switch {
+            display: flex;
+
+            height: 38px;
+
+            padding: 3px;
+
+            background: #f3f5f8;
+
+            border-radius: var(--radius-small);
+        }
+
+        .method-button {
+            flex: 1;
+
+            border: 0;
+            background: transparent;
+
+            color: var(--text-secondary);
+
+            border-radius: 7px;
+
+            font-size: 12px;
+
+            transition: .18s ease;
+        }
+
+        .method-button.active {
+            background: white;
+            color: var(--text);
+
+            box-shadow:
+                0 2px 7px rgba(20, 32, 56, .08);
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 38px;
+
+            padding:
+                0 12px 0 34px;
+
+            border:
+                1px solid var(--border-strong);
+
+            border-radius: var(--radius-small);
+
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+
+            left: 12px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: var(--text-muted);
+
+            font-size: 13px;
+        }
+
+        .refresh-button {
+            height: 38px;
+
+            padding: 0 16px;
+
+            border: 0;
+            border-radius: var(--radius-small);
+
+            background: var(--text);
+            color: white;
+
+            font-weight: 650;
+            font-size: 12px;
+
+            transition:
+                transform .18s ease,
+                opacity .18s ease;
+        }
+
+        .refresh-button:hover {
+            transform: translateY(-1px);
+            opacity: .92;
+        }
+
+        /* =========================================================
+           Quick Period
+        ========================================================= */
+
+        .period-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-top: 14px;
+        }
+
+        .period-label {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
+        .period-button {
+            height: 30px;
+
+            padding: 0 12px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 999px;
+
+            background: white;
+
+            color: var(--text-secondary);
+
+            font-size: 12px;
+
+            transition: .18s ease;
+        }
+
+        .period-button:hover {
+            border-color: #cbd5e1;
+        }
+
+        .period-button.active {
+            color: var(--accent);
+
+            background: var(--accent-soft);
+
+            border-color: #d7e0ff;
+        }
+
+        /* =========================================================
+           Summary Cards
+        ========================================================= */
+
+        .summary-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+
+            gap: 12px;
+
+            margin-bottom: 18px;
+        }
+
+        .summary-card {
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            padding: 18px 20px;
+
+            box-shadow: var(--shadow);
+
+            min-height: 105px;
+        }
+
+        .summary-label {
+            color: var(--text-muted);
+            font-size: 12px;
+
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 24px;
+
+            font-weight: 750;
+
+            letter-spacing: -0.03em;
+        }
+
+        .summary-sub {
+            color: var(--text-muted);
+            font-size: 11px;
+
+            margin-top: 5px;
+        }
+
+        .summary-value.up {
+            color: var(--up);
+        }
+
+        .summary-value.down {
+            color: var(--down);
+        }
+
+        /* =========================================================
+           Content Layout
+        ========================================================= */
+
+        .content-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1.6fr)
+                minmax(360px, .8fr);
+
+            gap: 18px;
+
+            align-items: start;
+        }
+
+        .panel {
+            background: var(--surface);
+
+            border: 1px solid var(--border);
+
+            border-radius: var(--radius);
+
+            box-shadow: var(--shadow);
+
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 18px 20px;
+
+            border-bottom:
+                1px solid var(--border);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 16px;
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 750;
+        }
+
+        .panel-description {
+            color: var(--text-muted);
+            font-size: 11px;
+
+            margin-top: 3px;
+        }
+
+        .panel-action {
+            color: var(--accent);
+            font-size: 12px;
+
+            border: 0;
+            background: transparent;
+        }
+
+        /* =========================================================
+           Industry Table
+        ========================================================= */
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            height: 42px;
+
+            padding: 0 16px;
+
+            text-align: right;
+
+            color: var(--text-muted);
+
+            font-size: 11px;
+            font-weight: 550;
+
+            background: #fbfcfd;
+
+            white-space: nowrap;
+        }
+
+        thead th:first-child {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        tbody tr {
+            border-top:
+                1px solid var(--border);
+
+            transition:
+                background .15s ease;
+        }
+
+        tbody tr:hover {
+            background: #fafcff;
+        }
+
+        tbody td {
+            height: 58px;
+
+            padding: 0 16px;
+
+            text-align: right;
+
+            font-size: 12px;
+
+            white-space: nowrap;
+        }
+
+        tbody td:first-child {
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .industry-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .rank {
+            width: 22px;
+
+            color: var(--text-muted);
+
+            font-size: 11px;
+        }
+
+        .industry-info {
+            min-width: 0;
+        }
+
+        .industry-name {
+            font-weight: 650;
+            color: var(--text);
+        }
+
+        .industry-code {
+            color: var(--text-muted);
+            font-size: 10px;
+            margin-top: 1px;
+        }
+
+        .level-badge {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-width: 28px;
+            height: 19px;
+
+            padding: 0 6px;
+
+            border-radius: 5px;
+
+            background: #f1f4f8;
+
+            color: var(--text-muted);
+
+            font-size: 10px;
+        }
+
+        .pct {
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .pct.up {
+            color: var(--up);
+        }
+
+        .pct.down {
+            color: var(--down);
+        }
+
+        .pct.flat {
+            color: var(--text-muted);
+        }
+
+        .count-up {
+            color: var(--up);
+        }
+
+        .count-down {
+            color: var(--down);
+        }
+
+        .bar-cell {
+            width: 120px;
+        }
+
+        .bar {
+            height: 5px;
+
+            width: 100px;
+
+            margin-left: auto;
+
+            background: #eef1f5;
+
+            border-radius: 999px;
+
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+
+            border-radius: inherit;
+
+            background: var(--up);
+
+            min-width: 2px;
+        }
+
+        .bar-fill.down {
+            background: var(--down);
+        }
+
+        .expand-button {
+            width: 24px;
+            height: 24px;
+
+            border: 0;
+
+            background: transparent;
+
+            color: var(--text-muted);
+
+            border-radius: 6px;
+
+            transition: .18s ease;
+        }
+
+        .expand-button:hover {
+            background: #f1f4f8;
+            color: var(--text);
+        }
+
+        /* =========================================================
+           Detail Panel
+        ========================================================= */
+
+        .detail-content {
+            padding: 20px;
+        }
+
+        .detail-empty {
+            min-height: 390px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            flex-direction: column;
+
+            color: var(--text-muted);
+
+            text-align: center;
+        }
+
+        .detail-empty-icon {
+            width: 48px;
+            height: 48px;
+
+            border-radius: 14px;
+
+            background: #f3f6fa;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+
+            margin-bottom: 12px;
+        }
+
+        .detail-empty-title {
+            color: var(--text-secondary);
+            font-weight: 650;
+            margin-bottom: 4px;
+        }
+
+        .detail-empty-text {
+            font-size: 12px;
+        }
+
+        .detail-head {
+            display: flex;
+
+            align-items: flex-start;
+            justify-content: space-between;
+
+            gap: 16px;
+
+            margin-bottom: 18px;
+        }
+
+        .detail-name {
+            font-size: 20px;
+            font-weight: 750;
+
+            letter-spacing: -0.025em;
+        }
+
+        .detail-code {
+            color: var(--text-muted);
+            font-size: 11px;
+
+            margin-top: 3px;
+        }
+
+        .detail-pct {
+            text-align: right;
+        }
+
+        .detail-pct-value {
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .detail-pct-label {
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        /* =========================================================
+           Chart
+        ========================================================= */
+
+        .chart-card {
+            border:
+                1px solid var(--border);
+
+            border-radius: 10px;
+
+            background: #fcfdff;
+
+            padding: 10px;
+
+            margin-bottom: 16px;
+        }
+
+        .chart-header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 5px 5px 8px;
+        }
+
+        .chart-title {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .chart-period {
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .chart {
+            width: 100%;
+            height: 190px;
+
+            display: block;
+        }
+
+        .chart-grid {
+            stroke: #edf0f4;
+            stroke-width: 1;
+        }
+
+        .chart-zero {
+            stroke: #d9dee6;
+            stroke-width: 1;
+            stroke-dasharray: 4 4;
+        }
+
+        .chart-line {
+            fill: none;
+
+            stroke: var(--accent);
+
+            stroke-width: 2.3;
+
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .chart-area {
+            fill: rgba(56, 103, 255, .08);
+        }
+
+        .chart-label {
+            fill: #98a2b3;
+
+            font-size: 9px;
+        }
+
+        .chart-point {
+            fill: white;
+
+            stroke: var(--accent);
+
+            stroke-width: 2;
+        }
+
+        /* =========================================================
+           Detail Stats
+        ========================================================= */
+
+        .detail-stats {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 8px;
+
+            margin-bottom: 16px;
+        }
+
+        .detail-stat {
+            background: #f8fafc;
+
+            border-radius: 9px;
+
+            padding: 11px 12px;
+        }
+
+        .detail-stat-label {
+            color: var(--text-muted);
+            font-size: 10px;
+        }
+
+        .detail-stat-value {
+            margin-top: 3px;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* =========================================================
+           Mini Distribution
+        ========================================================= */
+
+        .distribution-title {
+            color: var(--text-secondary);
+
+            font-size: 11px;
+            font-weight: 650;
+
+            margin-bottom: 9px;
+        }
+
+        .distribution {
+            display: flex;
+
+            height: 9px;
+
+            border-radius: 999px;
+
+            overflow: hidden;
+
+            background: #f0f2f5;
+        }
+
+        .dist-up {
+            background: var(--up);
+        }
+
+        .dist-down {
+            background: var(--down);
+        }
+
+        .dist-flat {
+            background: #cbd5e1;
+        }
+
+        .distribution-legend {
+            display: flex;
+
+            justify-content: space-between;
+
+            color: var(--text-muted);
+
+            font-size: 10px;
+
+            margin-top: 7px;
+        }
+
+        /* =========================================================
+           Footer
+        ========================================================= */
+
+        .data-note {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 18px;
+
+            color: var(--text-muted);
+
+            font-size: 11px;
+        }
+
+        .data-note-left {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .tiny-dot {
+            width: 5px;
+            height: 5px;
+
+            border-radius: 50%;
+
+            background: #22c55e;
+        }
+
+        /* =========================================================
+           Responsive
+        ========================================================= */
+
+        @media (max-width: 1200px) {
+
+            .filter-grid {
+                grid-template-columns:
+                    repeat(3, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+            .detail-content {
+                min-height: 0;
+            }
+
+            .detail-empty {
+                min-height: 280px;
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .container,
+            .header-inner {
+                width: min(
+                    calc(100% - 28px),
+                    var(--max-width)
+                );
+            }
+
+            main {
+                padding-top: 24px;
+            }
+
+            .hero {
+                display: block;
+            }
+
+            .hero-meta {
+                margin-top: 15px;
+            }
+
+            .filter-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .summary-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+            .bar-cell {
+                display: none;
+            }
+        }
+
+        @media (max-width: 560px) {
+
+            .brand-subtitle {
+                display: none;
+            }
+
+            .header-right .status {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 25px;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .period-row {
+                overflow-x: auto;
+                padding-bottom: 3px;
+            }
+
+            .period-button {
+                flex: 0 0 auto;
+            }
+
+            .data-note {
+                display: block;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <!-- =========================================================
+         Header
+    ========================================================== -->
+
+    <header class="top-header">
+
+        <div class="header-inner">
+
+            <a
+                class="brand"
+                href="../index.html"
+            >
+
+                <div class="brand-mark">
+                    SL
+                </div>
+
+                <div class="brand-name">
+                    STOCK LAB
+                </div>
+
+                <div class="brand-subtitle">
+                    行业行情
+                </div>
+
+            </a>
+
+
+            <div class="header-right">
+
+                <div class="status">
+
+                    <span class="status-dot"></span>
+
+                    <span>
+                        数据服务正常
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         Main
+    ========================================================== -->
+
+    <main>
+
+        <div class="container">
+
+
+            <!-- =================================================
+                 Hero
+            ================================================== -->
+
+            <section class="hero">
+
+                <div class="hero-left">
+
+                    <div class="eyebrow">
+                        STOCK LAB · INDUSTRY MARKET
+                    </div>
+
+                    <h1>
+                        行业行情
+                    </h1>
+
+                    <p class="hero-description">
+                        从中证行业分类体系观察不同层级行业的涨跌表现，
+                        支持单日行情与区间表现分析。
+                    </p>
+
+                </div>
+
+
+                <div class="hero-meta">
+
+                    <span>
+                        数据日期
+                    </span>
+
+                    <strong id="dataDate">
+                        2026-09-22
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Filter
+            ================================================== -->
+
+            <section class="filter-panel">
+
+                <div class="filter-top">
+
+                    <div>
+
+                        <div class="filter-title">
+                            行业筛选
+                        </div>
+
+                        <div class="filter-hint">
+                            选择行业层级、统计方式和观察周期
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="filter-grid">
+
+
+                    <!-- Level -->
+
+                    <div class="field">
+
+                        <label class="field-label">
+                            行业层级
+                        </label>
+
+                        <select
+                            class="select"
+                            id="levelSelect"
+                        >
+
+                            <option value="1">
+                                一级行业
+                            </option>
+
+                            <option value="2">
+                                二级行业
+                            </option>
+
+                            <option value="3">
+                                三级行业
+                            </option>
+
+                            <option value="4">
+                                四级行业
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Parent -->
+
+                    <div class="field">
+
+                        <label class="field-label">
+                            上级行业
+                        </label>
+
+                        <select
+                            class="select"
+                            id="parentSelect"
+                        >
+
+                            <option value="all">
+                                全部行业
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Period -->
+
+                    <div class="field">
+
+                        <label class="field-label">
+                            观察区间
+                        </label>
+
+                        <select
+                            class="select"
+                            id="periodSelect"
+                        >
+
+                            <option value="1">
+                                单日
+                            </option>
+
+                            <option value="5">
+                                近 5 日
+                            </option>
+
+                            <option value="20">
+                                近 20 日
+                            </option>
+
+                            <option value="60">
+                                近 60 日
+                            </option>
+
+                            <option value="120">
+                                近 120 日
+                            </option>
+
+                            <option value="custom">
+                                自定义
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Method -->
+
+                    <div class="field">
+
+                        <label class="field-label">
+                            计算方式
+                        </label>
+
+                        <div class="method-switch">
+
+                            <button
+                                class="method-button active"
+                                data-method="weighted"
+                            >
+                                市值加权
+                            </button>
+
+                            <button
+                                class="method-button"
+                                data-method="equal"
+                            >
+                                等权
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Search -->
+
+                    <div class="field">
+
+                        <label class="field-label">
+                            搜索行业
+                        </label>
+
+                        <div class="search-wrap">
+
+                            <span class="search-icon">
+                                ⌕
+                            </span>
+
+                            <input
+                                class="search-input"
+                                id="searchInput"
+                                type="text"
+                                placeholder="行业名称 / 代码"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Refresh -->
+
+                    <div class="field">
+
+                        <label class="field-label">
+                            &nbsp;
+                        </label>
+
+                        <button
+                            class="refresh-button"
+                            id="refreshButton"
+                        >
+                            刷新数据
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Quick period -->
+
+                <div class="period-row">
+
+                    <span class="period-label">
+                        快速选择
+                    </span>
+
+                    <button
+                        class="period-button active"
+                        data-period="1"
+                    >
+                        今日
+                    </button>
+
+                    <button
+                        class="period-button"
+                        data-period="5"
+                    >
+                        5 日
+                    </button>
+
+                    <button
+                        class="period-button"
+                        data-period="20"
+                    >
+                        20 日
+                    </button>
+
+                    <button
+                        class="period-button"
+                        data-period="60"
+                    >
+                        60 日
+                    </button>
+
+                    <button
+                        class="period-button"
+                        data-period="120"
+                    >
+                        120 日
+                    </button>
+
+                </div>
+
+
+                <!-- Custom dates -->
+
+                <div
+                    id="customDateArea"
+                    style="
+                        display:none;
+                        margin-top:14px;
+                    "
+                >
+
+                    <div
+                        style="
+                            display:flex;
+                            gap:10px;
+                            max-width:500px;
+                        "
+                    >
+
+                        <div style="flex:1">
+
+                            <label class="field-label">
+                                开始日期
+                            </label>
+
+                            <input
+                                class="date-input"
+                                id="startDate"
+                                type="date"
+                            >
+
+                        </div>
+
+
+                        <div style="flex:1">
+
+                            <label class="field-label">
+                                结束日期
+                            </label>
+
+                            <input
+                                class="date-input"
+                                id="endDate"
+                                type="date"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Summary
+            ================================================== -->
+
+            <section class="summary-grid">
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        行业数量
+                    </div>
+
+                    <div
+                        class="summary-value"
+                        id="industryCount"
+                    >
+                        31
+                    </div>
+
+                    <div class="summary-sub">
+                        当前筛选范围
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        上涨行业
+                    </div>
+
+                    <div
+                        class="summary-value up"
+                        id="upIndustryCount"
+                    >
+                        23
+                    </div>
+
+                    <div class="summary-sub">
+                        行业表现为正
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        下跌行业
+                    </div>
+
+                    <div
+                        class="summary-value down"
+                        id="downIndustryCount"
+                    >
+                        8
+                    </div>
+
+                    <div class="summary-sub">
+                        行业表现为负
+                    </div>
+
+                </div>
+
+
+                <div class="summary-card">
+
+                    <div class="summary-label">
+                        行业平均涨跌
+                    </div>
+
+                    <div
+                        class="summary-value up"
+                        id="averagePct"
+                    >
+                        +0.82%
+                    </div>
+
+                    <div class="summary-sub">
+                        当前统计方法
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Main Content
+            ================================================== -->
+
+            <section class="content-grid">
+
+
+                <!-- =================================================
+                     Industry Table
+                ================================================== -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                行业表现
+                            </div>
+
+                            <div class="panel-description">
+                                按涨跌幅排序
+                            </div>
+
+                        </div>
+
+
+                        <button
+                            class="panel-action"
+                            id="sortButton"
+                        >
+                            涨跌幅 ↓
+                        </button>
+
+                    </div>
+
+
+                    <div class="table-wrap">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        行业
+                                    </th>
+
+                                    <th>
+                                        涨跌幅
+                                    </th>
+
+                                    <th>
+                                        上涨
+                                    </th>
+
+                                    <th>
+                                        下跌
+                                    </th>
+
+                                    <th>
+                                        成分股
+                                    </th>
+
+                                    <th class="bar-cell">
+                                        表现
+                                    </th>
+
+                                    <th>
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+                            <tbody id="industryTable">
+
+                                <!-- JS -->
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     Detail
+                ================================================== -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                行业详情
+                            </div>
+
+                            <div class="panel-description">
+                                点击左侧行业查看区间走势
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div
+                        class="detail-content"
+                        id="detailContent"
+                    >
+
+                        <div class="detail-empty">
+
+                            <div class="detail-empty-icon">
+                                ↗
+                            </div>
+
+                            <div class="detail-empty-title">
+                                选择一个行业
+                            </div>
+
+                            <div class="detail-empty-text">
+                                查看行业区间涨跌、成分股分布和趋势
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =================================================
+                 Data Note
+            ================================================== -->
+
+            <div class="data-note">
+
+                <div class="data-note-left">
+
+                    <span class="tiny-dot"></span>
+
+                    <span id="dataSource">
+                        数据源：中证行业分类 · MVP 模拟数据
+                    </span>
+
+                </div>
+
+                <div>
+                    最后更新：
+                    <span id="updateTime">
+                        2026-09-22 15:10
+                    </span>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+/* ===============================================================
+   STOCK LAB · Industry Performance
+
+   当前：
+       使用 mockData
+
+   后续：
+       将 loadData() 替换为 FastAPI 请求即可。
+
+   推荐 API：
+
+       GET /api/industry/performance
+
+   参数：
+
+       level
+       parent
+       period
+       method
+       start_date
+       end_date
+
+   例如：
+
+       /api/industry/performance
+           ?level=2
+           &period=20
+           &method=weighted
+
+   =============================================================== */
+
+
+/* ===============================================================
+   Mock Data
+   =============================================================== */
+
+const mockData = {
+
+    date: "2026-09-22",
+
+    update_time: "2026-09-22 15:10",
+
+    industries: [
+
+        {
+            code: "A01",
+            name: "农林牧渔",
+            level: 1,
+            parent_code: null,
+            pct: 2.18,
+            stocks: 87,
+            up: 61,
+            down: 21,
+            flat: 5
+        },
+
+        {
+            code: "A02",
+            name: "基础化工",
+            level: 1,
+            parent_code: null,
+            pct: 1.64,
+            stocks: 312,
+            up: 224,
+            down: 77,
+            flat: 11
+        },
+
+        {
+            code: "A03",
+            name: "钢铁",
+            level: 1,
+            parent_code: null,
+            pct: 0.72,
+            stocks: 45,
+            up: 29,
+            down: 14,
+            flat: 2
+        },
+
+        {
+            code: "A04",
+            name: "有色金属",
+            level: 1,
+            parent_code: null,
+            pct: 2.84,
+            stocks: 98,
+            up: 77,
+            down: 18,
+            flat: 3
+        },
+
+        {
+            code: "A05",
+            name: "电子",
+            level: 1,
+            parent_code: null,
+            pct: 1.93,
+            stocks: 361,
+            up: 260,
+            down: 86,
+            flat: 15
+        },
+
+        {
+            code: "A06",
+            name: "汽车",
+            level: 1,
+            parent_code: null,
+            pct: 1.21,
+            stocks: 183,
+            up: 127,
+            down: 49,
+            flat: 7
+        },
+
+        {
+            code: "A07",
+            name: "机械设备",
+            level: 1,
+            parent_code: null,
+            pct: 0.96,
+            stocks: 265,
+            up: 166,
+            down: 89,
+            flat: 10
+        },
+
+        {
+            code: "A08",
+            name: "医药生物",
+            level: 1,
+            parent_code: null,
+            pct: -0.42,
+            stocks: 318,
+            up: 127,
+            down: 177,
+            flat: 14
+        },
+
+        {
+            code: "A09",
+            name: "食品饮料",
+            level: 1,
+            parent_code: null,
+            pct: -0.76,
+            stocks: 124,
+            up: 39,
+            down: 81,
+            flat: 4
+        },
+
+        {
+            code: "A10",
+            name: "计算机",
+            level: 1,
+            parent_code: null,
+            pct: 1.38,
+            stocks: 282,
+            up: 196,
+            down: 76,
+            flat: 10
+        },
+
+        {
+            code: "A11",
+            name: "传媒",
+            level: 1,
+            parent_code: null,
+            pct: 0.53,
+            stocks: 152,
+            up: 91,
+            down: 55,
+            flat: 6
+        },
+
+        {
+            code: "A12",
+            name: "通信",
+            level: 1,
+            parent_code: null,
+            pct: 2.37,
+            stocks: 119,
+            up: 89,
+            down: 27,
+            flat: 3
+        },
+
+        {
+            code: "A13",
+            name: "银行",
+            level: 1,
+            parent_code: null,
+            pct: -0.18,
+            stocks: 42,
+            up: 16,
+            down: 23,
+            flat: 3
+        },
+
+        {
+            code: "A14",
+            name: "非银金融",
+            level: 1,
+            parent_code: null,
+            pct: 0.34,
+            stocks: 81,
+            up: 44,
+            down: 33,
+            flat: 4
+        },
+
+        {
+            code: "A15",
+            name: "房地产",
+            level: 1,
+            parent_code: null,
+            pct: -1.28,
+            stocks: 108,
+            up: 24,
+            down: 78,
+            flat: 6
+        },
+
+        {
+            code: "A16",
+            name: "建筑材料",
+            level: 1,
+            parent_code: null,
+            pct: -0.34,
+            stocks: 76,
+            up: 30,
+            down: 42,
+            flat: 4
+        },
+
+        {
+            code: "A17",
+            name: "电力设备",
+            level: 1,
+            parent_code: null,
+            pct: 1.76,
+            stocks: 229,
+            up: 167,
+            down: 56,
+            flat: 6
+        },
+
+        {
+            code: "A18",
+            name: "公用事业",
+            level: 1,
+            parent_code: null,
+            pct: 0.18,
+            stocks: 94,
+            up: 45,
+            down: 43,
+            flat: 6
+        },
+
+        {
+            code: "A19",
+            name: "交通运输",
+            level: 1,
+            parent_code: null,
+            pct: 0.62,
+            stocks: 119,
+            up: 70,
+            down: 44,
+            flat: 5
+        },
+
+        {
+            code: "A20",
+            name: "商贸零售",
+            level: 1,
+            parent_code: null,
+            pct: -0.21,
+            stocks: 109,
+            up: 46,
+            down: 57,
+            flat: 6
+        },
+
+        {
+            code: "A21",
+            name: "社会服务",
+            level: 1,
+            parent_code: null,
+            pct: 0.41,
+            stocks: 68,
+            up: 39,
+            down: 26,
+            flat: 3
+        },
+
+        {
+            code: "A22",
+            name: "美容护理",
+            level: 1,
+            parent_code: null,
+            pct: -0.62,
+            stocks: 31,
+            up: 10,
+            down: 19,
+            flat: 2
+        },
+
+        {
+            code: "A23",
+            name: "家用电器",
+            level: 1,
+            parent_code: null,
+            pct: 0.86,
+            stocks: 92,
+            up: 57,
+            down: 31,
+            flat: 4
+        },
+
+        {
+            code: "A24",
+            name: "纺织服饰",
+            level: 1,
+            parent_code: null,
+            pct: -0.16,
+            stocks: 87,
+            up: 40,
+            down: 42,
+            flat: 5
+        },
+
+        {
+            code: "A25",
+            name: "轻工制造",
+            level: 1,
+            parent_code: null,
+            pct: 0.37,
+            stocks: 113,
+            up: 62,
+            down: 46,
+            flat: 5
+        },
+
+        {
+            code: "A26",
+            name: "国防军工",
+            level: 1,
+            parent_code: null,
+            pct: 2.06,
+            stocks: 83,
+            up: 63,
+            down: 18,
+            flat: 2
+        },
+
+        {
+            code: "A27",
+            name: "计算机应用",
+            level: 1,
+            parent_code: null,
+            pct: 1.44,
+            stocks: 141,
+            up: 101,
+            down: 36,
+            flat: 4
+        },
+
+        {
+            code: "A28",
+            name: "综合",
+            level: 1,
+            parent_code: null,
+            pct: 0.12,
+            stocks: 37,
+            up: 17,
+            down: 18,
+            flat: 2
+        }
+
+    ]
+
+};
+
+
+/* ===============================================================
+   State
+   =============================================================== */
+
+const state = {
+
+    level: 1,
+
+    parent: "all",
+
+    period: 1,
+
+    method: "weighted",
+
+    search: "",
+
+    sort: "desc",
+
+    selectedCode: null,
+
+    customStart: null,
+
+    customEnd: null,
+
+    data: mockData
+
+};
+
+
+/* ===============================================================
+   DOM
+   =============================================================== */
+
+const levelSelect =
+    document.getElementById("levelSelect");
+
+const parentSelect =
+    document.getElementById("parentSelect");
+
+const periodSelect =
+    document.getElementById("periodSelect");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const refreshButton =
+    document.getElementById("refreshButton");
+
+const customDateArea =
+    document.getElementById("customDateArea");
+
+const startDate =
+    document.getElementById("startDate");
+
+const endDate =
+    document.getElementById("endDate");
+
+const industryTable =
+    document.getElementById("industryTable");
+
+const detailContent =
+    document.getElementById("detailContent");
+
+
+/* ===============================================================
+   Helpers
+   =============================================================== */
+
+function formatPct(value) {
+
+    if (value === null || value === undefined) {
+        return "--";
+    }
+
+    const number = Number(value);
+
+    if (number > 0) {
+        return "+" + number.toFixed(2) + "%";
+    }
+
+    if (number < 0) {
+        return number.toFixed(2) + "%";
+    }
+
+    return "0.00%";
+}
+
+
+function pctClass(value) {
+
+    if (value > 0) {
+        return "up";
+    }
+
+    if (value < 0) {
+        return "down";
+    }
+
+    return "flat";
+}
+
+
+function levelName(level) {
+
+    const names = {
+        1: "一级",
+        2: "二级",
+        3: "三级",
+        4: "四级"
+    };
+
+    return names[level] || "";
+}
+
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* ===============================================================
+   Generate mock chart
+   后续由 API 返回真实历史数据。
+
+   推荐：
+
+   history: [
+       {
+           date: "2026-09-01",
+           pct: 1.21
+       }
+   ]
+
+   =============================================================== */
+
+function generateHistory(basePct) {
+
+    const result = [];
+
+    let current = 0;
+
+    for (let i = 0; i < 20; i++) {
+
+        const random =
+            (Math.random() - 0.46) * 0.8;
+
+        current += random;
+
+        if (i === 19) {
+            current = basePct;
+        }
+
+        result.push({
+            date: `09-${String(i + 1).padStart(2, "0")}`,
+            pct: current
+        });
+    }
+
+    return result;
+}
+
+
+/* ===============================================================
+   Filter Data
+   =============================================================== */
+
+function getFilteredData() {
+
+    let list =
+        state.data.industries
+            .filter(item =>
+                item.level === Number(state.level)
+            );
+
+
+    if (state.parent !== "all") {
+
+        list =
+            list.filter(
+                item =>
+                    item.parent_code === state.parent
+            );
+    }
+
+
+    if (state.search.trim()) {
+
+        const keyword =
+            state.search
+                .trim()
+                .toLowerCase();
+
+        list =
+            list.filter(item => {
+
+                return (
+                    item.name
+                        .toLowerCase()
+                        .includes(keyword)
+                    ||
+                    item.code
+                        .toLowerCase()
+                        .includes(keyword)
+                );
+
+            });
+
+    }
+
+
+    list.sort((a, b) => {
+
+        if (state.sort === "desc") {
+            return b.pct - a.pct;
+        }
+
+        return a.pct - b.pct;
+
+    });
+
+
+    return list;
+}
+
+
+/* ===============================================================
+   Render Parent Options
+   =============================================================== */
+
+function renderParentOptions() {
+
+    const targetLevel =
+        Number(state.level);
+
+    if (targetLevel <= 1) {
+
+        parentSelect.innerHTML = `
+            <option value="all">
+                全部行业
+            </option>
+        `;
+
+        parentSelect.disabled = true;
+
+        return;
+    }
+
+
+    parentSelect.disabled = false;
+
+
+    const parentLevel =
+        targetLevel - 1;
+
+
+    const parents =
+        state.data.industries
+            .filter(
+                item =>
+                    item.level === parentLevel
+            );
+
+
+    parentSelect.innerHTML = `
+
+        <option value="all">
+            全部行业
+        </option>
+
+        ${parents.map(item => `
+
+            <option value="${escapeHtml(item.code)}">
+                ${escapeHtml(item.name)}
+            </option>
+
+        `).join("")}
+
+    `;
+
+
+    parentSelect.value =
+        state.parent;
+}
+
+
+/* ===============================================================
+   Render Summary
+   =============================================================== */
+
+function renderSummary(list) {
+
+    const count =
+        list.length;
+
+
+    const up =
+        list.filter(
+            item => item.pct > 0
+        ).length;
+
+
+    const down =
+        list.filter(
+            item => item.pct < 0
+        ).length;
+
+
+    const average =
+        count
+            ? list.reduce(
+                (sum, item) =>
+                    sum + item.pct,
+                0
+            ) / count
+            : 0;
+
+
+    document.getElementById(
+        "industryCount"
+    ).textContent = count;
+
+
+    document.getElementById(
+        "upIndustryCount"
+    ).textContent = up;
+
+
+    document.getElementById(
+        "downIndustryCount"
+    ).textContent = down;
+
+
+    const averageElement =
+        document.getElementById(
+            "averagePct"
+        );
+
+
+    averageElement.textContent =
+        formatPct(average);
+
+
+    averageElement.className =
+        "summary-value " +
+        pctClass(average);
+
+}
+
+
+/* ===============================================================
+   Render Table
+   =============================================================== */
+
+function renderTable() {
+
+    const list =
+        getFilteredData();
+
+
+    renderSummary(list);
+
+
+    if (!list.length) {
+
+        industryTable.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    style="
+                        height:180px;
+                        text-align:center;
+                        color:var(--text-muted);
+                    "
+                >
+                    没有找到符合条件的行业
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+    }
+
+
+    const maxAbs =
+        Math.max(
+            ...list.map(
+                item =>
+                    Math.abs(item.pct)
+            ),
+            1
+        );
+
+
+    industryTable.innerHTML =
+        list.map(
+            (item, index) => {
+
+                const pct =
+                    Number(item.pct);
+
+
+                const width =
+                    Math.min(
+                        Math.abs(pct)
+                        / maxAbs
+                        * 100,
+                        100
+                    );
+
+
+                const barClass =
+                    pct < 0
+                        ? "bar-fill down"
+                        : "bar-fill";
+
+
+                return `
+
+                    <tr
+                        data-code="${escapeHtml(item.code)}"
+                        class="industry-row"
+                    >
+
+                        <td>
+
+                            <div class="industry-cell">
+
+                                <span class="rank">
+                                    ${index + 1}
+                                </span>
+
+                                <span
+                                    class="level-badge"
+                                >
+                                    ${levelName(item.level)}
+                                </span>
+
+                                <div class="industry-info">
+
+                                    <div
+                                        class="industry-name"
+                                    >
+                                        ${escapeHtml(item.name)}
+                                    </div>
+
+                                    <div
+                                        class="industry-code"
+                                    >
+                                        ${escapeHtml(item.code)}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="pct ${pctClass(pct)}"
+                            >
+                                ${formatPct(pct)}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="count-up">
+                                ${item.up}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="count-down">
+                                ${item.down}
+                            </span>
+
+                        </td>
+
+
+                        <td>
+                            ${item.stocks}
+                        </td>
+
+
+                        <td class="bar-cell">
+
+                            <div class="bar">
+
+                                <div
+                                    class="${barClass}"
+                                    style="
+                                        width:${width}%;
+                                    "
+                                ></div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            <button
+                                class="expand-button"
+                                data-detail="${escapeHtml(item.code)}"
+                                title="查看详情"
+                            >
+                                →
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        ).join("");
+
+
+    document
+        .querySelectorAll(
+            "[data-detail]"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                event => {
+
+                    event.stopPropagation();
+
+                    const code =
+                        button.dataset.detail;
+
+                    selectIndustry(code);
+
+                }
+            );
+
+        });
+
+
+    document
+        .querySelectorAll(
+            ".industry-row"
+        )
+        .forEach(row => {
+
+            row.addEventListener(
+                "click",
+                () => {
+
+                    selectIndustry(
+                        row.dataset.code
+                    );
+
+                }
+            );
+
+        });
+
+
+    /*
+     * 自动选择第一项
+     */
+
+    if (!state.selectedCode ||
+        !list.some(
+            item =>
+                item.code === state.selectedCode
+        )
+    ) {
+
+        selectIndustry(
+            list[0].code
+        );
+
+    }
+
+}
+
+
+/* ===============================================================
+   SVG Chart
+   =============================================================== */
+
+function renderChart(history) {
+
+    const width = 560;
+
+    const height = 190;
+
+    const padding = {
+        left: 12,
+        right: 12,
+        top: 12,
+        bottom: 22
+    };
+
+
+    const values =
+        history.map(
+            item =>
+                Number(item.pct)
+        );
+
+
+    const max =
+        Math.max(
+            ...values,
+            1
+        );
+
+
+    const min =
+        Math.min(
+            ...values,
+            -1
+        );
+
+
+    const range =
+        Math.max(
+            max - min,
+            2
+        );
+
+
+    function x(index) {
+
+        return (
+            padding.left
+            +
+            index
+            /
+            (history.length - 1)
+            *
+            (
+                width
+                -
+                padding.left
+                -
+                padding.right
+            )
+        );
+
+    }
+
+
+    function y(value) {
+
+        return (
+            padding.top
+            +
+            (
+                max - value
+            )
+            /
+            range
+            *
+            (
+                height
+                -
+                padding.top
+                -
+                padding.bottom
+            )
+        );
+
+    }
+
+
+    const points =
+        history.map(
+            (item, index) =>
+                `${x(index)},${y(item.pct)}`
+        );
+
+
+    const line =
+        points.join(" ");
+
+
+    const area =
+        `
+        ${points.join(" ")}
+        ${x(history.length - 1)},${height - padding.bottom}
+        ${x(0)},${height - padding.bottom}
+        `;
+
+
+    const zeroY =
+        y(0);
+
+
+    const first =
+        history[0];
+
+    const last =
+        history[history.length - 1];
+
+
+    return `
+
+        <svg
+            class="chart"
+            viewBox="0 0 ${width} ${height}"
+            preserveAspectRatio="none"
+        >
+
+            <line
+                class="chart-grid"
+                x1="0"
+                y1="${padding.top}"
+                x2="${width}"
+                y2="${padding.top}"
+            />
+
+            <line
+                class="chart-zero"
+                x1="0"
+                y1="${zeroY}"
+                x2="${width}"
+                y2="${zeroY}"
+            />
+
+            <line
+                class="chart-grid"
+                x1="0"
+                y1="${height - padding.bottom}"
+                x2="${width}"
+                y2="${height - padding.bottom}"
+            />
+
+
+            <polygon
+                class="chart-area"
+                points="${area}"
+            />
+
+
+            <polyline
+                class="chart-line"
+                points="${line}"
+            />
+
+
+            <circle
+                class="chart-point"
+                cx="${x(history.length - 1)}"
+                cy="${y(last.pct)}"
+                r="4"
+            />
+
+
+            <text
+                class="chart-label"
+                x="${padding.left}"
+                y="${height - 5}"
+            >
+                ${first.date}
+            </text>
+
+
+            <text
+                class="chart-label"
+                text-anchor="end"
+                x="${width - padding.right}"
+                y="${height - 5}"
+            >
+                ${last.date}
+            </text>
+
+        </svg>
+
+    `;
+
+}
+
+
+/* ===============================================================
+   Select Industry
+   =============================================================== */
+
+function selectIndustry(code) {
+
+    const item =
+        state.data.industries.find(
+            item =>
+                item.code === code
+        );
+
+
+    if (!item) {
+        return;
+    }
+
+
+    state.selectedCode =
+        code;
+
+
+    const history =
+        generateHistory(
+            item.pct
+        );
+
+
+    const total =
+        item.stocks;
+
+
+    const upPct =
+        total
+            ? item.up / total * 100
+            : 0;
+
+
+    const downPct =
+        total
+            ? item.down / total * 100
+            : 0;
+
+
+    const flatPct =
+        total
+            ? item.flat / total * 100
+            : 0;
+
+
+    detailContent.innerHTML = `
+
+        <div class="detail-head">
+
+            <div>
+
+                <div class="detail-name">
+                    ${escapeHtml(item.name)}
+                </div>
+
+                <div class="detail-code">
+                    ${escapeHtml(item.code)}
+                    ·
+                    ${levelName(item.level)}行业
+                </div>
+
+            </div>
+
+
+            <div class="detail-pct">
+
+                <div
+                    class="
+                        detail-pct-value
+                        ${pctClass(item.pct)}
+                    "
+                >
+                    ${formatPct(item.pct)}
+                </div>
+
+                <div class="detail-pct-label">
+                    ${state.period === 1
+                        ? "当日涨跌"
+                        : `近 ${state.period} 日涨跌`}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="chart-card">
+
+            <div class="chart-header">
+
+                <div class="chart-title">
+                    区间走势
+                </div>
+
+                <div class="chart-period">
+                    ${state.period === 1
+                        ? "当日"
+                        : `近 ${state.period} 个交易日`}
+                </div>
+
+            </div>
+
+            ${renderChart(history)}
+
+        </div>
+
+
+        <div class="detail-stats">
+
+
+            <div class="detail-stat">
+
+                <div class="detail-stat-label">
+                    成分股
+                </div>
+
+                <div class="detail-stat-value">
+                    ${item.stocks}
+                </div>
+
+            </div>
+
+
+            <div class="detail-stat">
+
+                <div class="detail-stat-label">
+                    上涨家数
+                </div>
+
+                <div
+                    class="
+                        detail-stat-value
+                        count-up
+                    "
+                >
+                    ${item.up}
+                </div>
+
+            </div>
+
+
+            <div class="detail-stat">
+
+                <div class="detail-stat-label">
+                    下跌家数
+                </div>
+
+                <div
+                    class="
+                        detail-stat-value
+                        count-down
+                    "
+                >
+                    ${item.down}
+                </div>
+
+            </div>
+
+
+            <div class="detail-stat">
+
+                <div class="detail-stat-label">
+                    平盘家数
+                </div>
+
+                <div class="detail-stat-value">
+                    ${item.flat}
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div>
+
+            <div class="distribution-title">
+                成分股涨跌分布
+            </div>
+
+
+            <div class="distribution">
+
+                <div
+                    class="dist-up"
+                    style="width:${upPct}%"
+                ></div>
+
+                <div
+                    class="dist-flat"
+                    style="width:${flatPct}%"
+                ></div>
+
+                <div
+                    class="dist-down"
+                    style="width:${downPct}%"
+                ></div>
+
+            </div>
+
+
+            <div class="distribution-legend">
+
+                <span>
+                    上涨 ${item.up}
+                </span>
+
+                <span>
+                    平盘 ${item.flat}
+                </span>
+
+                <span>
+                    下跌 ${item.down}
+                </span>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* ===============================================================
+   Load Data
+   =============================================================== */
+
+async function loadData() {
+
+    /*
+     * ============================================================
+     * 未来接 FastAPI 时，主要修改这里。
+     *
+     * const params = new URLSearchParams({
+     *
+     *     level: state.level,
+     *     parent: state.parent,
+     *     period: state.period,
+     *     method: state.method
+     *
+     * });
+     *
+     * if (state.period === "custom") {
+     *
+     *     params.set(
+     *         "start_date",
+     *         state.customStart
+     *     );
+     *
+     *     params.set(
+     *         "end_date",
+     *         state.customEnd
+     *     );
+     *
+     * }
+     *
+     * const response =
+     *     await fetch(
+     *         `/api/industry/performance?${params}`
+     *     );
+     *
+     * state.data =
+     *     await response.json();
+     *
+     * ============================================================
+     */
+
+
+    /*
+     * MVP 阶段直接使用本地数据。
+     */
+
+    await new Promise(
+        resolve =>
+            setTimeout(resolve, 180)
+    );
+
+
+    state.data =
+        mockData;
+
+
+    document.getElementById(
+        "dataDate"
+    ).textContent =
+        state.data.date;
+
+
+    document.getElementById(
+        "updateTime"
+    ).textContent =
+        state.data.update_time;
+
+
+    renderParentOptions();
+
+    renderTable();
+
+}
+
+
+/* ===============================================================
+   Level Change
+   =============================================================== */
+
+levelSelect.addEventListener(
+    "change",
+    () => {
+
+        state.level =
+            Number(
+                levelSelect.value
+            );
+
+        state.parent =
+            "all";
+
+        renderParentOptions();
+
+        loadData();
+
+    }
+);
+
+
+/* ===============================================================
+   Parent Change
+   =============================================================== */
+
+parentSelect.addEventListener(
+    "change",
+    () => {
+
+        state.parent =
+            parentSelect.value;
+
+        loadData();
+
+    }
+);
+
+
+/* ===============================================================
+   Period Select
+   =============================================================== */
+
+periodSelect.addEventListener(
+    "change",
+    () => {
+
+        state.period =
+            periodSelect.value === "custom"
+                ? "custom"
+                : Number(
+                    periodSelect.value
+                );
+
+
+        customDateArea.style.display =
+            state.period === "custom"
+                ? "block"
+                : "none";
+
+
+        document
+            .querySelectorAll(
+                ".period-button"
+            )
+            .forEach(button => {
+
+                button.classList.toggle(
+                    "active",
+                    button.dataset.period ===
+                    String(state.period)
+                );
+
+            });
+
+
+        if (state.period !== "custom") {
+            loadData();
+        }
+
+    }
+);
+
+
+/* ===============================================================
+   Quick Period
+   =============================================================== */
+
+document
+    .querySelectorAll(
+        ".period-button"
+    )
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const period =
+                    Number(
+                        button.dataset.period
+                    );
+
+
+                state.period =
+                    period;
+
+
+                periodSelect.value =
+                    String(period);
+
+
+                customDateArea.style.display =
+                    "none";
+
+
+                document
+                    .querySelectorAll(
+                        ".period-button"
+                    )
+                    .forEach(item => {
+
+                        item.classList.toggle(
+                            "active",
+                            item === button
+                        );
+
+                    });
+
+
+                loadData();
+
+            }
+        );
+
+    });
+
+
+/* ===============================================================
+   Method
+   =============================================================== */
+
+document
+    .querySelectorAll(
+        ".method-button"
+    )
+    .forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        ".method-button"
+                    )
+                    .forEach(item => {
+
+                        item.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                state.method =
+                    button.dataset.method;
+
+
+                loadData();
+
+            }
+        );
+
+    });
+
+
+/* ===============================================================
+   Search
+   =============================================================== */
+
+searchInput.addEventListener(
+    "input",
+    () => {
+
+        state.search =
+            searchInput.value;
+
+        renderTable();
+
+    }
+);
+
+
+/* ===============================================================
+   Sort
+   =============================================================== */
+
+document
+    .getElementById("sortButton")
+    .addEventListener(
+        "click",
+        () => {
+
+            state.sort =
+                state.sort === "desc"
+                    ? "asc"
+                    : "desc";
+
+
+            document.getElementById(
+                "sortButton"
+            ).textContent =
+                state.sort === "desc"
+                    ? "涨跌幅 ↓"
+                    : "涨跌幅 ↑";
+
+
+            renderTable();
+
+        }
+    );
+
+
+/* ===============================================================
+   Refresh
+   =============================================================== */
+
+refreshButton.addEventListener(
+    "click",
+    async () => {
+
+        const originalText =
+            refreshButton.textContent;
+
+
+        refreshButton.textContent =
+            "更新中...";
+
+
+        refreshButton.disabled =
+            true;
+
+
+        try {
+
+            await loadData();
+
+        } finally {
+
+            refreshButton.textContent =
+                originalText;
+
+            refreshButton.disabled =
+                false;
+
+        }
+
+    }
+);
+
+
+/* ===============================================================
+   Custom Dates
+   =============================================================== */
+
+startDate.addEventListener(
+    "change",
+    () => {
+
+        state.customStart =
+            startDate.value;
+
+        if (
+            state.customStart &&
+            state.customEnd
+        ) {
+
+            loadData();
+
+        }
+
+    }
+);
+
+
+endDate.addEventListener(
+    "change",
+    () => {
+
+        state.customEnd =
+            endDate.value;
+
+        if (
+            state.customStart &&
+            state.customEnd
+        ) {
+
+            loadData();
+
+        }
+
+    }
+);
+
+
+/* ===============================================================
+   Initial
+   =============================================================== */
+
+renderParentOptions();
+
+renderTable();
+
+</script>
+
+</body>
+</html>
