@@ -1184,3 +1184,299 @@ tbody td:first-child {
         display: block;
     }
 }
+
+/* =========================================================
+   Industry Stocks
+========================================================= */
+
+.industry-stocks-panel {
+    margin-top: 24px;
+}
+
+
+.stocks-header-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+#stocksIndustryName {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.stocks-count {
+    padding: 5px 9px;
+    border-radius: 999px;
+    background: rgba(80, 100, 130, 0.08);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+
+.stocks-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    padding: 14px 18px;
+
+    border-top: 1px solid rgba(20, 30, 45, 0.06);
+    border-bottom: 1px solid rgba(20, 30, 45, 0.06);
+}
+
+
+.stocks-toolbar-left,
+.stocks-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.stock-search-wrap {
+    position: relative;
+    width: 240px;
+}
+
+
+.stock-search-wrap .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    font-size: 17px;
+    opacity: 0.55;
+
+    pointer-events: none;
+}
+
+
+.stock-search-wrap .search-input {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding-left: 34px;
+}
+
+
+.stock-filter-select {
+    min-width: 150px;
+}
+
+
+.stocks-table-wrap {
+    overflow-x: auto;
+}
+
+
+.stocks-table {
+    width: 100%;
+    min-width: 1180px;
+
+    border-collapse: collapse;
+}
+
+
+.stocks-table th {
+    padding: 13px 14px;
+
+    background: rgba(20, 30, 45, 0.025);
+
+    color: #6b7280;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-align: right;
+
+    white-space: nowrap;
+}
+
+
+.stocks-table th:first-child,
+.stocks-table th:nth-child(2) {
+    text-align: left;
+}
+
+
+.stocks-table td {
+    padding: 14px;
+
+    border-top: 1px solid rgba(20, 30, 45, 0.055);
+
+    font-size: 13px;
+
+    text-align: right;
+
+    white-space: nowrap;
+}
+
+
+.stocks-table td:first-child,
+.stocks-table td:nth-child(2) {
+    text-align: left;
+}
+
+
+.stocks-table tbody tr {
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
+}
+
+
+.stocks-table tbody tr:hover {
+    background: rgba(20, 30, 45, 0.025);
+}
+
+
+/* 股票名称 */
+
+.stock-name {
+    font-weight: 600;
+    color: #172033;
+}
+
+
+.stock-code {
+    color: #8a94a6;
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        monospace;
+    font-size: 12px;
+}
+
+
+/* 涨跌幅 */
+
+.stock-pct {
+    font-weight: 650;
+}
+
+
+.stock-pct.up {
+    color: #e25555;
+}
+
+
+.stock-pct.down {
+    color: #32936f;
+}
+
+
+.stock-pct.flat {
+    color: #8a94a6;
+}
+
+
+/* 数值 */
+
+.stock-price {
+    font-variant-numeric: tabular-nums;
+}
+
+
+.stock-muted {
+    color: #8a94a6;
+}
+
+
+/* 空状态 */
+
+.stocks-empty {
+    padding: 56px 20px !important;
+
+    text-align: center !important;
+}
+
+
+.stocks-empty-icon {
+    width: 42px;
+    height: 42px;
+
+    margin: 0 auto 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: rgba(20, 30, 45, 0.05);
+
+    font-size: 20px;
+}
+
+
+.stocks-empty-title {
+    margin-bottom: 6px;
+
+    font-size: 14px;
+    font-weight: 650;
+
+    color: #202938;
+}
+
+
+.stocks-empty-text {
+    font-size: 12px;
+    line-height: 1.6;
+
+    color: #929baa;
+}
+
+
+/* 底部 */
+
+.stocks-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 13px 18px;
+
+    border-top: 1px solid rgba(20, 30, 45, 0.055);
+
+    color: #8a94a6;
+
+    font-size: 12px;
+}
+
+
+.stocks-footer strong {
+    color: #4b5563;
+    font-weight: 600;
+}
+
+
+@media (max-width: 900px) {
+
+    .stocks-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+
+    .stocks-toolbar-left,
+    .stocks-toolbar-right {
+        width: 100%;
+    }
+
+
+    .stock-search-wrap {
+        width: 100%;
+    }
+
+
+    .stock-filter-select {
+        flex: 1;
+    }
+
+}

@@ -521,6 +521,211 @@
 
                 </section>
 
+                <!-- =================================================
+     Industry Stocks
+================================================== -->
+
+                <section class="panel industry-stocks-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <div class="panel-title">
+                                行业成分股
+                            </div>
+
+                            <div class="panel-description" id="stocksDescription">
+                                选择一个行业查看成分股行情
+                            </div>
+
+                        </div>
+
+
+                        <div class="stocks-header-meta">
+
+                            <span id="stocksIndustryName">
+                                --
+                            </span>
+
+                            <span class="stocks-count" id="stocksCount">
+                                0 只
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stocks-toolbar">
+
+                        <div class="stocks-toolbar-left">
+
+                            <div class="stock-search-wrap">
+
+                                <span class="search-icon">
+                                    ⌕
+                                </span>
+
+                                <input class="search-input" id="stockSearchInput" type="text" placeholder="搜索股票名称 / 代码">
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stocks-toolbar-right">
+
+                            <select class="select stock-filter-select" id="stockSortSelect">
+
+                                <option value="pct_desc">
+                                    涨跌幅从高到低
+                                </option>
+
+                                <option value="pct_asc">
+                                    涨跌幅从低到高
+                                </option>
+
+                                <option value="amount_desc">
+                                    成交额从高到低
+                                </option>
+
+                                <option value="market_cap_desc">
+                                    市值从高到低
+                                </option>
+
+                                <option value="name_asc">
+                                    股票名称
+                                </option>
+
+                            </select>
+
+
+                            <button class="panel-action" id="stockRefreshButton">
+                                刷新
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="table-wrap stocks-table-wrap">
+
+                        <table class="stocks-table">
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        股票
+                                    </th>
+
+                                    <th>
+                                        代码
+                                    </th>
+
+                                    <th>
+                                        最新价
+                                    </th>
+
+                                    <th>
+                                        涨跌幅
+                                    </th>
+
+                                    <th>
+                                        今开
+                                    </th>
+
+                                    <th>
+                                        最高
+                                    </th>
+
+                                    <th>
+                                        最低
+                                    </th>
+
+                                    <th>
+                                        昨收
+                                    </th>
+
+                                    <th>
+                                        成交额
+                                    </th>
+
+                                    <th>
+                                        换手率
+                                    </th>
+
+                                    <th>
+                                        总市值
+                                    </th>
+
+                                    <th>
+                                        流通市值
+                                    </th>
+
+                                    <th>
+                                        PE(TTM)
+                                    </th>
+
+                                    <th>
+                                        PB
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody id="industryStocksTable">
+
+                                <tr>
+
+                                    <td colspan="14" class="stocks-empty">
+
+                                        <div class="stocks-empty-icon">
+                                            ↗
+                                        </div>
+
+                                        <div class="stocks-empty-title">
+                                            选择一个行业
+                                        </div>
+
+                                        <div class="stocks-empty-text">
+                                            点击上方行业列表中的行业，
+                                            查看该行业全部成分股
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <div class="stocks-footer">
+
+                        <span>
+                            当前显示
+                            <strong id="visibleStocksCount">0</strong>
+                            只
+                        </span>
+
+                        <span>
+                            数据日期：
+                            <strong id="stocksDataDate">--</strong>
+                        </span>
+
+                    </div>
+
+                </section>
+
 
                 <!-- =================================================
                  Data Note
