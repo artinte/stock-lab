@@ -48,7 +48,7 @@ async def lifespan(app: FastAPI):
         # 行业行情服务
         # ====================================================
 
-        app_state.industry_performance_service = IndustryPerformanceService()
+        app_state.industry_performance_service = IndustryPerformanceService(app_state.data)
 
         print("✅ 行业行情服务启动成功")
 

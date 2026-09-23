@@ -9,7 +9,6 @@ from infra.gateways.stock_data import StockDataGateway
 from infra.managers.stock_manager import StockManager
 from infra.managers.crypto_manager import CryptoManager
 from infra.managers.forex_manager import ForexManager
-from infra.service.industry_service import IndustryService
 
 
 class DataManager:
@@ -79,12 +78,6 @@ class DataManager:
             )
 
             self.forex = ForexManager(forex_gateway)
-
-        # --------------------------------------------------
-        # 行业服务
-        # --------------------------------------------------
-
-        self.industry = IndustryService()
 
     # ======================================================
     # 生命周期管理
