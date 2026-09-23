@@ -6,7 +6,7 @@ utils 包的初始化文件
 
 # 1. 使用相对导入，把子模块中的关键类/函数暴露出来
 from .stock_mapping import StockCodeConverter, stock_name_to_code
-from .stock_industry_category import get_stock_industry_category
+from .stock_industry_classification import get_stock_industry_category
 
 
 # 2. (可选) 定义 __all__，指定 from utils import * 时导入的内容

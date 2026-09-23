@@ -1,6 +1,6 @@
 from core.models.industry import Industry
 from core.models.industry_profile import IndustryProfile
-from utils.stock_industry_category import StockQueryResult, get_stock_industry_category
+from utils.stock_industry_classification import StockQueryResult, get_stock_industry_category
 
 
 class IndustryService:

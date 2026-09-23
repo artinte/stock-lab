@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date
 from typing import Optional
 
+from common.constants import TEN_THOUSAND
 from core.cache.file import FileCache
 from core.cache.paths import get_cache_path
 
@@ -211,11 +212,12 @@ class YinheEquityStructure:
 
         return EquityStructure(
             symbol=symbol,
-            total_shares=cls._to_float(row.get("TOT_SHARE")),
-            float_shares=cls._to_float(row.get("FLOAT_SHARE")),
-            float_a_shares=cls._to_float(row.get("FLOAT_A_SHARE")),
-            float_b_shares=cls._to_float(row.get("FLOAT_B_SHARE")),
-            restricted_shares=cls._to_float(row.get("TOT_RESTRICTED_SHARE")),
+            total_shares=cls._to_float(row.get("TOT_SHARE")) * TEN_THOUSAND,
+            float_shares=cls._to_float(row.get("FLOAT_SHARE")) * TEN_THOUSAND,
+            float_a_shares=cls._to_float(row.get("FLOAT_A_SHARE")) * TEN_THOUSAND,
+            float_b_shares=cls._to_float(row.get("FLOAT_B_SHARE")) * TEN_THOUSAND,
+            restricted_shares=cls._to_float(row.get("TOT_RESTRICTED_SHARE"))
+            * TEN_THOUSAND,
             announcement_date=cls._parse_date(row.get("ANN_DATE")),
             change_date=cls._parse_date(row.get("CHANGE_DATE")),
             ex_change_date=cls._parse_date(row.get("EX_CHANGE_DATE")),
@@ -248,10 +250,7 @@ class YinheEquityStructure:
             return []
 
         normalized_symbols = list(
-            dict.fromkeys(
-                normalize_symbol(symbol)
-                for symbol in symbols
-            )
+            dict.fromkeys(normalize_symbol(symbol) for symbol in symbols)
         )
 
         structures: dict[str, EquityStructure] = {}
@@ -269,19 +268,14 @@ class YinheEquityStructure:
         # 获取缓存未命中的数据
         if missing_symbols:
             try:
-                equity_structure = (
-                    self.gateway.info_data.get_equity_structure(
-                        missing_symbols,
-                        local_path=self.gateway.local_path,
-                        is_local=True,
-                    )
+                equity_structure = self.gateway.info_data.get_equity_structure(
+                    missing_symbols,
+                    local_path=self.gateway.local_path,
+                    is_local=True,
                 )
 
             except Exception as exc:
-                print(
-                    f"[银河网关] 获取股票股本结构失败 "
-                    f"{missing_symbols}: {exc}"
-                )
+                print(f"[银河网关] 获取股票股本结构失败 " f"{missing_symbols}: {exc}")
                 equity_structure = None
 
             if (
@@ -291,8 +285,7 @@ class YinheEquityStructure:
             ):
                 for symbol in missing_symbols:
                     records = equity_structure[
-                        equity_structure["MARKET_CODE"].astype(str)
-                        == symbol
+                        equity_structure["MARKET_CODE"].astype(str) == symbol
                     ]
 
                     if records.empty:
@@ -328,7 +321,5 @@ class YinheEquityStructure:
 
         # 按输入顺序返回
         return [
-            structures[symbol]
-            for symbol in normalized_symbols
-            if symbol in structures
+            structures[symbol] for symbol in normalized_symbols if symbol in structures
         ]

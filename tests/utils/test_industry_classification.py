@@ -1,4 +1,4 @@
-from utils.stock_industry_category import (
+from utils.stock_industry_classification import (
     get_stock_industry_category,
     get_category_stocks,
     get_all_category,

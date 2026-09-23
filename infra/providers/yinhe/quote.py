@@ -112,7 +112,6 @@ class YinheQuote:
         normalized_symbols = []
 
         for symbol in symbols:
-
             if not symbol:
                 continue
 
@@ -130,16 +129,13 @@ class YinheQuote:
 
         now = datetime.datetime.now()
 
-        start_time = (
-            now - pandas.Timedelta(days=30)
-        )
+        start_time = now - pandas.Timedelta(days=30)
 
         # =====================================================
         # 3. 一次性批量获取 K 线
         # =====================================================
 
         try:
-
             klines = self.gateway.kline.fetch_kline(
                 symbol=normalized_symbols,
                 interval=Interval.DAY_1,
@@ -149,11 +145,7 @@ class YinheQuote:
             )
 
         except Exception as e:
-
-            print(
-                f"[银河行情] 批量获取 K 线失败：{e}"
-            )
-
+            print(f"[银河行情] 批量获取 K 线失败：{e}")
             return []
 
         if not klines:
@@ -162,26 +154,6 @@ class YinheQuote:
         # =====================================================
         # 4. 整理 K 线数据
         # =====================================================
-        #
-        # fetch_kline() 批量返回的数据具体结构，
-        # 可能是：
-        #
-        #   list[Kline]
-        #
-        # 或：
-        #
-        #   dict[str, list[Kline]]
-        #
-        # 这里统一转换成：
-        #
-        #   {
-        #       "600519.SH": [...],
-        #       "000001.SZ": [...],
-        #   }
-        #
-        # 如果你的 fetch_kline 已经固定返回 dict，
-        # 可以直接保留 dict 分支。
-        #
 
         kline_map = self._group_klines(
             klines,
@@ -195,9 +167,19 @@ class YinheQuote:
         # 5. 一次批量获取股本
         # =====================================================
 
-        equity_map = self._fetch_equity(
+        equity_structures = self.gateway.equity_structure.fetch_equity_structures(
             normalized_symbols
         )
+
+        # list[EquityStructure]
+        # 转换成：
+        #
+        # {
+        #     "600519.SH": EquityStructure(...),
+        #     "000001.SZ": EquityStructure(...),
+        # }
+
+        equity_map = {structure.symbol: structure for structure in equity_structures}
 
         # =====================================================
         # 6. 构造 Quote
@@ -206,19 +188,15 @@ class YinheQuote:
         result = []
 
         for symbol in normalized_symbols:
-
             symbol_klines = kline_map.get(symbol)
 
             if not symbol_klines:
-                print(
-                    f"[银河行情] 无 K 线数据：{symbol}"
-                )
+                print(f"[银河行情] 无 K 线数据：{symbol}")
                 continue
 
             equity = equity_map.get(symbol)
 
             try:
-
                 quote = self._build_quote(
                     symbol=symbol,
                     klines=symbol_klines,
@@ -230,11 +208,7 @@ class YinheQuote:
                     result.append(quote)
 
             except Exception as e:
-
-                print(
-                    f"[银河行情] 构造行情失败 "
-                    f"{symbol}：{e}"
-                )
+                print(f"[银河行情] 构造行情失败 " f"{symbol}：{e}")
 
         return result
 
@@ -266,9 +240,7 @@ class YinheQuote:
 
             for symbol, items in klines.items():
 
-                normalized = normalize_symbol(
-                    symbol
-                )
+                normalized = normalize_symbol(symbol)
 
                 if items:
                     result[normalized] = items
@@ -281,10 +253,7 @@ class YinheQuote:
 
         if isinstance(klines, list):
 
-            result = {
-                symbol: []
-                for symbol in symbols
-            }
+            result = {symbol: [] for symbol in symbols}
 
             for kline in klines:
 
@@ -297,9 +266,7 @@ class YinheQuote:
                 if not symbol:
                     continue
 
-                symbol = normalize_symbol(
-                    symbol
-                )
+                symbol = normalize_symbol(symbol)
 
                 if symbol in result:
                     result[symbol].append(kline)
@@ -330,12 +297,10 @@ class YinheQuote:
         result = {}
 
         try:
-            equity = (
-                self.gateway.info_data.get_equity_structure(
-                    symbols,
-                    local_path=self.gateway.local_path,
-                    is_local=True,
-                )
+            equity = self.gateway.info_data.get_equity_structure(
+                symbols,
+                local_path=self.gateway.local_path,
+                is_local=True,
             )
 
             if equity is None or equity.empty:
@@ -366,9 +331,7 @@ class YinheQuote:
             if symbol_column is not None:
                 for symbol in symbols:
                     mask = (
-                        equity[symbol_column]
-                        .astype(str)
-                        .map(normalize_symbol)
+                        equity[symbol_column].astype(str).map(normalize_symbol)
                         == symbol
                     )
                     data = equity.loc[mask]
@@ -387,9 +350,7 @@ class YinheQuote:
 
         except Exception as e:
 
-            print(
-                f"[银河行情] 批量获取股本失败：{e}"
-            )
+            print(f"[银河行情] 批量获取股本失败：{e}")
 
             return result
 
@@ -419,11 +380,7 @@ class YinheQuote:
 
         latest = klines[-1]
 
-        previous = (
-            klines[-2]
-            if len(klines) > 1
-            else None
-        )
+        previous = klines[-2] if len(klines) > 1 else None
 
         # =====================================================
         # 基础价格
@@ -431,11 +388,7 @@ class YinheQuote:
 
         last_price = latest.close
 
-        prev_close = (
-            previous.close
-            if previous is not None
-            else None
-        )
+        prev_close = previous.close if previous is not None else None
 
         open_price = latest.open
         high_price = latest.high
@@ -448,22 +401,11 @@ class YinheQuote:
         change = None
         change_percent = None
 
-        if (
-            last_price is not None
-            and prev_close is not None
-            and prev_close != 0
-        ):
+        if last_price is not None and prev_close is not None and prev_close != 0:
 
-            change = (
-                last_price
-                - prev_close
-            )
+            change = last_price - prev_close
 
-            change_percent = (
-                change
-                / prev_close
-                * 100
-            )
+            change_percent = change / prev_close * 100
 
         # =====================================================
         # 振幅
@@ -478,18 +420,14 @@ class YinheQuote:
             and prev_close != 0
         ):
 
-            amplitude = (
-                (high_price - low_price)
-                / prev_close
-                * 100
-            )
+            amplitude = (high_price - low_price) / prev_close * 100
 
         # =====================================================
         # 股本
         # =====================================================
 
-        total_shares = None
-        float_shares = None
+        total_shares = equity.total_shares
+        float_shares = equity.float_shares
 
         # =====================================================
         # 总市值
@@ -497,15 +435,8 @@ class YinheQuote:
 
         market_cap = None
 
-        if (
-            total_shares is not None
-            and last_price is not None
-        ):
-
-            market_cap = (
-                total_shares
-                * last_price
-            )
+        if total_shares is not None and last_price is not None:
+            market_cap = total_shares * last_price
 
         # =====================================================
         # 流通市值
@@ -513,15 +444,8 @@ class YinheQuote:
 
         float_market_cap = None
 
-        if (
-            float_shares is not None
-            and last_price is not None
-        ):
-
-            float_market_cap = (
-                float_shares
-                * last_price
-            )
+        if float_shares is not None and last_price is not None:
+            float_market_cap = float_shares * last_price
 
         # =====================================================
         # 成交量 / 成交额
@@ -536,15 +460,9 @@ class YinheQuote:
 
         average_price = None
 
-        if (
-            amount is not None
-            and volume is not None
-            and volume != 0
-        ):
+        if amount is not None and volume is not None and volume != 0:
 
-            average_price = (
-                amount / volume
-            )
+            average_price = amount / volume
 
         # =====================================================
         # 换手率
@@ -552,17 +470,9 @@ class YinheQuote:
 
         turnover = None
 
-        if (
-            float_shares is not None
-            and float_shares != 0
-            and volume is not None
-        ):
+        if float_shares is not None and float_shares != 0 and volume is not None:
 
-            turnover = (
-                volume
-                / float_shares
-                * 100
-            )
+            turnover = volume / float_shares * 100
 
         # =====================================================
         # 量比
@@ -575,60 +485,37 @@ class YinheQuote:
             volumes = [
                 k.volume
                 for k in klines[:-1][-5:]
-                if (
-                    k.volume is not None
-                    and k.volume > 0
-                )
+                if (k.volume is not None and k.volume > 0)
             ]
 
             today_volume = latest.volume
 
-            if (
-                today_volume is not None
-                and today_volume > 0
-                and volumes
-            ):
+            if today_volume is not None and today_volume > 0 and volumes:
 
-                average_volume = (
-                    sum(volumes)
-                    / len(volumes)
-                )
+                average_volume = sum(volumes) / len(volumes)
 
                 if average_volume > 0:
 
-                    volume_ratio = (
-                        today_volume
-                        / average_volume
-                    )
+                    volume_ratio = today_volume / average_volume
 
         # =====================================================
         # 涨跌停
         # =====================================================
 
-        limit_percent = (
-            self._get_limit_percent(
-                symbol
-            )
-        )
+        limit_percent = self._get_limit_percent(symbol)
 
         limit_up = None
         limit_down = None
 
-        if (
-            prev_close is not None
-            and prev_close > 0
-            and limit_percent is not None
-        ):
+        if prev_close is not None and prev_close > 0 and limit_percent is not None:
 
             limit_up = round(
-                prev_close
-                * (1 + limit_percent),
+                prev_close * (1 + limit_percent),
                 2,
             )
 
             limit_down = round(
-                prev_close
-                * (1 - limit_percent),
+                prev_close * (1 - limit_percent),
                 2,
             )
 
@@ -652,31 +539,23 @@ class YinheQuote:
             timestamp=latest.timestamp,
             source="yinhe",
             currency="CNY",
-
             last_price=last_price,
             previous_close=prev_close,
-
             open_price=open_price,
             high_price=high_price,
             low_price=low_price,
-
             change=change,
             change_percent=change_percent,
             amplitude=amplitude,
-
             volume=volume,
             amount=amount,
             average_price=average_price,
-
             turnover=turnover,
             volume_ratio=volume_ratio,
-
             market_cap=market_cap,
             float_market_cap=float_market_cap,
-
             limit_up=limit_up,
             limit_down=limit_down,
-
             status=status,
         )
 
@@ -709,10 +588,7 @@ class YinheQuote:
         # 北交所
         # -----------------------------------------------------
 
-        if (
-            symbol.startswith("8")
-            or symbol.startswith("4")
-        ):
+        if symbol.startswith("8") or symbol.startswith("4"):
             return 0.30
 
         # -----------------------------------------------------
@@ -739,23 +615,13 @@ class YinheQuote:
         if last_price is None:
             return "unknown"
 
-        if (
-            volume is not None
-            and volume == 0
-        ):
+        if volume is not None and volume == 0:
             return "suspended"
 
-        if (
-            limit_up is not None
-            and last_price >= limit_up
-        ):
+        if limit_up is not None and last_price >= limit_up:
             return "limit_up"
 
-        if (
-            limit_down is not None
-            and last_price <= limit_down
-        ):
+        if limit_down is not None and last_price <= limit_down:
             return "limit_down"
 
         return "trading"
-
