@@ -1,317 +1,211 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from datetime import date, datetime
-from decimal import Decimal
+from dataclasses import dataclass
+from datetime import date
 from typing import Any
 
 """
-股票股权结构数据模型。
+股票股本结构数据模型。
 
-用于描述上市公司的股权结构、股东信息及股份类别。
+用于描述上市公司的核心股本结构以及股本变动信息。
 
-主要内容：
+主要包括：
 
-1. 股份结构
-   - 总股本
-   - 流通股本
-   - 非流通股本
-   - 股份类别
+- 总股本
+- 流通股本
+- 流通 A 股
+- 流通 B 股
+- 限售股
+- 股本变动日期
+- 股本变动原因
 
-2. 股东结构
-   - 股东名称
-   - 股东类型
-   - 持股数量
-   - 持股比例
-   - 股份性质
-   - 股东排名
+该模型是 Stock Lab 的统一业务模型，
+不直接对应某一个数据源的全部原始字段。
 
-3. 控股关系
-   - 控股股东
-   - 实际控制人
-
-4. 数据属性
-   - 报告期
-   - 公告日期
-   - 数据来源
-
-该模型主要用于统一不同数据源的股权结构数据，
-不负责数据获取、计算或持久化。
+股份数量统一使用“万股”作为单位。
 """
 
 
-@dataclass(slots=True)
-class Shareholder:
-    """股东信息。"""
-
-    name: str
-    rank: int | None = None
-
-    shareholder_type: str | None = None
-    share_type: str | None = None
-
-    shares: Decimal | None = None
-    ownership_ratio: Decimal | None = None
-
-    change_shares: Decimal | None = None
-    change_ratio: Decimal | None = None
-
-    is_controlling_shareholder: bool = False
-    is_actual_controller: bool = False
-
-    source: str | None = None
-
-    def to_dict(self) -> dict[str, Any]:
-        """转换为字典。"""
-        return {
-            "name": self.name,
-            "rank": self.rank,
-            "shareholder_type": self.shareholder_type,
-            "share_type": self.share_type,
-            "shares": self.shares,
-            "ownership_ratio": self.ownership_ratio,
-            "change_shares": self.change_shares,
-            "change_ratio": self.change_ratio,
-            "is_controlling_shareholder": self.is_controlling_shareholder,
-            "is_actual_controller": self.is_actual_controller,
-            "source": self.source,
-        }
-
-
-@dataclass(slots=True)
-class ShareClass:
-    """股份类别。"""
-
-    name: str
-    shares: Decimal | None = None
-    ownership_ratio: Decimal | None = None
-
-    listed: bool = True
-    tradable: bool = True
-
-    description: str | None = None
-
-    def to_dict(self) -> dict[str, Any]:
-        """转换为字典。"""
-        return {
-            "name": self.name,
-            "shares": self.shares,
-            "ownership_ratio": self.ownership_ratio,
-            "listed": self.listed,
-            "tradable": self.tradable,
-            "description": self.description,
-        }
-
-
-@dataclass(slots=True)
+@dataclass
 class EquityStructure:
-    """
-    上市公司股权结构。
+    """股票股本结构。"""
 
-    一个 EquityStructure 对应一个股票在某个报告期的股权结构快照。
-    """
-
+    # 基本信息
     symbol: str
     name: str | None = None
 
-    # =========================
-    # 股本结构
-    # =========================
+    # 核心股本
+    total_shares: float | None = None
+    float_shares: float | None = None
 
-    total_shares: Decimal | None = None
-    float_shares: Decimal | None = None
-    non_float_shares: Decimal | None = None
+    # 流通结构
+    float_a_shares: float | None = None
+    float_b_shares: float | None = None
 
-    # =========================
-    # 股份类别
-    # =========================
+    # 限售结构
+    restricted_shares: float | None = None
 
-    share_classes: list[ShareClass] = field(default_factory=list)
-
-    # =========================
-    # 股东结构
-    # =========================
-
-    shareholders: list[Shareholder] = field(default_factory=list)
-
-    # =========================
-    # 控股关系
-    # =========================
-
-    controlling_shareholder: str | None = None
-    actual_controller: str | None = None
-
-    controlling_ratio: Decimal | None = None
-
-    # =========================
-    # 数据时间
-    # =========================
-
-    report_date: date | None = None
+    # 股本变动
     announcement_date: date | None = None
+    change_date: date | None = None
+    ex_change_date: date | None = None
+    change_reason: str | None = None
 
-    # =========================
     # 数据来源
-    # =========================
-
     source: str | None = None
 
-    updated_at: datetime | None = None
-
-    # =========================
-    # 基础方法
-    # =========================
-
     def to_dict(self) -> dict[str, Any]:
-        """转换为字典。"""
+        """转换为字典，用于缓存和序列化。"""
+
         return {
             "symbol": self.symbol,
             "name": self.name,
             "total_shares": self.total_shares,
             "float_shares": self.float_shares,
-            "non_float_shares": self.non_float_shares,
-            "share_classes": [item.to_dict() for item in self.share_classes],
-            "shareholders": [item.to_dict() for item in self.shareholders],
-            "controlling_shareholder": self.controlling_shareholder,
-            "actual_controller": self.actual_controller,
-            "controlling_ratio": self.controlling_ratio,
-            "report_date": self.report_date,
-            "announcement_date": self.announcement_date,
+            "float_a_shares": self.float_a_shares,
+            "float_b_shares": self.float_b_shares,
+            "restricted_shares": self.restricted_shares,
+
+            "announcement_date": (
+                self.announcement_date.isoformat()
+                if self.announcement_date
+                else None
+            ),
+            "change_date": (
+                self.change_date.isoformat()
+                if self.change_date
+                else None
+            ),
+            "ex_change_date": (
+                self.ex_change_date.isoformat()
+                if self.ex_change_date
+                else None
+            ),
+
+            "change_reason": self.change_reason,
             "source": self.source,
-            "updated_at": self.updated_at,
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> EquityStructure:
+        """从字典恢复股本结构对象。"""
+
+        def parse_date(value: Any) -> date | None:
+            if value is None:
+                return None
+
+            if isinstance(value, date):
+                return value
+
+            value = str(value).strip()
+
+            if not value or value == "-":
+                return None
+
+            try:
+                # 例如：20250331
+                if len(value) == 8 and value.isdigit():
+                    return date(
+                        int(value[:4]),
+                        int(value[4:6]),
+                        int(value[6:8]),
+                    )
+
+                # 例如：2025-03-31
+                return date.fromisoformat(value)
+
+            except ValueError:
+                return None
+
+        return cls(
+            symbol=data["symbol"],
+            name=data.get("name"),
+            total_shares=data.get("total_shares"),
+            float_shares=data.get("float_shares"),
+            float_a_shares=data.get("float_a_shares"),
+            float_b_shares=data.get("float_b_shares"),
+            restricted_shares=data.get("restricted_shares"),
+            announcement_date=parse_date(data.get("announcement_date")),
+            change_date=parse_date(data.get("change_date")),
+            ex_change_date=parse_date(data.get("ex_change_date")),
+            change_reason=data.get("change_reason"),
+            source=data.get("source"),
+        )
+
     def display(self) -> None:
-        """以适合终端查看的形式显示股权结构。"""
-
-        print("=" * 72)
-        print("股权结构")
-        print("=" * 72)
-
-        # -------------------------
-        # 基本信息
-        # -------------------------
+        """以适合终端查看的形式显示股本结构。"""
 
         print(f"股票：{self.symbol}")
 
         if self.name:
             print(f"名称：{self.name}")
 
-        if self.report_date:
-            print(f"报告期：{self.report_date}")
+        print("\n【核心股本】")
+        self._display_shares("总股本", self.total_shares)
+        self._display_shares("流通股本", self.float_shares)
 
-        if self.announcement_date:
-            print(f"公告日期：{self.announcement_date}")
+        if any(
+            value is not None
+            for value in (
+                self.float_a_shares,
+                self.float_b_shares,
+            )
+        ):
+            print("\n【流通结构】")
+            self._display_shares(
+                "流通 A 股",
+                self.float_a_shares,
+            )
+            self._display_shares(
+                "流通 B 股",
+                self.float_b_shares,
+            )
 
-        # -------------------------
-        # 股本结构
-        # -------------------------
+        if self.restricted_shares is not None:
+            print("\n【限售结构】")
+            self._display_shares(
+                "限售股",
+                self.restricted_shares,
+            )
 
-        print("\n【股本结构】")
+        if any(
+            value is not None
+            for value in (
+                self.announcement_date,
+                self.change_date,
+                self.ex_change_date,
+                self.change_reason,
+            )
+        ):
+            print("\n【股本变动】")
 
-        self._display_value(
-            "总股本",
-            self.total_shares,
-        )
+            if self.announcement_date:
+                print(f"公告日期：{self.announcement_date}")
 
-        self._display_value(
-            "流通股本",
-            self.float_shares,
-        )
+            if self.change_date:
+                print(f"变动日期：{self.change_date}")
 
-        self._display_value(
-            "非流通股本",
-            self.non_float_shares,
-        )
+            if self.ex_change_date:
+                print(f"除权日期：{self.ex_change_date}")
 
-        # -------------------------
-        # 控股关系
-        # -------------------------
-
-        if self.controlling_shareholder or self.actual_controller:
-            print("\n【控股关系】")
-
-            if self.controlling_shareholder:
-                print(f"控股股东：{self.controlling_shareholder}")
-
-            if self.controlling_ratio is not None:
-                print(f"控股比例：" f"{self._format_percent(self.controlling_ratio)}")
-
-            if self.actual_controller:
-                print(f"实际控制人：{self.actual_controller}")
-
-        # -------------------------
-        # 股份类别
-        # -------------------------
-
-        if self.share_classes:
-            print("\n【股份类别】")
-
-            for item in self.share_classes:
-                shares = self._format_number(item.shares)
-                ratio = self._format_percent(item.ownership_ratio)
-
-                print(f"{item.name:<16}" f"股数：{shares:<16}" f"占比：{ratio}")
-
-        # -------------------------
-        # 股东
-        # -------------------------
-
-        if self.shareholders:
-            print("\n【主要股东】")
-
-            for shareholder in self.shareholders:
-                rank = (
-                    f"{shareholder.rank:>2}" if shareholder.rank is not None else "--"
-                )
-
-                shares = self._format_number(shareholder.shares)
-
-                ratio = self._format_percent(shareholder.ownership_ratio)
-
-                print(
-                    f"{rank}. "
-                    f"{shareholder.name:<24}"
-                    f"持股：{shares:<16}"
-                    f"占比：{ratio}"
-                )
-
-        # -------------------------
-        # 数据来源
-        # -------------------------
+            if self.change_reason:
+                print(f"变动原因：{self.change_reason}")
 
         if self.source:
-            print(f"\n数据来源：{self.source}")
+            print("\n【数据来源】")
+            print(f"数据来源：{self.source}")
 
-        if self.updated_at:
-            print(f"更新时间：{self.updated_at}")
-
-        print("=" * 72)
+        print("=" * 64)
 
     @staticmethod
-    def _format_number(
-        value: Decimal | None,
-    ) -> str:
-        """格式化数值。"""
-        if value is None:
-            return "-"
-
-        return f"{value:,.0f}"
-
-    @staticmethod
-    def _format_percent(
-        value: Decimal | None,
-    ) -> str:
-        """格式化百分比。"""
-        if value is None:
-            return "-"
-
-        return f"{value:.2f}%"
-
-    @staticmethod
-    def _display_value(
+    def _display_shares(
         label: str,
-        value: Decimal | None,
+        value: float | None,
     ) -> None:
-        """显示股本字段。"""
-        print(f"{label}：" f"{EquityStructure._format_number(value)}")
+        """显示股数。"""
+
+        if value is None:
+            print(f"{label}：-")
+            return
+
+        print(f"{label}：{value:,.2f} 万股")

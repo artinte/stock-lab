@@ -5,6 +5,7 @@ from typing import Optional
 
 from common.enums.quote_level import QuoteLevel
 
+from core.models.equity_structure import EquityStructure
 from core.models.financial.income_statement import IncomeStatement
 from core.models.financial.financial import Financial
 from core.models.valuation import Valuation
@@ -58,6 +59,22 @@ class StockManager:
         """批量获取股票基础信息。"""
 
         return self.gateway.fetch_stocks(symbols)
+
+    def get_equity_structure(
+        self,
+        symbol: str,
+    ) -> EquityStructure | None:
+        """获取单只股票的股本结构。"""
+
+        return self.gateway.fetch_equity_structure(symbol)
+
+    def get_equity_structures(
+        self,
+        symbols: list[str],
+    ) -> list[EquityStructure]:
+        """批量获取股票股本结构。"""
+
+        return self.gateway.fetch_equity_structures(symbols)
 
     # --------------------------------------------------
     # 股票行情

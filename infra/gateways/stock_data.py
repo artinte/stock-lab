@@ -8,6 +8,7 @@ from polars import date
 
 from common.constants import Interval
 from common.enums.quote_level import QuoteLevel
+from core.models.equity_structure import EquityStructure
 from core.models.financial.balance_sheet import BalanceSheet
 from core.models.financial.cash_flow import CashFlow
 from core.models.financial.financial import Financial
@@ -73,6 +74,18 @@ class StockDataGateway(ABC):
         end_time: Optional[datetime] = None,
         limit: int = 1000,
     ) -> Kline:
+        raise NotImplementedError
+
+    @abstractmethod
+    def fetch_equity_structure(
+        symbol: str,
+    ) -> EquityStructure | None:
+        raise NotImplementedError
+
+    @abstractmethod
+    def fetch_equity_structures(
+        symbols: list[str],
+    ) -> list[EquityStructure]:
         raise NotImplementedError
 
     @abstractmethod

@@ -488,7 +488,7 @@ class YinheQuote:
         # 股本
         # =====================================================
 
-        total_shares = equity.
+        total_shares = None
         float_shares = None
 
         # =====================================================

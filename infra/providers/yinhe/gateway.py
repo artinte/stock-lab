@@ -20,7 +20,7 @@ from core.models.financial.financial import Financial
 from core.models.kline import Kline
 from core.models.valuation import Valuation
 from core.models.quote import Quote
-from infra.analysis.financial_analyzer import FinancialAnalyzer
+from infra.providers.yinhe.equity_structure import YinheEquityStructure
 from infra.providers.yinhe.etf import YinheETF
 from infra.providers.yinhe.financial import YinheFinancial
 from infra.providers.yinhe.kline import YinheKline
@@ -162,6 +162,8 @@ class YinheGateway(StockDataGateway):
         self.stock = YinheStock(self)
 
         self.kline = YinheKline(self)
+
+        self.equity_structure = YinheEquityStructure(self)
 
         self.quote = YinheQuote(self)
 
@@ -311,27 +313,6 @@ class YinheGateway(StockDataGateway):
         """
         return self.stock.fetch_stocks(symbols)
 
-    def fetch_quote(
-        self,
-        symbol: str,
-        quote_level: Optional[QuoteLevel] = None,
-    ) -> Optional[Quote]:
-        """
-        获取股票最新行情。
-
-        当前 AmazingData 未直接接入实时行情接口，
-        使用最近交易日 K 线构造行情快照。
-
-        因此：
-
-            price = 最近交易日收盘价
-            prev_close = 前一交易日收盘价
-
-        注意：
-            这里不是实时行情。
-        """
-        return self.quote.fetch_quote(symbol=symbol, quote_level=quote_level)
-
     def fetch_kline(
         self,
         symbol: str,
@@ -362,6 +343,39 @@ class YinheGateway(StockDataGateway):
             elif interval == "1M":
                 start_time = end_time - datetime.timedelta(days=limit * 31 * 2)
         return self.kline.fetch_kline(symbol, interval, start_time, end_time, limit)
+
+    def fetch_equity_structure(
+        self,
+        symbol,
+    ):
+        return self.equity_structure.fetch_equity_structure(symbol)
+
+    def fetch_equity_structures(
+        self,
+        symbols,
+    ):
+        return self.equity_structure.fetch_equity_structures(symbols)
+
+    def fetch_quote(
+        self,
+        symbol: str,
+        quote_level: Optional[QuoteLevel] = None,
+    ) -> Optional[Quote]:
+        """
+        获取股票最新行情。
+
+        当前 AmazingData 未直接接入实时行情接口，
+        使用最近交易日 K 线构造行情快照。
+
+        因此：
+
+            price = 最近交易日收盘价
+            prev_close = 前一交易日收盘价
+
+        注意：
+            这里不是实时行情。
+        """
+        return self.quote.fetch_quote(symbol=symbol, quote_level=quote_level)
 
     def fetch_quotes(
         self,
