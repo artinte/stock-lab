@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
+
+"""
+==============================================================================
+模块名称 : 中证行业分类数据查询
+功能描述 : 提供中证行业分类、股票行业归属以及行业股票列表查询。
+==============================================================================
+"""
+
 from functools import lru_cache
-from typing import Dict, List, Optional, Union
+from typing import Optional, Union
+
 import pandas as pd
 
 from common.constants import IndustryStandard
 from core.models.industry import Industry
 from .download_industry_data import get_csindex_industry_data
 
-"""
-==============================================================================
-模块名称 (Module Name) : CSIndex Industry Classification Query Tool
-功能描述 (Description) : 本模块提供中证行业分类数据的离线检索与处理工具。
-==============================================================================
-"""
+# =============================================================================
+# 常量
+# =============================================================================
 
 LEVEL_MAP = {
     1: 1,
@@ -33,313 +39,326 @@ LEVEL_MAP = {
     "四": 4,
 }
 
-ZH_NUM_MAP = {1: "一", 2: "二", 3: "三", 4: "四"}
+ZH_NUM_MAP = {
+    1: "一",
+    2: "二",
+    3: "三",
+    4: "四",
+}
 
 
-def _parse_level(level: Optional[Union[int, str]]) -> Optional[int]:
-    """统一解析层级输入为标准的 1~4 整数"""
-    if level is None:
-        return None
-    return LEVEL_MAP.get(level, LEVEL_MAP.get(str(level).strip()))
+# =============================================================================
+# 内部工具
+# =============================================================================
 
 
-class StockItem:
-    """单只股票数据对象，支持属性访问 (stock.code, stock.name, stock.l3 等)"""
+def _parse_level(level: Union[int, str]) -> int:
+    """将行业层级统一转换为 1~4 的整数。"""
 
-    def __init__(self, row_dict: dict):
-        raw_code = str(row_dict.get("code", "")).split(".")[0]
-        self.code: str = raw_code.zfill(6) if raw_code else ""
-        self.name: str = str(row_dict.get("name", ""))
-        self.l1: str = str(row_dict.get("l1", ""))
-        self.l2: str = str(row_dict.get("l2", ""))
-        self.l3: str = str(row_dict.get("l3", ""))
-        self.l4: str = str(row_dict.get("l4", ""))
+    value = LEVEL_MAP.get(level)
 
-    def __repr__(self) -> str:
-        return f"<Stock {self.code} {self.name} | {self.l1}->{self.l2}->{self.l3}->{self.l4}>"
+    if value is None:
+        value = LEVEL_MAP.get(str(level).strip())
 
-    def to_dict(self) -> dict:
-        return {
-            "code": self.code,
-            "name": self.name,
-            "l1": self.l1,
-            "l2": self.l2,
-            "l3": self.l3,
-            "l4": self.l4,
-        }
+    if value is None:
+        raise ValueError(f"无效的行业层级: {level!r}，" "支持 1~4、一级~四级。")
+
+    return value
 
 
-class StockQueryResult:
-    """股票查询结果容器，封装 DataFrame，解决访问繁琐问题"""
+def _normalize_stock_code(code: Union[str, int]) -> str:
+    """标准化股票代码。"""
 
-    def __init__(self, df: pd.DataFrame):
-        self._df: pd.DataFrame = df.reset_index(drop=True)
+    value = str(code).strip()
 
-    def top(self, n: int = 5) -> "StockQueryResult":
-        """获取前 N 条结果"""
-        return StockQueryResult(self._df.head(n))
+    # 去除交易所后缀，例如 600519.SH
+    value = value.split(".")[0]
 
-    def summary(self, level: Union[int, str] = 3) -> pd.DataFrame:
-        """只提取核心摘要列 (代码、名称、指定行业层级)"""
-        lvl_num = _parse_level(level) or 3
-        target_lvl = f"l{lvl_num}"
-        cols = ["code", "name", target_lvl]
-        return self._df[[c for c in cols if c in self._df.columns]]
+    if value.isdigit():
+        return value.zfill(6)
 
-    def to_list(self) -> List[StockItem]:
-        """转为 Python 对象列表"""
-        return [StockItem(row) for row in self._df.to_dict(orient="records")]
-
-    def to_df(self) -> pd.DataFrame:
-        """提取底层原生 DataFrame"""
-        return self._df.copy()
-
-    def industry(
-        self,
-    ) -> pd.Series:
-        """
-        获取行业路径。
-        """
-
-        return self._df.apply(
-            self._industry_path,
-            axis=1,
-        )
-
-    def _industry_path(
-        self,
-        row: pd.Series,
-    ) -> str:
-        """
-        拼接行业层级。
-
-        示例：
-
-        l1 - l2 - l3 - l4
-        """
-
-        levels = []
-
-        for col in [
-            "l1",
-            "l2",
-            "l3",
-            "l4",
-        ]:
-            value = row.get(col)
-
-            if value is not None and str(value).strip():
-                levels.append(str(value))
-
-        return " - ".join(levels)
-
-    def __len__(self) -> int:
-
-        return len(self._df)
-
-    def __str__(self) -> str:
-        if self._df.empty:
-            return "<StockQueryResult: 空数据>"
-
-        return self._industry_path(self._df.iloc[0])
-
-    def __repr__(self) -> str:
-        return self.__str__()
+    return value
 
 
-class CategoryQueryResult:
-    """行业分类列表容器"""
-
-    def __init__(self, data: Union[List[str], pd.DataFrame]):
-        self._data = data
-
-    def top(self, n: int = 5) -> "CategoryQueryResult":
-        """获取前 N 个分类"""
-        if isinstance(self._data, pd.DataFrame):
-            return CategoryQueryResult(self._data.head(n))
-        return CategoryQueryResult(self._data[:n])
-
-    def to_list(self) -> Union[List[str], List[Dict[str, str]]]:
-        """直接获取纯字符串名称列表，或带代码的字典列表"""
-        if isinstance(self._data, pd.DataFrame):
-            return self._data.to_dict(orient="records")
-        return list(self._data)
-
-    def to_df(self) -> pd.DataFrame:
-        """获取包含分类数据的 DataFrame"""
-        if isinstance(self._data, pd.DataFrame):
-            return self._data.copy()
-        return pd.DataFrame(self._data, columns=["category_name"])
-
-    def __len__(self) -> int:
-        return len(self._data)
-
-    def __repr__(self) -> str:
-        if isinstance(self._data, pd.DataFrame):
-            return self._data.to_string(index=False)
-        return (
-            f"全量行业分类 ({len(self._data)}个):\n"
-            + ", ".join(map(str, self._data[:10]))
-            + ("..." if len(self._data) > 10 else "")
-        )
+# =============================================================================
+# 数据读取
+# =============================================================================
 
 
 @lru_cache(maxsize=1)
 def _get_cached_data() -> pd.DataFrame:
-    """读取数据并自动清洗映射为统一表头 (code, name, l1, l2, l3, l4)"""
+    """
+    获取并缓存中证行业分类数据。
+
+    数据统一转换为：
+
+        code
+        name
+        l1
+        l1_code
+        l2
+        l2_code
+        l3
+        l3_code
+        l4
+        l4_code
+    """
+
     df = get_csindex_industry_data().copy()
+
+    # -------------------------------------------------------------------------
+    # 股票代码
+    # -------------------------------------------------------------------------
+
     code_col = next(
-        (c for c in ["证券代码", "成分券代码", "代码"] if c in df.columns),
-        df.columns[0],
+        (
+            column
+            for column in [
+                "证券代码",
+                "成分券代码",
+                "代码",
+            ]
+            if column in df.columns
+        ),
+        None,
     )
 
-    rename_dict = {code_col: "code", "证券简称": "name"}
-    for lvl_num, lvl_zh in ZH_NUM_MAP.items():
-        rename_dict[f"中证{lvl_zh}级行业分类简称"] = f"l{lvl_num}"
-        rename_dict[f"中证{lvl_zh}级行业分类代码"] = f"l{lvl_num}_code"
+    if code_col is None:
+        raise ValueError("中证行业数据中不存在股票代码字段。")
 
-    df = df.rename(columns=rename_dict)
+    # -------------------------------------------------------------------------
+    # 字段映射
+    # -------------------------------------------------------------------------
+
+    rename_map = {
+        code_col: "code",
+        "证券简称": "name",
+    }
+
+    for level, level_name in ZH_NUM_MAP.items():
+        rename_map[f"中证{level_name}级行业分类代码"] = f"l{level}_code"
+
+        rename_map[f"中证{level_name}级行业分类简称"] = f"l{level}"
+
+    df = df.rename(columns=rename_map)
+
+    # -------------------------------------------------------------------------
+    # 基础清洗
+    # -------------------------------------------------------------------------
+
     df["code"] = df["code"].astype(str).str.split(".").str[0].str.strip().str.zfill(6)
+
     df["name"] = df["name"].astype(str).str.strip()
+
+    for level in range(1, 5):
+        for suffix in ["", "_code"]:
+            column = f"l{level}{suffix}"
+
+            if column in df.columns:
+                df[column] = df[column].fillna("").astype(str).str.strip()
+
     return df
 
 
-def get_stock_industry_category(
-    stocks: Union[str, int, list[Union[str, int]]],
-) -> Union[Industry, list[Industry], None]:
+# =============================================================================
+# 行业查询
+# =============================================================================
+
+
+def get_all_industries(
+    level: Union[int, str] = 1,
+) -> list[Industry]:
     """
-    查询股票所属行业。
+    获取指定层级的全部中证行业分类。
 
-    Args:
-        stocks:
-            股票代码、股票名称，或者股票代码/名称列表。
+    参数：
+        level:
+            行业层级：
 
-            例如：
-                "600519"
-                "600519.SH"
-                "贵州茅台"
-                ["600519", "000858", "000568"]
+                1 / "一级"
+                2 / "二级"
+                3 / "三级"
+                4 / "四级"
 
-    Returns:
-        单个股票:
-            Industry | None
+    返回：
+        list[Industry]
 
-        多个股票:
-            list[Industry]
+    示例：
+
+        industries = get_all_industries(1)
+
+        for industry in industries:
+            print(industry.symbol, industry.name)
     """
+
+    level = _parse_level(level)
 
     df = _get_cached_data()
 
-    raw_list = [stocks] if isinstance(stocks, (str, int)) else stocks
+    code_column = f"l{level}_code"
+    name_column = f"l{level}"
 
-    target_codes: list[str] = []
-    target_names: list[str] = []
+    columns = [
+        code_column,
+        name_column,
+    ]
 
-    for stock in raw_list:
-        value = str(stock).strip()
-
-        code = value.split(".")[0]
-
-        if code.isdigit():
-            target_codes.append(code.zfill(6))
-        else:
-            target_names.append(value)
-
-    mask = df["code"].isin(target_codes) | df["name"].isin(target_names)
-
-    res = df[mask]
+    # 只保留有效行业
+    data = df[columns].dropna().drop_duplicates()
 
     industries: list[Industry] = []
 
-    for _, row in res.iterrows():
+    for _, row in data.iterrows():
+
+        code = str(row[code_column]).strip()
+        name = str(row[name_column]).strip()
+
+        if not code or not name:
+            continue
+
         industries.append(
             Industry(
-                symbol=str(row["code"]),
-                name=row["name"],
-                level_1=row.get("l1"),
-                level_2=row.get("l2"),
-                level_3=row.get("l3"),
-                level_4=row.get("l4"),
+                symbol=code,
+                name=name,
+                level_1=name if level == 1 else None,
+                level_2=name if level == 2 else None,
+                level_3=name if level == 3 else None,
+                level_4=name if level == 4 else None,
                 standard=IndustryStandard.CSI,
                 source="中证指数",
             )
         )
 
-    # 单个输入 -> 单个对象
-    if isinstance(stocks, (str, int)):
-        return industries[0] if industries else None
-
-    # 多个输入 -> 多个对象
     return industries
 
 
-def get_category_stocks(
-    category_name: str,
-    level: Optional[Union[int, str]] = None,
-    top: Optional[int] = None,
-) -> StockQueryResult:
-    """获取某个行业下的所有股票 (支持模糊匹配和跨层级自动检索)"""
-    df = _get_cached_data()
-    clean_cat = str(category_name).strip()
-    lvl_num = _parse_level(level)
+def get_stock_industry_category(
+    stock: Union[str, int],
+) -> Optional[Industry]:
+    """
+    查询单只股票所属的中证行业分类。
 
-    if lvl_num is not None:
-        target_col = f"l{lvl_num}_code" if clean_cat.isdigit() else f"l{lvl_num}"
-        if target_col in df.columns:
-            res = df[df[target_col].astype(str).str.strip() == clean_cat]
-            if res.empty and not clean_cat.isdigit():
-                res = df[df[target_col].astype(str).str.contains(clean_cat, na=False)]
-        else:
-            res = df.iloc[0:0]
+    参数：
+        stock:
+            股票代码或股票名称。
+
+            例如：
+
+                "600519"
+                "600519.SH"
+                "贵州茅台"
+
+    返回：
+        Industry | None
+    """
+
+    df = _get_cached_data()
+
+    value = str(stock).strip()
+
+    if value.isdigit() or "." in value:
+        code = _normalize_stock_code(value)
+
+        result = df[df["code"] == code]
     else:
-        if clean_cat.isdigit():
-            code_cols = [
-                c for c in df.columns if c.startswith("l") and c.endswith("_code")
-            ]
-            mask = (
-                df[code_cols]
-                .astype(str)
-                .apply(lambda col: col.str.strip() == clean_cat)
-                .any(axis=1)
-            )
-        else:
-            name_cols = [c for c in ["l1", "l2", "l3", "l4"] if c in df.columns]
-            mask = (
-                df[name_cols]
-                .astype(str)
-                .apply(lambda col: col.str.contains(clean_cat, na=False))
-                .any(axis=1)
-            )
-        res = df[mask]
+        result = df[df["name"] == value]
 
-    if top:
-        res = res.head(top)
+    if result.empty:
+        return None
 
-    return StockQueryResult(res)
+    row = result.iloc[0]
+
+    return Industry(
+        symbol=str(row["code"]),
+        name=str(row["name"]),
+        level_1=str(row["l1"]),
+        level_2=str(row["l2"]),
+        level_3=str(row["l3"]),
+        level_4=str(row["l4"]),
+        standard=IndustryStandard.CSI,
+        source="中证指数",
+    )
 
 
-def get_all_category(
-    level: Union[int, str] = 1,
-    return_code: bool = False,
-    top: Optional[int] = None,
-) -> CategoryQueryResult:
-    """获取全量行业分类列表"""
+def get_category_stocks(
+    category: Union[str, int],
+    level: Optional[Union[int, str]] = None,
+) -> list[str]:
+    """
+    获取指定行业分类下的全部股票代码。
+
+    参数：
+        category:
+            行业代码或行业名称。
+
+        level:
+            行业层级。
+
+            如果指定 level，则只在该层级查询。
+
+            如果不指定，则根据行业代码自动匹配
+            一级、二级、三级、四级。
+
+    返回：
+        list[str]
+
+    示例：
+
+        get_category_stocks("401010")
+
+        返回：
+
+        [
+            "000001",
+            "600000",
+            "601398",
+            ...
+        ]
+    """
+
     df = _get_cached_data()
-    lvl_num = _parse_level(level) or 1
 
-    name_col = f"l{lvl_num}"
-    code_col = f"l{lvl_num}_code"
+    value = str(category).strip()
 
-    if return_code and code_col in df.columns:
-        res_df = (
-            df[[code_col, name_col]].dropna().drop_duplicates().reset_index(drop=True)
-        )
-        res_df.columns = ["category_code", "category_name"]
-        if top:
-            res_df = res_df.head(top)
-        return CategoryQueryResult(res_df)
+    if level is not None:
+        level = _parse_level(level)
 
-    res_list = df[name_col].dropna().unique().tolist()
-    if top:
-        res_list = res_list[:top]
-    return CategoryQueryResult(res_list)
+        if value.isdigit():
+            column = f"l{level}_code"
+        else:
+            column = f"l{level}"
+
+        if column not in df.columns:
+            return []
+
+        mask = df[column] == value
+
+    else:
+        # ---------------------------------------------------------------------
+        # 未指定层级：
+        # 行业代码在一级~四级代码中查找
+        # ---------------------------------------------------------------------
+
+        if value.isdigit():
+
+            code_columns = [
+                "l1_code",
+                "l2_code",
+                "l3_code",
+                "l4_code",
+            ]
+
+            mask = df[code_columns].eq(value).any(axis=1)
+
+        else:
+
+            name_columns = [
+                "l1",
+                "l2",
+                "l3",
+                "l4",
+            ]
+
+            mask = df[name_columns].eq(value).any(axis=1)
+
+    return df.loc[mask, "code"].drop_duplicates().tolist()
