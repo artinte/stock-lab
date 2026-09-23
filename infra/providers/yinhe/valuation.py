@@ -238,7 +238,7 @@ class YinheValuation:
                 self.gateway.info_data.get_equity_structure(
                     [symbol],
                     local_path=self.gateway.local_path,
-                    is_local=False,
+                    is_local=True,
                 )
             )
 

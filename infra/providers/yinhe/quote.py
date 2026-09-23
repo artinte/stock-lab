@@ -330,7 +330,6 @@ class YinheQuote:
         result = {}
 
         try:
-
             equity = (
                 self.gateway.info_data.get_equity_structure(
                     symbols,
@@ -347,7 +346,6 @@ class YinheQuote:
             # -------------------------------------------------
 
             symbol_column = None
-
             for column in (
                 "SYMBOL",
                 "CODE",
@@ -366,16 +364,13 @@ class YinheQuote:
             # -------------------------------------------------
 
             if symbol_column is not None:
-
                 for symbol in symbols:
-
                     mask = (
                         equity[symbol_column]
                         .astype(str)
                         .map(normalize_symbol)
                         == symbol
                     )
-
                     data = equity.loc[mask]
 
                     if not data.empty:
@@ -493,11 +488,8 @@ class YinheQuote:
         # 股本
         # =====================================================
 
-        total_shares = None
+        total_shares = equity.
         float_shares = None
-        
-        total_shares, float_shares, current_date = self.gateway.valuation._get_equity_structure(symbol)
-
 
         # =====================================================
         # 总市值

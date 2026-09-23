@@ -294,7 +294,7 @@ if __name__ == "__main__":
             raw_income = info_data_obj.get_income(
                 code_list=[code],
                 local_path=local_path,
-                is_local=False,
+                is_local=True,
                 begin_date="20240101",
                 end_date=calendar[-1],
             )
