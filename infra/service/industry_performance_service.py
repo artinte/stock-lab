@@ -128,8 +128,7 @@ class IndustryPerformanceService:
         # DataManager / StockManager
         # =====================================================
 
-        self.manager = manager
-        self.stock_manager = manager.stock
+        self.data_manager = manager
 
         # =====================================================
         # 行情模式
@@ -442,7 +441,7 @@ class IndustryPerformanceService:
         StockManager 是系统统一的数据入口。
         """
 
-        return self.stock_manager.fetch_quotes(stocks)
+        return self.data_manager.stock.fetch_quotes(stocks)
 
     # =========================================================
     # Mock Quote
