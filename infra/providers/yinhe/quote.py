@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+import traceback
 from typing import Optional
 
 import pandas
@@ -191,10 +192,14 @@ class YinheQuote:
             symbol_klines = kline_map.get(symbol)
 
             if not symbol_klines:
-                print(f"[银河行情] 无 K 线数据：{symbol}")
+                # print(f"[银河行情] 无 K 线数据：{symbol}")
                 continue
 
             equity = equity_map.get(symbol)
+            
+            if not equity:
+                # print(f"[银河行情] 无股本数据：{symbol}")
+                continue
 
             try:
                 quote = self._build_quote(
@@ -208,6 +213,7 @@ class YinheQuote:
                     result.append(quote)
 
             except Exception as e:
+                traceback.print_exc()
                 print(f"[银河行情] 构造行情失败 " f"{symbol}：{e}")
 
         return result

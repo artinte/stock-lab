@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime
 
+import traceback
 from typing import Optional, Union
 
 import AmazingData
@@ -83,18 +84,15 @@ class YinheKline:
         is_batch = isinstance(symbol, (list, tuple, set))
 
         if is_batch:
-
             symbols = [
-                normalize_symbol(item)
+                normalized
                 for item in symbol
                 if item is not None
+                for normalized in [normalize_symbol(item)]
+                if normalized.endswith((".SH", ".SZ", ".BJ"))
             ]
-
         else:
-
-            symbols = [
-                normalize_symbol(symbol)
-            ]
+            symbols = [normalize_symbol(symbol)]
 
         # 去重，同时保持原顺序
         symbols = list(dict.fromkeys(symbols))
@@ -107,27 +105,13 @@ class YinheKline:
         # ------------------------------------------------------
 
         period_map = {
-
-            Interval.MINUTE_1:
-                AmazingData.constant.Period.min1.value,
-
-            Interval.MINUTE_5:
-                AmazingData.constant.Period.min5.value,
-
-            Interval.MINUTE_15:
-                AmazingData.constant.Period.min15.value,
-
-            Interval.MINUTE_30:
-                AmazingData.constant.Period.min30.value,
-
-            Interval.MINUTE_60:
-                AmazingData.constant.Period.min60.value,
-
-            Interval.DAY_1:
-                AmazingData.constant.Period.day.value,
-
-            Interval.WEEK_1:
-                AmazingData.constant.Period.week.value,
+            Interval.MINUTE_1: AmazingData.constant.Period.min1.value,
+            Interval.MINUTE_5: AmazingData.constant.Period.min5.value,
+            Interval.MINUTE_15: AmazingData.constant.Period.min15.value,
+            Interval.MINUTE_30: AmazingData.constant.Period.min30.value,
+            Interval.MINUTE_60: AmazingData.constant.Period.min60.value,
+            Interval.DAY_1: AmazingData.constant.Period.day.value,
+            Interval.WEEK_1: AmazingData.constant.Period.week.value,
         }
 
         period = period_map.get(
@@ -143,17 +127,9 @@ class YinheKline:
 
         today_str = now.strftime("%Y%m%d")
 
-        begin_str = (
-            start_time.strftime("%Y%m%d")
-            if start_time
-            else today_str
-        )
+        begin_str = start_time.strftime("%Y%m%d") if start_time else today_str
 
-        end_str = (
-            end_time.strftime("%Y%m%d")
-            if end_time
-            else today_str
-        )
+        end_str = end_time.strftime("%Y%m%d") if end_time else today_str
 
         # ------------------------------------------------------
         # 4. 一次批量查询
@@ -169,7 +145,6 @@ class YinheKline:
         # ------------------------------------------------------
 
         try:
-
             kline_dict = self.gateway.market_data.query_kline(
                 symbols,
                 period=period,
@@ -178,11 +153,8 @@ class YinheKline:
             )
 
         except Exception as e:
-
-            print(
-                f"[银河网关] 批量 query_kline 查询失败: {e}"
-            )
-
+            print(f"[银河网关] 批量 query_kline 查询失败: {e}")
+            traceback.print_exc()
             return {} if is_batch else []
 
         # ------------------------------------------------------
@@ -208,13 +180,7 @@ class YinheKline:
             # --------------------------------------------------
 
             if df is None:
-
-                print(
-                    f"[银河网关] {current_symbol} 无返回数据"
-                )
-
                 result[current_symbol] = []
-
                 continue
 
             # --------------------------------------------------
@@ -222,11 +188,7 @@ class YinheKline:
             # --------------------------------------------------
 
             if hasattr(df, "empty") and df.empty:
-
-                print(
-                    f"[银河网关] {current_symbol} 返回数据为空"
-                )
-
+                print(f"[银河网关] {current_symbol} 返回数据为空")
                 result[current_symbol] = []
 
                 continue
@@ -309,13 +271,9 @@ class YinheKline:
 
                 if kline_time is None:
 
-                    print(
-                        f"[银河网关] {symbol} 缺少 kline_time"
-                    )
+                    print(f"[银河网关] {symbol} 缺少 kline_time")
 
-                    print(
-                        f"    原始数据: {item}"
-                    )
+                    print(f"    原始数据: {item}")
 
                     continue
 
@@ -325,9 +283,7 @@ class YinheKline:
                     "to_pydatetime",
                 ):
 
-                    kline_time = (
-                        kline_time.to_pydatetime()
-                    )
+                    kline_time = kline_time.to_pydatetime()
 
                 # --------------------------------------------------
                 # Kline
@@ -338,45 +294,21 @@ class YinheKline:
                         symbol=symbol,
                         timestamp=kline_time,
                         interval=interval,
-
-                        open=float(
-                            item["open"]
-                        ),
-
-                        high=float(
-                            item["high"]
-                        ),
-
-                        low=float(
-                            item["low"]
-                        ),
-
-                        close=float(
-                            item["close"]
-                        ),
-
-                        volume=int(
-                            item["volume"]
-                        ),
-
-                        amount=float(
-                            item["amount"]
-                        ),
+                        open=float(item["open"]),
+                        high=float(item["high"]),
+                        low=float(item["low"]),
+                        close=float(item["close"]),
+                        volume=int(item["volume"]),
+                        amount=float(item["amount"]),
                     )
                 )
 
             except Exception as e:
 
-                print(
-                    f"[银河网关] 转换 Kline 失败: "
-                    f"{symbol}: {e}"
-                )
+                print(f"[银河网关] 转换 Kline 失败: " f"{symbol}: {e}")
 
-                print(
-                    f"    原始数据: {item}"
-                )
+                print(f"    原始数据: {item}")
 
                 continue
 
         return klines
-

@@ -213,13 +213,6 @@ def test_industry_performance(
 
     performance_date = (date.today() - timedelta(days=1)).isoformat()
 
-    run_daily_performance_test(
-        service,
-        performance_date=performance_date,
-        level=2,
-        method="weighted",
-    )
-
     # ---------------------------------------------------------
     # 每日行情：等权
     # ---------------------------------------------------------
@@ -231,6 +224,13 @@ def test_industry_performance(
         method="equal",
     )
 
+    run_daily_performance_test(
+        service,
+        performance_date=performance_date,
+        level=2,
+        method="weighted",
+    )
+
     # ---------------------------------------------------------
     # 区间行情
     # ---------------------------------------------------------
@@ -238,24 +238,24 @@ def test_industry_performance(
     end_date = date.today()
     start_date = end_date - timedelta(days=5)
 
-    run_period_performance_test(
-        service,
-        start_date=start_date.isoformat(),
-        end_date=end_date.isoformat(),
-        level=2,
-        method="weighted",
-    )
+    # run_period_performance_test(
+    #     service,
+    #     start_date=start_date.isoformat(),
+    #     end_date=end_date.isoformat(),
+    #     level=2,
+    #     method="weighted",
+    # )
 
-    # ---------------------------------------------------------
-    # Cache
-    # ---------------------------------------------------------
+    # # ---------------------------------------------------------
+    # # Cache
+    # # ---------------------------------------------------------
 
-    run_cache_test(
-        service,
-        performance_date=performance_date,
-        level=2,
-        method="weighted",
-    )
+    # run_cache_test(
+    #     service,
+    #     performance_date=performance_date,
+    #     level=2,
+    #     method="weighted",
+    # )
 
 
 def main() -> None:

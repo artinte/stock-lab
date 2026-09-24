@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 ==============================================================================
 模块名称 : 行业行情表现服务
@@ -220,28 +218,15 @@ class IndustryPerformanceService:
 
         参数：
             date:
-                日期，例如：
-
-                    "2026-09-23"
-
-                不指定时使用今天。
+                日期，例如："2026-09-23"，不指定时使用今天。
 
             level:
-                行业层级：
-
-                    1
-                    2
-                    3
-                    4
+                行业层级：1 - 2 - 3 - 4
 
             method:
                 计算方式：
-
-                    weighted
-                        按总市值加权
-
-                    equal
-                        等权平均
+                    weighted 按总市值加权
+                    equal 等权平均
 
         返回：
             IndustryPerformanceDaily
@@ -319,13 +304,10 @@ class IndustryPerformanceService:
             # -------------------------------------------------
             # 获取行业成分股
             # -------------------------------------------------
-            print(industry.symbol)
             stocks = get_category_stocks(
                 industry.symbol,
                 level=level,
             )
-
-            print(stocks)
             if not stocks:
                 continue
 
@@ -406,15 +388,14 @@ class IndustryPerformanceService:
         # =====================================================
 
         if self.mode == "real":
-            return self._fetch_real_quotes(stocks)
+            return self.data_manager.stock.get_quotes(stocks)
 
         # =====================================================
         # Auto
         # =====================================================
 
         try:
-
-            quotes = self._fetch_real_quotes(stocks)
+            quotes = self.data_manager.stock.get_quotes(stocks)
 
             if quotes:
                 return quotes
@@ -427,21 +408,6 @@ class IndustryPerformanceService:
 
         return self._fetch_mock_quotes(stocks)
 
-    # =========================================================
-    # Real Quote
-    # =========================================================
-
-    def _fetch_real_quotes(
-        self,
-        stocks: list[str],
-    ) -> list[Any]:
-        """
-        使用真实 StockManager 获取股票行情。
-
-        StockManager 是系统统一的数据入口。
-        """
-
-        return self.data_manager.stock.get_quotes(stocks)
 
     # =========================================================
     # Mock Quote
@@ -540,7 +506,6 @@ class IndustryPerformanceService:
         valid_quotes: list[tuple[Any, float]] = []
 
         for quote in quotes:
-            print(quote)
             pct = cls._get_quote_pct(quote)
 
             if pct is None:

@@ -274,7 +274,10 @@ def normalize_symbol(symbol: str) -> str:
         深圳指数 -> XXXXX.SZ
 
     注意：
-        指数代码优先处理，不能单纯依赖股票代码规则。
+        1. 已经包含市场后缀的代码直接返回。
+        2. 指数代码优先处理。
+        3. 北京证券交易所代码需要单独处理。
+        4. 无法可靠判断市场的代码不强行转换。
     """
 
     symbol = str(symbol).strip().upper()
@@ -288,7 +291,7 @@ def normalize_symbol(symbol: str) -> str:
 
     # 2. 指数特殊处理
     #
-    # 必须放在股票判断之前
+    # 必须放在股票判断之前。
     if symbol in INDEX_SYMBOLS:
         return INDEX_SYMBOLS[symbol]
 
@@ -319,15 +322,21 @@ def normalize_symbol(symbol: str) -> str:
         return f"{symbol}.SZ"
 
     # 5. 北京股票
+    #
+    # 北交所历史代码主要包括 4、8 开头的代码，
+    # 新增 920 开头代码也属于北交所。
     if symbol.startswith(
         (
             "4",
             "8",
+            "920",
         )
     ):
         return f"{symbol}.BJ"
 
-    # 6. 无法判断
+    # 6. 无法可靠判断
+    #
+    # 不要猜测市场。
     return symbol
 
 
