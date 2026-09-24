@@ -213,6 +213,7 @@ class IndustryPerformanceService:
         date: str | None = None,
         level: int = 2,
         method: str = "weighted",
+        use_cached: bool = False,
     ) -> IndustryPerformanceDaily:
         """
         获取指定日期的行业表现。
@@ -259,8 +260,8 @@ class IndustryPerformanceService:
         # -----------------------------------------------------
         # 优先读取缓存
         # -----------------------------------------------------
-
-        if cache_file.exists():
+        
+        if use_cached and cache_file.exists():
             return self._load_daily(cache_file)
 
         # -----------------------------------------------------
@@ -309,7 +310,6 @@ class IndustryPerformanceService:
             3. 提取股票涨跌幅
             4. 根据 method 计算行业涨跌幅
         """
-
         industries = get_all_industries(level)
 
         results: list[IndustryPeriodPerformance] = []
@@ -319,12 +319,13 @@ class IndustryPerformanceService:
             # -------------------------------------------------
             # 获取行业成分股
             # -------------------------------------------------
-
+            print(industry.symbol)
             stocks = get_category_stocks(
                 industry.symbol,
                 level=level,
             )
 
+            print(stocks)
             if not stocks:
                 continue
 
@@ -333,7 +334,6 @@ class IndustryPerformanceService:
             # -------------------------------------------------
 
             quotes = self._fetch_quotes(stocks)
-
             if not quotes:
                 continue
 
@@ -441,7 +441,7 @@ class IndustryPerformanceService:
         StockManager 是系统统一的数据入口。
         """
 
-        return self.data_manager.stock.fetch_quotes(stocks)
+        return self.data_manager.stock.get_quotes(stocks)
 
     # =========================================================
     # Mock Quote
@@ -540,7 +540,7 @@ class IndustryPerformanceService:
         valid_quotes: list[tuple[Any, float]] = []
 
         for quote in quotes:
-
+            print(quote)
             pct = cls._get_quote_pct(quote)
 
             if pct is None:
@@ -959,7 +959,7 @@ class IndustryPerformanceService:
         self,
         path: Path,
     ) -> IndustryPerformanceDaily:
-
+        print(f"[行业行情] 加载每日缓存: {path}")
         with path.open(
             "r",
             encoding="utf-8",

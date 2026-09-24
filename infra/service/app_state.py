@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from infra.data_manager import DataManager
-from infra.service.industry_performance_service import (
+from infra.service.industry_performance import (
     IndustryPerformanceService,
 )
 from infra.service.stock_financial_service import StockFinancialService
