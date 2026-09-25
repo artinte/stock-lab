@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime
 import os
+import traceback
 from typing import Any, Optional
 
 import AmazingData
@@ -245,28 +246,23 @@ class YinheGateway(StockDataGateway):
             self._started = True
 
             print("[银河网关] 登录成功")
-
             return True
 
         except ValueError:
             print("[银河网关] 端口格式无效，请检查配置。")
-
+            traceback.print_exc()
             self._started = False
-
             return False
 
         except Exception as e:
             print(f"[银河网关] 登录异常: {e}")
-
             self._started = False
-
             return False
 
     def logout(self) -> None:
         """
         注销银河数据源。
         """
-
         if self._started:
             try:
                 print("[银河网关] 退出登录")
@@ -278,14 +274,12 @@ class YinheGateway(StockDataGateway):
         self.base_data = None
         self.calendar = None
         self.market_data = None
-
         self._started = False
 
     def health_check(self) -> bool:
         """
         检查数据源是否已经启动。
         """
-
         return self._started
 
     def fetch_stock(
@@ -325,11 +319,9 @@ class YinheGateway(StockDataGateway):
         获取历史 K 线。
 
         AmazingData 原始数据：
-
             DataFrame
 
         转换为：
-
             list[Kline]
         """
         if end_time is None:
@@ -426,13 +418,9 @@ class YinheGateway(StockDataGateway):
             return None
 
         if "REPORTING_PERIOD" in df.columns:
-
             df = df.copy()
-
             df["REPORTING_PERIOD"] = df["REPORTING_PERIOD"].astype(str)
-
             df = df.sort_values("REPORTING_PERIOD")
-
         return df.iloc[-1]
 
     def fetch_balance_sheet(
@@ -456,9 +444,7 @@ class YinheGateway(StockDataGateway):
         """
 
         self._ensure_started()
-
         symbol = normalize_symbol(symbol)
-
         return self.financial.fetch_balance_sheet(
             symbol,
             start_year,
@@ -510,9 +496,7 @@ class YinheGateway(StockDataGateway):
         """
 
         self._ensure_started()
-
         symbol = normalize_symbol(symbol)
-
         self._validate_report_period(
             start_year,
             start_quarter,
@@ -549,7 +533,6 @@ class YinheGateway(StockDataGateway):
         """
 
         self._ensure_started()
-
         self._validate_report_period(
             start_year,
             start_quarter,
@@ -558,7 +541,6 @@ class YinheGateway(StockDataGateway):
         )
 
         symbol = normalize_symbol(symbol)
-
         return self.financial.fetch_cash_flow(
             symbol,
             start_year,
@@ -577,9 +559,7 @@ class YinheGateway(StockDataGateway):
     ) -> Financial | None:
 
         self._ensure_started()
-
         symbol = normalize_symbol(symbol)
-
         return self.financial.fetch_financial(
             symbol,
             start_year,
@@ -592,7 +572,6 @@ class YinheGateway(StockDataGateway):
         """
         确保数据源已经启动。
         """
-
         if not self._started:
             raise RuntimeError("银河数据源尚未启动，" "请先调用 DataManager.start()")
 

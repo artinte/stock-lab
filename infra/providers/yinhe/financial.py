@@ -78,7 +78,6 @@ class YinheFinancial:
         转换为统一 IncomeStatement 模型。
 
         数据流：
-
             AmazingData
                 |
                 ↓
@@ -112,15 +111,12 @@ class YinheFinancial:
         end_year: int | None = None,
         end_quarter: int | None = None,
     ) -> dict[str, list[BalanceSheet]]:
-
         balance_sheets: dict[str, list[BalanceSheet]] = {}
-
         try:
             # ======================================================
             # 获取银河指定股票列表的上市公司的资产负债表数据
             # 本地保存全量历史数据，且每次调用接口默认增量更新本地数据，从而加速接口读取速度
             # ======================================================
-
             result = self.gateway.info_data.get_balance_sheet(
                 symbols,
                 local_path=self.gateway.local_path,
@@ -132,11 +128,9 @@ class YinheFinancial:
                 return {}
 
             for symbol in symbols:
-
                 # ======================================================
                 # 获取当前股票 DataFrame
                 # ======================================================
-
                 df = result.get(symbol)
 
                 if df is None:
@@ -156,29 +150,22 @@ class YinheFinancial:
                 # ======================================================
 
                 selected_rows = []
-
                 for _, row in df.iterrows():
-
                     statement_type = row.get("STATEMENT_TYPE")
-
                     # --------------------------------------------------
                     # 只使用合并报表
                     # --------------------------------------------------
-
                     if statement_type != "1":
                         continue
-
                     report_date = str(row.get("REPORTING_PERIOD"))
 
                     if not report_date:
                         continue
-
                     report_year, report_quarter = self._parse_report_period(report_date)
 
                     # --------------------------------------------------
                     # 起始报告期
                     # --------------------------------------------------
-
                     if start_year is not None:
                         if self._quarter_index(
                             report_year,
@@ -192,7 +179,6 @@ class YinheFinancial:
                     # --------------------------------------------------
                     # 结束报告期
                     # --------------------------------------------------
-
                     if end_year is not None:
                         if self._quarter_index(
                             report_year,
@@ -204,18 +190,14 @@ class YinheFinancial:
                             continue
 
                     selected_rows.append(row)
-
                 if not selected_rows:
                     continue
 
                 # ======================================================
                 # 转换为标准 BalanceSheet
                 # ======================================================
-
                 symbol_balance_sheets: list[BalanceSheet] = []
-
                 for row in selected_rows:
-
                     symbol_balance_sheets.append(
                         BalanceSheet(
                             # ==================================================
@@ -300,11 +282,8 @@ class YinheFinancial:
                 # ======================================================
                 # 按报告期升序排列
                 # ======================================================
-
                 symbol_balance_sheets.sort(key=lambda item: item.report_date or "")
-
                 balance_sheets[symbol] = symbol_balance_sheets
-
             return balance_sheets
 
         except SystemExit as exc:
@@ -323,15 +302,12 @@ class YinheFinancial:
         end_year: int | None = None,
         end_quarter: int | None = None,
     ) -> dict[str, list[CashFlow]]:
-
         cash_flows: dict[str, list[CashFlow]] = {}
-
         try:
             # ======================================================
             # 获取银河指定股票列表的上市公司的现金流量表数据
             # 本地保存全量历史数据，且每次调用接口默认增量更新本地数据，从而加速接口读取速度
             # ======================================================
-
             result = self.gateway.info_data.get_cash_flow(
                 symbols,
                 local_path=self.gateway.local_path,
@@ -343,13 +319,10 @@ class YinheFinancial:
                 return {}
 
             for symbol in symbols:
-
                 # ======================================================
                 # 获取当前股票 DataFrame
                 # ======================================================
-
                 df = result.get(symbol)
-
                 if df is None:
                     print(f"[银河] 未找到股票现金流量表: {symbol}")
                     continue
@@ -367,29 +340,21 @@ class YinheFinancial:
                 # ======================================================
 
                 selected_rows = []
-
                 for _, row in df.iterrows():
-
                     statement_type = row.get("STATEMENT_TYPE")
-
                     # --------------------------------------------------
                     # 只使用合并报表
                     # --------------------------------------------------
-
                     if statement_type != "1":
                         continue
-
                     report_date = str(row.get("REPORTING_PERIOD"))
-
                     if not report_date:
                         continue
-
                     report_year, report_quarter = self._parse_report_period(report_date)
 
                     # --------------------------------------------------
                     # 起始报告期
                     # --------------------------------------------------
-
                     if start_year is not None:
                         if self._quarter_index(
                             report_year,
@@ -403,7 +368,6 @@ class YinheFinancial:
                     # --------------------------------------------------
                     # 结束报告期
                     # --------------------------------------------------
-
                     if end_year is not None:
                         if self._quarter_index(
                             report_year,

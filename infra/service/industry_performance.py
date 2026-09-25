@@ -352,10 +352,6 @@ class IndustryPerformanceService:
 
         return results
 
-    # =========================================================
-    # Quote
-    # =========================================================
-
     def _fetch_quotes(
         self,
         stocks: list[str],
@@ -376,24 +372,15 @@ class IndustryPerformanceService:
         if not stocks:
             return []
 
-        # =====================================================
         # Mock
-        # =====================================================
-
         if self.mode == "mock":
             return self._fetch_mock_quotes(stocks)
 
-        # =====================================================
         # Real
-        # =====================================================
-
         if self.mode == "real":
             return self.data_manager.stock.get_quotes(stocks)
 
-        # =====================================================
         # Auto
-        # =====================================================
-
         try:
             quotes = self.data_manager.stock.get_quotes(stocks)
 
@@ -435,11 +422,9 @@ class IndustryPerformanceService:
         quotes = []
 
         for symbol in stocks:
-
             # -------------------------------------------------
             # 模拟涨跌幅
             # -------------------------------------------------
-
             pct = random.uniform(
                 -8.0,
                 8.0,
@@ -637,7 +622,6 @@ class IndustryPerformanceService:
         )
 
         for field in fields:
-
             value = getattr(
                 quote,
                 field,
@@ -691,7 +675,6 @@ class IndustryPerformanceService:
     # =========================================================
     # Period
     # =========================================================
-
     def get_period_performance(
         self,
         start_date: str,

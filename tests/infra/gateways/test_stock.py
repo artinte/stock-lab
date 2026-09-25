@@ -7,7 +7,7 @@ from core.models.stock import Stock
 股票基础信息测试。
 
 运行：
-python -m tests.infra.test_stock
+python -m tests.infra.gateways.test_stock
 """
 
 
