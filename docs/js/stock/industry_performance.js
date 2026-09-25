@@ -814,7 +814,7 @@ function renderParentOptions() {
 
 
     /*
-     * 一级行业没有父行业
+     * 一级行业没有父行业。
      */
 
     if (
@@ -844,7 +844,16 @@ function renderParentOptions() {
 
 
     parentSelect.disabled =
-        false;
+        true;
+
+
+    parentSelect.innerHTML = `
+
+        <option value="all">
+            加载中...
+        </option>
+
+    `;
 
 
     const parentLevel =
@@ -852,75 +861,154 @@ function renderParentOptions() {
 
 
     /*
-     * 从当前 API 数据中寻找父行业。
-     *
-     * 注意：
-     *
-     * 如果当前后端只返回当前 level，
-     * 那么这里可能拿不到父行业。
-     *
-     * MVP 阶段暂时保持兼容。
+     * 获取父级行业分类。
      */
 
-    const parents =
-        state.data.industries
-            .filter(
-                item =>
-                    item.level ===
-                    parentLevel
-            );
+    fetch(
+        `/api/industry/categories?level=${parentLevel}`
+    )
+
+        .then(
+            response => {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        `行业分类请求失败：HTTP ${response.status}`
+                    );
+
+                }
+
+                return response.json();
+
+            }
+        )
+
+        .then(
+            parents => {
+
+                /*
+                 * 没有父级行业。
+                 */
+
+                if (
+                    !Array.isArray(parents) ||
+                    !parents.length
+                ) {
+
+                    parentSelect.innerHTML = `
+
+                        <option value="all">
+                            全部行业
+                        </option>
+
+                    `;
 
 
-    /*
-     * 如果 API 没有返回父级数据，
-     * 暂时保留“全部行业”。
-     */
-
-    if (!parents.length) {
-
-        parentSelect.innerHTML = `
-
-            <option value="all">
-                全部行业
-            </option>
-
-        `;
+                    parentSelect.value =
+                        "all";
 
 
-        parentSelect.value =
-            "all";
+                    state.parent =
+                        "all";
 
 
-        state.parent =
-            "all";
+                    return;
+
+                }
 
 
-        return;
+                /*
+                 * 生成父级行业选项。
+                 */
 
-    }
+                parentSelect.innerHTML = `
+
+                    <option value="all">
+                        全部行业
+                    </option>
+
+                    ${parents.map(item => `
+
+                        <option
+                            value="${escapeHtml(item.code)}"
+                        >
+                            ${escapeHtml(item.name)}
+                        </option>
+
+                    `).join("")}
+
+                `;
 
 
-    parentSelect.innerHTML = `
+                /*
+                 * 恢复之前选择的父级行业。
+                 */
 
-        <option value="all">
-            全部行业
-        </option>
-
-        ${parents.map(item => `
-
-            <option
-                value="${escapeHtml(item.code)}"
-            >
-                ${escapeHtml(item.name)}
-            </option>
-
-        `).join("")}
-
-    `;
+                const exists =
+                    [...parentSelect.options]
+                        .some(
+                            option =>
+                                option.value ===
+                                state.parent
+                        );
 
 
-    parentSelect.value =
-        state.parent;
+                if (exists) {
+
+                    parentSelect.value =
+                        state.parent;
+
+                } else {
+
+                    parentSelect.value =
+                        "all";
+
+
+                    state.parent =
+                        "all";
+
+                }
+
+            }
+        )
+
+        .catch(
+            error => {
+
+                console.error(
+                    "加载上级行业失败：",
+                    error
+                );
+
+
+                parentSelect.innerHTML = `
+
+                    <option value="all">
+                        全部行业
+                    </option>
+
+                `;
+
+
+                parentSelect.value =
+                    "all";
+
+
+                state.parent =
+                    "all";
+
+            }
+        )
+
+        .finally(
+            () => {
+
+                parentSelect.disabled =
+                    false;
+
+            }
+        );
 
 }
 

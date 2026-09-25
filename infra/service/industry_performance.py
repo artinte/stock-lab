@@ -175,7 +175,6 @@ class IndustryPerformanceService:
         """
         获取指定层级的全部行业。
         """
-
         return get_all_industries(level)
 
     def get_industry_stocks(
@@ -205,7 +204,6 @@ class IndustryPerformanceService:
     # =========================================================
     # Daily
     # =========================================================
-
     def get_daily_performance(
         self,
         date: str | None = None,
@@ -233,9 +231,7 @@ class IndustryPerformanceService:
         """
 
         date = date or self._today()
-
         self._validate_method(method)
-
         cache_file = self._daily_cache_file(
             date=date,
             level=level,
@@ -245,14 +241,12 @@ class IndustryPerformanceService:
         # -----------------------------------------------------
         # 优先读取缓存
         # -----------------------------------------------------
-        
         if use_cached and cache_file.exists():
             return self._load_daily(cache_file)
 
         # -----------------------------------------------------
         # 计算行业表现
         # -----------------------------------------------------
-
         industries = self._calculate_daily(
             level=level,
             method=method,

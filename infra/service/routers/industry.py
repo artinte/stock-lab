@@ -3,6 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, Query
 
 from infra.service import app_state
+from utils.stock_industry_classification import get_all_industries
 
 router = APIRouter(
     prefix="/api/industry",
@@ -13,6 +14,26 @@ router = APIRouter(
 # ============================================================
 # Daily Performance
 # ============================================================
+
+@router.get("/categories")
+def get_industry_categories(
+    level: int = Query(
+        default=1,
+        ge=1,
+        le=4,
+        description="行业层级：1 / 2 / 3 / 4",
+    ),
+):
+    industries = get_all_industries(level)
+
+    return [
+        {
+            "code": industry.symbol,
+            "name": industry.name,
+            "level": level,
+        }
+        for industry in industries
+    ]
 
 
 @router.get("/performance")
