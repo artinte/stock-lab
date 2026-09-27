@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
+    // 设置 K 线详情页链接
+    updateKlineDetailLink();
+
 
     // 先显示当前股票代码
     setText("stockSymbol", currentSymbol);
@@ -722,8 +725,8 @@ function renderKline(data) {
                     <div>
                         <strong>
                             ${formatKlineTooltipTime(
-                                item.timestamp
-                            )}
+                    item.timestamp
+                )}
                         </strong>
 
                         <div>
@@ -956,7 +959,7 @@ function renderKline(data) {
 
     const latest =
         sortedData[
-            sortedData.length - 1
+        sortedData.length - 1
         ];
 
     if (latest) {
@@ -2947,3 +2950,19 @@ function scrollToAI() {
 
 }
 
+function updateKlineDetailLink() {
+
+    const link =
+        document.getElementById(
+            "klineDetailLink"
+        );
+
+    if (!link || !currentSymbol) {
+        return;
+    }
+
+    link.href =
+        `/stock/kline.html?symbol=${encodeURIComponent(
+            currentSymbol
+        )}`;
+}

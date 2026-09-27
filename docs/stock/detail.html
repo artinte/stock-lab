@@ -290,16 +290,10 @@
 
 
             <div class="overview-grid">
-
-
                 <!-- K线 -->
-
                 <div class="panel chart-panel">
-
                     <div class="panel-title-row">
-
                         <div>
-
                             <h3>
                                 价格走势
                             </h3>
@@ -311,24 +305,25 @@
                         </div>
 
 
-                        <div class="period-buttons">
+                        <div class="chart-actions">
+                            <div class="period-buttons">
+                                <button class="active" data-period="day">
+                                    日
+                                </button>
+                                <button data-period="week">
+                                    周
+                                </button>
+                                <button data-period="month">
+                                    月
+                                </button>
+                            </div>
 
-                            <button class="active" data-period="day">
-                                日
-                            </button>
-
-                            <button data-period="week">
-                                周
-                            </button>
-
-                            <button data-period="month">
-                                月
-                            </button>
-
+                            <a class="kline-detail-button" id="klineDetailLink" href="#" title="打开 K 线详情"
+                                aria-label="打开 K 线详情">
+                                ...
+                            </a>
                         </div>
-
                     </div>
-
 
                     <div class="chart-container" id="chartContainer">
 

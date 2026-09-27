@@ -633,6 +633,15 @@ body {
 
 }
 
+.chart-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+}
 
 .period-buttons {
 
@@ -666,6 +675,44 @@ body {
 
 }
 
+.kline-detail-button {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 26px;
+    height: 26px;
+
+    margin-left: 8px;
+
+    border: 1px solid var(--stock-border);
+
+    border-radius: 4px;
+
+    background: #fff;
+
+    color: #6b7280;
+
+    font-size: 14px;
+
+    line-height: 1;
+
+    text-decoration: none;
+
+    box-sizing: border-box;
+
+}
+
+
+.kline-detail-button:hover {
+
+    color: #111827;
+
+    background: #f9fafb;
+
+}
 
 .chart-container {
 
