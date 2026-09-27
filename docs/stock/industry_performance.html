@@ -2,102 +2,160 @@
 <html lang="zh-CN">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>行业行情 · STOCK LAB</title>
+
+    <title>
+        行业行情 · STOCK LAB
+    </title>
+
     <link rel="stylesheet" href="../css/stock/industry_performance.css">
+
 </head>
+
 
 <body>
 
     <div class="page">
-        <!-- =========================================================
-         Main
-    ========================================================== -->
 
         <main>
+
             <div class="container">
+
+
+                <!-- =================================================
+                 Hero
+            ================================================== -->
+
                 <section class="hero">
+
                     <div class="hero-left">
+
                         <div class="eyebrow">
                             STOCK LAB · INDUSTRY MARKET
                         </div>
+
 
                         <h1>
                             行业行情
                         </h1>
 
+
                         <p class="hero-description">
                             从中证行业分类体系观察不同层级行业的涨跌表现，支持单日行情与区间表现分析。
                         </p>
+
                     </div>
 
+
                     <div class="hero-meta">
+
                         <span>
                             数据日期
                         </span>
 
+
                         <strong id="dataDate">
-                            2026-09-22
+                            --
                         </strong>
+
                     </div>
+
                 </section>
 
+
+                <!-- =================================================
+                 Filter
+            ================================================== -->
+
                 <section class="filter-panel">
+
                     <div class="filter-top">
+
                         <div>
+
                             <div class="filter-title">
                                 行业筛选
                             </div>
 
+
                             <div class="filter-hint">
-                                选择行业层级、统计方式和观察周期
+                                选择行业层级、具体行业、统计方式和观察周期
                             </div>
+
                         </div>
+
                     </div>
 
 
                     <div class="filter-grid">
+
+
+                        <!-- 行业层级 -->
+
                         <div class="field">
+
                             <label class="field-label">
                                 行业层级
                             </label>
 
+
                             <select class="select" id="levelSelect">
+
                                 <option value="1">
                                     一级行业
                                 </option>
 
-                                <option value="2">
+
+                                <option value="2" selected>
                                     二级行业
                                 </option>
+
 
                                 <option value="3">
                                     三级行业
                                 </option>
 
+
                                 <option value="4">
                                     四级行业
                                 </option>
+
                             </select>
+
                         </div>
 
+
+                        <!-- 当前行业 -->
+
                         <div class="field">
+
                             <label class="field-label">
-                                上级行业
+                                当前行业
                             </label>
-                            <select class="select" id="parentSelect">
+
+
+                            <select class="select" id="industrySelect">
 
                                 <option value="all">
                                     全部行业
                                 </option>
+
                             </select>
+
                         </div>
 
+
+                        <!-- 观察区间 -->
+
                         <div class="field">
+
                             <label class="field-label">
                                 观察区间
                             </label>
+
 
                             <select class="select" id="periodSelect">
 
@@ -105,21 +163,26 @@
                                     单日
                                 </option>
 
+
                                 <option value="5">
                                     近 5 日
                                 </option>
+
 
                                 <option value="20">
                                     近 20 日
                                 </option>
 
+
                                 <option value="60">
                                     近 60 日
                                 </option>
 
+
                                 <option value="120">
                                     近 120 日
                                 </option>
+
 
                                 <option value="custom">
                                     自定义
@@ -130,19 +193,23 @@
                         </div>
 
 
+                        <!-- 计算方式 -->
+
                         <div class="field">
 
                             <label class="field-label">
                                 计算方式
                             </label>
 
+
                             <div class="method-switch">
 
-                                <button class="method-button active" data-method="weighted">
+                                <button class="method-button active" data-method="weighted" type="button">
                                     市值加权
                                 </button>
 
-                                <button class="method-button" data-method="equal">
+
+                                <button class="method-button" data-method="equal" type="button">
                                     等权
                                 </button>
 
@@ -151,11 +218,14 @@
                         </div>
 
 
+                        <!-- 搜索 -->
+
                         <div class="field">
 
                             <label class="field-label">
                                 搜索行业
                             </label>
+
 
                             <div class="search-wrap">
 
@@ -163,11 +233,15 @@
                                     ⌕
                                 </span>
 
+
                                 <input class="search-input" id="searchInput" type="text" placeholder="行业名称 / 代码">
 
                             </div>
 
                         </div>
+
+
+                        <!-- 刷新 -->
 
                         <div class="field">
 
@@ -175,7 +249,8 @@
                                 &nbsp;
                             </label>
 
-                            <button class="refresh-button" id="refreshButton">
+
+                            <button class="refresh-button" id="refreshButton" type="button">
                                 刷新数据
                             </button>
 
@@ -184,7 +259,9 @@
                     </div>
 
 
-                    <!-- Quick period -->
+                    <!-- =================================================
+                     Quick Period
+                ================================================== -->
 
                     <div class="period-row">
 
@@ -192,30 +269,37 @@
                             快速选择
                         </span>
 
-                        <button class="period-button active" data-period="1">
+
+                        <button class="period-button active" data-period="1" type="button">
                             今日
                         </button>
 
-                        <button class="period-button" data-period="5">
+
+                        <button class="period-button" data-period="5" type="button">
                             5 日
                         </button>
 
-                        <button class="period-button" data-period="20">
+
+                        <button class="period-button" data-period="20" type="button">
                             20 日
                         </button>
 
-                        <button class="period-button" data-period="60">
+
+                        <button class="period-button" data-period="60" type="button">
                             60 日
                         </button>
 
-                        <button class="period-button" data-period="120">
+
+                        <button class="period-button" data-period="120" type="button">
                             120 日
                         </button>
 
                     </div>
 
 
-                    <!-- Custom dates -->
+                    <!-- =================================================
+                     Custom Dates
+                ================================================== -->
 
                     <div id="customDateArea" style="
                         display:none;
@@ -234,6 +318,7 @@
                                     开始日期
                                 </label>
 
+
                                 <input class="date-input" id="startDate" type="date">
 
                             </div>
@@ -244,6 +329,7 @@
                                 <label class="field-label">
                                     结束日期
                                 </label>
+
 
                                 <input class="date-input" id="endDate" type="date">
 
@@ -269,9 +355,11 @@
                             行业数量
                         </div>
 
+
                         <div class="summary-value" id="industryCount">
-                            31
+                            0
                         </div>
+
 
                         <div class="summary-sub">
                             当前筛选范围
@@ -286,9 +374,11 @@
                             上涨行业
                         </div>
 
+
                         <div class="summary-value up" id="upIndustryCount">
-                            23
+                            0
                         </div>
+
 
                         <div class="summary-sub">
                             行业表现为正
@@ -303,9 +393,11 @@
                             下跌行业
                         </div>
 
+
                         <div class="summary-value down" id="downIndustryCount">
-                            8
+                            0
                         </div>
+
 
                         <div class="summary-sub">
                             行业表现为负
@@ -320,9 +412,11 @@
                             行业平均涨跌
                         </div>
 
-                        <div class="summary-value up" id="averagePct">
-                            +0.82%
+
+                        <div class="summary-value" id="averagePct">
+                            --
                         </div>
+
 
                         <div class="summary-sub">
                             当前统计方法
@@ -354,6 +448,7 @@
                                     行业表现
                                 </div>
 
+
                                 <div class="panel-description">
                                     按涨跌幅排序
                                 </div>
@@ -361,7 +456,7 @@
                             </div>
 
 
-                            <button class="panel-action" id="sortButton">
+                            <button class="panel-action" id="sortButton" type="button">
                                 涨跌幅 ↓
                             </button>
 
@@ -380,25 +475,31 @@
                                             行业
                                         </th>
 
+
                                         <th>
                                             涨跌幅
                                         </th>
+
 
                                         <th>
                                             上涨
                                         </th>
 
+
                                         <th>
                                             下跌
                                         </th>
+
 
                                         <th>
                                             成分股
                                         </th>
 
+
                                         <th class="bar-cell">
                                             表现
                                         </th>
+
 
                                         <th>
                                         </th>
@@ -407,9 +508,8 @@
 
                                 </thead>
 
-                                <tbody id="industryTable">
 
-                                    <!-- JS -->
+                                <tbody id="industryTable">
 
                                 </tbody>
 
@@ -434,6 +534,7 @@
                                     行业详情
                                 </div>
 
+
                                 <div class="panel-description">
                                     点击左侧行业查看区间走势
                                 </div>
@@ -451,9 +552,11 @@
                                     ↗
                                 </div>
 
+
                                 <div class="detail-empty-title">
                                     选择一个行业
                                 </div>
+
 
                                 <div class="detail-empty-text">
                                     查看行业区间涨跌、成分股分布和趋势
@@ -467,9 +570,10 @@
 
                 </section>
 
+
                 <!-- =================================================
-     Industry Stocks
-================================================== -->
+                 Industry Stocks
+            ================================================== -->
 
                 <section class="panel industry-stocks-panel">
 
@@ -480,6 +584,7 @@
                             <div class="panel-title">
                                 行业成分股
                             </div>
+
 
                             <div class="panel-description" id="stocksDescription">
                                 选择一个行业查看成分股行情
@@ -493,6 +598,7 @@
                             <span id="stocksIndustryName">
                                 --
                             </span>
+
 
                             <span class="stocks-count" id="stocksCount">
                                 0 只
@@ -513,6 +619,7 @@
                                     ⌕
                                 </span>
 
+
                                 <input class="search-input" id="stockSearchInput" type="text" placeholder="搜索股票名称 / 代码">
 
                             </div>
@@ -528,17 +635,21 @@
                                     涨跌幅从高到低
                                 </option>
 
+
                                 <option value="pct_asc">
                                     涨跌幅从低到高
                                 </option>
+
 
                                 <option value="amount_desc">
                                     成交额从高到低
                                 </option>
 
+
                                 <option value="market_cap_desc">
                                     市值从高到低
                                 </option>
+
 
                                 <option value="name_asc">
                                     股票名称
@@ -547,7 +658,7 @@
                             </select>
 
 
-                            <button class="panel-action" id="stockRefreshButton">
+                            <button class="panel-action" id="stockRefreshButton" type="button">
                                 刷新
                             </button>
 
@@ -568,53 +679,66 @@
                                         股票
                                     </th>
 
+
                                     <th>
                                         代码
                                     </th>
+
 
                                     <th>
                                         最新价
                                     </th>
 
+
                                     <th>
                                         涨跌幅
                                     </th>
+
 
                                     <th>
                                         今开
                                     </th>
 
+
                                     <th>
                                         最高
                                     </th>
+
 
                                     <th>
                                         最低
                                     </th>
 
+
                                     <th>
                                         昨收
                                     </th>
+
 
                                     <th>
                                         成交额
                                     </th>
 
+
                                     <th>
                                         换手率
                                     </th>
+
 
                                     <th>
                                         总市值
                                     </th>
 
+
                                     <th>
                                         流通市值
                                     </th>
 
+
                                     <th>
                                         PE(TTM)
                                     </th>
+
 
                                     <th>
                                         PB
@@ -635,9 +759,11 @@
                                             ↗
                                         </div>
 
+
                                         <div class="stocks-empty-title">
                                             选择一个行业
                                         </div>
+
 
                                         <div class="stocks-empty-text">
                                             点击上方行业列表中的行业，
@@ -659,13 +785,18 @@
 
                         <span>
                             当前显示
-                            <strong id="visibleStocksCount">0</strong>
+                            <strong id="visibleStocksCount">
+                                0
+                            </strong>
                             只
                         </span>
 
+
                         <span>
                             数据日期：
-                            <strong id="stocksDataDate">--</strong>
+                            <strong id="stocksDataDate">
+                                --
+                            </strong>
                         </span>
 
                     </div>
@@ -683,17 +814,21 @@
 
                         <span class="tiny-dot"></span>
 
+
                         <span id="dataSource">
-                            数据源：中证行业分类 · MVP 模拟数据
+                            数据源：中证行业分类 · 行业行情
                         </span>
 
                     </div>
 
+
                     <div>
+
                         最后更新：
                         <span id="updateTime">
-                            2026-09-22 15:10
+                            --
                         </span>
+
                     </div>
 
                 </div>
@@ -704,6 +839,7 @@
         </main>
 
     </div>
+
 
     <script src="../js/stock/industry_performance.js"></script>
 

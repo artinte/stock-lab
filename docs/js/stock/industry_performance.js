@@ -24,11 +24,13 @@
 
        API
           ↓
-       获取行业数据
+       获取当前层级行业数据
           ↓
-       前端筛选
+       当前层级行业筛选
           ↓
-       前端排序
+       搜索
+          ↓
+       排序
           ↓
        页面展示
 
@@ -39,7 +41,6 @@
        加权 / 等权
        JSON Cache
 
-
    =============================================================== */
 
 
@@ -49,9 +50,20 @@
 
 const state = {
 
-    level: 1,
+    /*
+     * 默认一级行业。
+     *
+     * 如果希望页面一进入就是二级行业，
+     * 这里改成 2 即可。
+     */
+    level: 2,
 
-    parent: "all",
+    /*
+     * 当前层级行业。
+     *
+     * 二级行业默认选择半导体。
+     */
+    industry: "半导体",
 
     period: 1,
 
@@ -87,8 +99,8 @@ const state = {
 const levelSelect =
     document.getElementById("levelSelect");
 
-const parentSelect =
-    document.getElementById("parentSelect");
+const industrySelect =
+    document.getElementById("industrySelect");
 
 const periodSelect =
     document.getElementById("periodSelect");
@@ -130,7 +142,9 @@ function formatPct(value) {
         value === undefined ||
         Number.isNaN(Number(value))
     ) {
+
         return "--";
+
     }
 
     const number =
@@ -138,19 +152,24 @@ function formatPct(value) {
 
 
     if (number > 0) {
+
         return "+" +
             number.toFixed(2) +
             "%";
+
     }
 
 
     if (number < 0) {
+
         return number.toFixed(2) +
             "%";
+
     }
 
 
     return "0.00%";
+
 }
 
 
@@ -164,16 +183,21 @@ function pctClass(value) {
 
 
     if (number > 0) {
+
         return "up";
+
     }
 
 
     if (number < 0) {
+
         return "down";
+
     }
 
 
     return "flat";
+
 }
 
 
@@ -193,6 +217,7 @@ function levelName(level) {
 
 
     return names[level] || "";
+
 }
 
 
@@ -207,6 +232,7 @@ function escapeHtml(value) {
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+
 }
 
 
@@ -238,16 +264,12 @@ function getToday() {
 
 
     return `${year}-${month}-${day}`;
+
 }
 
 
 /**
  * 获取过去 N 天日期
- *
- * 这里按自然日计算。
- *
- * 后端目前的 Mock 数据每天都能生成，
- * 后续接真实交易数据后，Service 会处理交易日。
  */
 function getDateBefore(
     dateString,
@@ -282,6 +304,147 @@ function getDateBefore(
 
 
     return `${year}-${month}-${day}`;
+
+}
+
+
+/* ===============================================================
+   Industry Options
+   =============================================================== */
+
+
+/**
+ * 根据当前已经加载的数据，
+ * 生成当前层级行业选择器。
+ *
+ * 不请求 /api/industry/categories。
+ *
+ * 例如：
+ *
+ * level = 2
+ *
+ * → 从 state.data.industries 中提取二级行业
+ *
+ * 默认二级行业选择：
+ *
+ * 半导体
+ */
+function renderIndustryOptions() {
+
+    const targetLevel =
+        Number(state.level);
+
+
+    if (!industrySelect) {
+
+        return;
+
+    }
+
+
+    const industries =
+        state.data.industries
+            .filter(
+                item =>
+                    Number(item.level) ===
+                    targetLevel
+            )
+            .sort(
+                (a, b) =>
+                    String(a.name)
+                        .localeCompare(
+                            String(b.name),
+                            "zh-CN"
+                        )
+            );
+
+
+    const currentIndustry =
+        state.industry;
+
+
+    industrySelect.innerHTML = `
+
+        <option value="all">
+            全部行业
+        </option>
+
+        ${industries.map(item => `
+
+            <option
+                value="${escapeHtml(item.code)}"
+            >
+                ${escapeHtml(item.name)}
+            </option>
+
+        `).join("")}
+
+    `;
+
+
+    /*
+     * 如果当前行业仍然存在，
+     * 保留当前选择。
+     */
+
+    const exists =
+        industries.some(
+            item =>
+                String(item.code) ===
+                String(currentIndustry)
+        );
+
+
+    if (exists) {
+
+        industrySelect.value =
+            currentIndustry;
+
+        return;
+
+    }
+
+
+    /*
+     * 第一次进入二级行业时，
+     * 默认选择半导体。
+     */
+
+    if (targetLevel === 2) {
+
+        const semiconductor =
+            industries.find(
+                item =>
+                    item.name === "半导体"
+            );
+
+
+        if (semiconductor) {
+
+            state.industry =
+                semiconductor.code;
+
+            industrySelect.value =
+                semiconductor.code;
+
+            return;
+
+        }
+
+    }
+
+
+    /*
+     * 当前层级没有半导体，
+     * 默认显示全部行业。
+     */
+
+    state.industry =
+        "all";
+
+    industrySelect.value =
+        "all";
+
 }
 
 
@@ -313,11 +476,6 @@ async function fetchDailyData() {
         state.method
     );
 
-
-    /*
-     * 如果用户选择了自定义日期，
-     * 单日模式直接使用开始日期。
-     */
 
     let date =
         getToday();
@@ -363,6 +521,7 @@ async function fetchDailyData() {
 
 
     return await response.json();
+
 }
 
 
@@ -428,6 +587,7 @@ async function fetchRangeData(
 
 
     return await response.json();
+
 }
 
 
@@ -439,22 +599,16 @@ async function fetchRangeData(
 /**
  * 加载行业行情
  *
- * 根据当前 period 自动选择：
- *
  * 1 日
  *     → /performance
  *
- * 5 / 10 / 20 日
+ * 5 / 20 / 60 / 120 日
  *     → /performance/range
  *
  * 自定义
  *     → /performance/range
  */
 async function loadData() {
-
-    /*
-     * 防止重复请求期间状态混乱
-     */
 
     try {
 
@@ -541,16 +695,6 @@ async function loadData() {
                 getToday();
 
 
-            /*
-             * 这里 period 表示区间长度。
-             *
-             * 例如：
-             *
-             * 5
-             * 10
-             * 20
-             */
-
             const startDate =
                 getDateBefore(
                     endDate,
@@ -582,18 +726,14 @@ async function loadData() {
 
 
         /*
-         * 如果当前选中的行业已经不存在，
-         * 后面的 renderTable 会自动选择第一项。
+         * 数据加载完成后，
+         * 根据当前 level 重新生成行业选择器。
          */
 
-        renderParentOptions();
+        renderIndustryOptions();
 
         renderTable();
 
-
-        /*
-         * 更新顶部日期
-         */
 
         const dataDate =
             document.getElementById(
@@ -704,23 +844,40 @@ function renderError(message) {
 /* ===============================================================
    Filter Data
    =============================================================== */
+
 function getFilteredData() {
-    let list = state.data.industries.filter(item => item.level === Number(state.level));
+
+    let list =
+        state.data.industries.filter(
+            item =>
+                Number(item.level) ===
+                Number(state.level)
+        );
 
 
     /*
-     * 父行业筛选
+     * 当前层级行业筛选。
+     *
+     * 注意：
+     *
+     * 这里不再使用 parent_code。
+     *
+     * 例如：
+     *
+     * state.industry = "半导体对应的 code"
+     *
+     * 就只显示半导体。
      */
 
     if (
-        state.parent !== "all"
+        state.industry !== "all"
     ) {
 
         list =
             list.filter(
                 item =>
-                    item.parent_code ===
-                    state.parent
+                    String(item.code) ===
+                    String(state.industry)
             );
 
     }
@@ -791,171 +948,6 @@ function getFilteredData() {
 
 
     return list;
-
-}
-
-
-/* ===============================================================
-   Render Parent Options
-   =============================================================== */
-
-function renderParentOptions() {
-    const targetLevel = Number(state.level);
-    // 一级行业没有父行业。
-    if (
-        targetLevel <= 1
-    ) {
-        parentSelect.innerHTML = `
-            <option value="all">
-                全部行业
-            </option>
-
-        `;
-
-        parentSelect.disabled =
-            true;
-
-        state.parent =
-            "all";
-
-        return;
-    }
-
-
-    parentSelect.disabled =
-        true;
-
-    parentSelect.innerHTML = `
-        <option value="all">
-            加载中...
-        </option>
-    `;
-
-    const parentLevel =
-        targetLevel - 1;
-
-
-    /*
-     * 获取父级行业分类。
-     */
-
-    fetch(
-        `/api/industry/categories?level=${parentLevel}`
-    )
-
-        .then(
-            response => {
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        `行业分类请求失败：HTTP ${response.status}`
-                    );
-
-                }
-
-                return response.json();
-
-            }
-        )
-
-        .then(
-            parents => {
-
-                /*
-                 * 没有父级行业。
-                 */
-
-                if (
-                    !Array.isArray(parents) ||
-                    !parents.length
-                ) {
-
-                    parentSelect.innerHTML = `
-
-                        <option value="all">
-                            全部行业
-                        </option>
-
-                    `;
-
-
-                    parentSelect.value = "all";
-                    state.parent = "all";
-                    return;
-                }
-
-
-                // 生成父级行业选项。
-                parentSelect.innerHTML = `
-                    <option value="all">
-                        全部行业
-                    </option>
-
-                    ${parents.map(item => `
-                        <option
-                            value="${escapeHtml(item.code)}"
-                        >
-                            ${escapeHtml(item.name)}
-                        </option>
-
-                    `).join("")}
-                `;
-
-                // 默认选择信息技术。
-                // 如果用户已经选择了其他行业，则保留原来的选择。
-                const bank = parents.find(
-                    item => item.name === "信息技术"
-                );
-
-                const exists = [...parentSelect.options]
-                    .some(option => option.value === state.parent);
-                if (exists) {
-                    parentSelect.value = state.parent;
-                } else if (bank) {
-                    parentSelect.value = bank.code
-                    state.parent = bank.code
-                } else {
-                    parentSelect.value = "all";
-                    state.parent = "all";
-                }
-            }
-        ).catch(
-            error => {
-
-                console.error(
-                    "加载上级行业失败：",
-                    error
-                );
-
-
-                parentSelect.innerHTML = `
-
-                    <option value="all">
-                        全部行业
-                    </option>
-
-                `;
-
-
-                parentSelect.value =
-                    "all";
-
-
-                state.parent =
-                    "all";
-
-            }
-        )
-
-        .finally(
-            () => {
-
-                parentSelect.disabled =
-                    false;
-
-            }
-        );
 
 }
 
@@ -1094,6 +1086,7 @@ function renderTable() {
             </tr>
 
         `;
+
 
         detailContent.innerHTML = `
 
@@ -1349,34 +1342,11 @@ function renderTable() {
    History
    =============================================================== */
 
-
-/**
- * 当前后端 MVP 的 range API
- * 返回的是区间累计涨跌幅，
- * 还没有返回每天的 history。
- *
- * 因此这里暂时使用一个轻量展示数据，
- * 避免详情区域因为 API 没有 history 而无法显示。
- *
- * 后续 Service 可以直接增加：
- *
- * history: [
- *     {
- *         date: "2026-09-01",
- *         pct: 1.21
- *     }
- * ]
- *
- * 到时候只需要把这里替换成：
- *
- * renderChart(item.history)
- */
 function generateHistory(
     basePct
 ) {
 
     const result = [];
-
 
     let current = 0;
 
@@ -1659,15 +1629,6 @@ function selectIndustry(code) {
         code;
 
 
-    /*
-     * 当前 MVP 后端没有返回历史曲线。
-     *
-     * 暂时生成展示曲线。
-     *
-     * 后续 API 增加 history 后，
-     * 这里直接使用 item.history。
-     */
-
     const history =
         item.history &&
             item.history.length
@@ -1914,15 +1875,18 @@ levelSelect.addEventListener(
             );
 
 
-        state.parent =
+        /*
+         * 切换层级后，
+         * 让 renderIndustryOptions()
+         * 根据新的层级重新选择行业。
+         */
+
+        state.industry =
             "all";
 
 
         state.selectedCode =
             null;
-
-
-        renderParentOptions();
 
 
         loadData();
@@ -1932,15 +1896,15 @@ levelSelect.addEventListener(
 
 
 /* ===============================================================
-   Parent Change
+   Industry Change
    =============================================================== */
 
-parentSelect.addEventListener(
+industrySelect.addEventListener(
     "change",
     () => {
 
-        state.parent =
-            parentSelect.value;
+        state.industry =
+            industrySelect.value;
 
 
         state.selectedCode =
@@ -1948,8 +1912,9 @@ parentSelect.addEventListener(
 
 
         /*
-         * Parent 是前端筛选，
-         * 不需要重新请求 API。
+         * 行业选择只是前端筛选。
+         *
+         * 不重新请求 API。
          */
 
         renderTable();
@@ -2262,10 +2227,15 @@ endDate.addEventListener(
    Initial
    =============================================================== */
 
-renderParentOptions();
-
 /*
- * 页面第一次进入：
- * 直接请求 FastAPI。
+ * 页面默认：
+ *
+ * 二级行业
+ * ↓
+ * 半导体
  */
+
+levelSelect.value =
+    String(state.level);
+
 loadData();
