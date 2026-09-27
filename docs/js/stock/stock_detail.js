@@ -336,63 +336,69 @@ async function loadQuote() {
                 result?.message || "行情数据不可用"
             );
         }
+
         console.log("行情数据:", result);
+
         const quote = result.data ?? result;
 
-        updatePrice(quote.lastPrice, quote.change, quote.changePercent)
+        // ============================================================
+        // 顶部行情
+        // ============================================================
+
+        updatePrice(
+            quote.last_price,
+            quote.change,
+            quote.change_percent
+        );
 
         setText(
             "quoteOpen",
-            formatNumber(quote.openPrice)
+            formatNumber(quote.open_price)
         );
-
 
         setText(
             "quoteHigh",
-            formatNumber(quote.highPrice)
+            formatNumber(quote.high_price)
         );
-
 
         setText(
             "quoteLow",
-            formatNumber(quote.lowPrice)
+            formatNumber(quote.low_price)
         );
-
 
         setText(
             "quotePrevClose",
-            formatNumber(quote.previousClose)
+            formatNumber(quote.previous_close)
         );
-
 
         setText(
             "quoteAmount",
             formatAmount(quote.amount)
         );
 
-
         setText(
             "turnover",
             formatPercent(quote.turnover, false)
         );
 
-
         setText(
             "marketCap",
-            formatAmount(quote.marketCap)
+            formatAmount(quote.market_cap)
         );
-
 
         setText(
             "floatMarketCap",
-            formatAmount(quote.floatMarketCap)
+            formatAmount(quote.float_market_cap)
         );
 
 
+        // ============================================================
         // 详情页行情
+        // ============================================================
+
         setText(
             "detailPrice",
-            formatNumber(quote.lastPrice)
+            formatNumber(quote.last_price)
         );
 
         setText(
@@ -402,7 +408,7 @@ async function loadQuote() {
 
         setText(
             "detailChangePercent",
-            formatPercent(quote.changePercent)
+            formatPercent(quote.change_percent)
         );
 
         setText(
@@ -421,7 +427,10 @@ async function loadQuote() {
         );
 
 
+        // ============================================================
         // 数据时间
+        // ============================================================
+
         if (quote.timestamp) {
 
             setText(
@@ -439,13 +448,20 @@ async function loadQuote() {
         }
 
 
+        // ============================================================
+        // 行情状态
+        // ============================================================
+
         setText(
             "stockStatus",
             "行情正常"
         );
 
 
-        // 52周
+        // ============================================================
+        // 52 周区间
+        // ============================================================
+
         if (
             quote.year_low !== undefined ||
             quote.year_high !== undefined
@@ -472,7 +488,6 @@ async function loadQuote() {
         );
 
     }
-
 }
 
 

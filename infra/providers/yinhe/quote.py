@@ -137,8 +137,8 @@ class YinheQuote:
         # =====================================================
 
         try:
-            klines = self.gateway.kline.fetch_kline(
-                symbol=normalized_symbols,
+            klines = self.gateway.kline.fetch_klines(
+                symbols=normalized_symbols,
                 interval=Interval.DAY_1,
                 start_time=start_time,
                 end_time=now,
