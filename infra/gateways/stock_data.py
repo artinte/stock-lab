@@ -15,7 +15,7 @@ from core.models.financial.financial import Financial
 from core.models.financial.income_statement import IncomeStatement
 from core.models.kline import Kline
 from core.models.quote import Quote
-from core.models.stock import Stock
+from core.models.stock.basic_info import BasicInfo
 
 
 class StockDataGateway(ABC):
@@ -55,14 +55,14 @@ class StockDataGateway(ABC):
     def fetch_stock(
         self,
         symbol: str,
-    ) -> Stock:
+    ) -> BasicInfo:
         raise NotImplementedError
 
     @abstractmethod
     def fetch_stocks(
         self,
         symbols: list[str],
-    ) -> list[Stock]:
+    ) -> list[BasicInfo]:
         raise NotImplementedError
 
     @abstractmethod

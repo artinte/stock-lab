@@ -22,7 +22,7 @@ from core.models.financial.financial import Financial
 from core.models.financial.income_statement import IncomeStatement
 from core.models.kline import Kline
 from core.models.quote import Quote
-from core.models.stock import Stock
+from core.models.stock.basic_info import BasicInfo
 from infra.base import StockDataGateway
 
 class IFinDGateway(StockDataGateway):
@@ -170,7 +170,7 @@ class IFinDGateway(StockDataGateway):
     def fetch_stock(
         self,
         symbol: str,
-    ) -> Stock:
+    ) -> BasicInfo:
         """
         获取股票基础信息。
 
@@ -200,7 +200,7 @@ class IFinDGateway(StockDataGateway):
             if value is not None:
                 name = str(value)
 
-        return Stock(
+        return BasicInfo(
             symbol=symbol,
             name=name,
         )

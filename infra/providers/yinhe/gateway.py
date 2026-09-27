@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 import tgw
 
 from common.enums.quote_level import QuoteLevel
-from core.models.stock import Stock
+from core.models.stock.basic_info import BasicInfo
 from infra.gateways.stock_data import StockDataGateway
 from common.constants import Interval, TEN_THOUSAND
 from core.models.financial.financial import IncomeStatement
@@ -26,7 +26,7 @@ from infra.providers.yinhe.etf import YinheETF
 from infra.providers.yinhe.financial import YinheFinancial
 from infra.providers.yinhe.kline import YinheKline
 from infra.providers.yinhe.quote import YinheQuote
-from infra.providers.yinhe.stock import YinheStock
+from infra.providers.yinhe.basic_info import YinheStock
 from infra.providers.yinhe.valuation import YinheValuation
 from infra.registry import GatewayRegistry
 
@@ -285,7 +285,7 @@ class YinheGateway(StockDataGateway):
     def fetch_stock(
         self,
         symbol: str,
-    ) -> Stock:
+    ) -> BasicInfo:
         """
         获取股票基础信息。
 
@@ -301,7 +301,7 @@ class YinheGateway(StockDataGateway):
     def fetch_stocks(
         self,
         symbols: list[str],
-    ) -> list[Stock]:
+    ) -> list[BasicInfo]:
         """
         批量获取股票基础信息。
         """

@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from infra.data_manager import DataManager
-from core.models.stock import Stock
+from core.models.stock.basic_info import BasicInfo
 
 """
 股票基础信息测试。
 
 运行：
-python -m tests.infra.gateways.test_stock
+python -m tests.infra.gateways.stock.test_basic_info
 """
 
 
@@ -18,7 +18,7 @@ def run_stock_test(
     print(f"【股票基础信息】{symbol}")
 
     try:
-        stock: Stock | None = manager.stock.get_stock(symbol)
+        stock: BasicInfo | None = manager.stock.get_basic_info(symbol)
 
         if stock is None:
             print("❌ 未获取到股票信息")
@@ -39,7 +39,7 @@ def run_stocks_test(
     print(f"【批量股票基础信息】{symbols}")
 
     try:
-        stocks: list[Stock] = manager.stock.get_stocks(symbols)
+        stocks: list[BasicInfo] = manager.stock.get_basic_infos(symbols)
 
         if not stocks:
             print("❌ 未获取到股票信息")

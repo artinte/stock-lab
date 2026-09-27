@@ -95,7 +95,7 @@ def get_stock(symbol: str):
     data = require_data()
 
     try:
-        result = data.stock.get_stock(symbol)
+        result = data.stock.get_basic_info(symbol)
 
         if result is None:
             return failure(symbol)

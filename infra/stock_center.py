@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import Optional
 
 
-from core.models.stock import Stock
+from core.models.stock.basic_info import BasicInfo
 from core.models.company import Company
 from core.models.capital import Capital
 from core.models.industry import Industry
@@ -87,7 +87,7 @@ class StockCenter:
     # 基础信息
     # ==========================================================
 
-    stock: Optional[Stock] = None
+    stock: Optional[BasicInfo] = None
 
     company: Optional[Company] = None
 
