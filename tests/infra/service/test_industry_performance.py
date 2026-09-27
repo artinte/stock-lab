@@ -3,7 +3,7 @@
 
 测试内容：
     - 行业成分股
-    - 
+    -
     - 每日行业行情
     - 等权行业行情
     - 市值加权行业行情
@@ -50,45 +50,21 @@ def run_industry_stocks_test(
         print(f"❌ 获取行业成分股失败：{exc}")
 
 
-def run_industry_parent_test(
-    service: IndustryPerformanceService,
-    parent_category: str,
-    child_level: int,
-) -> None:
-    """测试父行业与子行业关系。"""
-
-    print(f"【行业父子关系】" f"{parent_category} " f"→ level={child_level}")
-
-    try:
-
-        stocks = service.get_industry_stocks(
-            parent_category,
-            level=child_level - 1,
-        )
-
-        print(f"父行业成分股数量: {len(stocks)}")
-
-        if not stocks:
-            print("❌ 未获取到父行业成分股")
-            return
-
-        print("✅ 父行业成分股获取成功")
-
-    except Exception as exc:
-
-        print(f"❌ 父行业测试失败：{exc}")
-
-
 def run_daily_performance_test(
     service: IndustryPerformanceService,
     performance_date: str,
     level: int,
     method: str,
+    category: str,
 ) -> None:
     """测试每日行业行情。"""
 
     print(
-        f"【每日行业行情】" f"{performance_date} " f"level={level} " f"method={method}"
+        f"【每日行业行情】"
+        f"{performance_date} "
+        f"level={level} "
+        f"method={method} "
+        f"category={category}"
     )
 
     try:
@@ -96,10 +72,12 @@ def run_daily_performance_test(
             date=performance_date,
             level=level,
             method=method,
+            category=category
         )
 
         print(f"日期: {result.date}")
         print(f"行业级别: {result.level}")
+        print(f"行业类别: {category}")
         print(f"计算方式: {result.method}")
         print(f"行业数量: {len(result.industries)}")
 
@@ -107,11 +85,11 @@ def run_daily_performance_test(
             print("❌ 未获取到行业行情")
             return
 
-        print("\n前 10 个行业：")
-
-        for industry in result.industries[:10]:
+        for industry in result.industries:
             print(
-                f"{industry.code:<12}" f"{industry.name:<16}" f"{industry.pct:>8.2f}%"
+                f"{industry.code:<12}"
+                f"{industry.name:<16}"
+                f"{industry.pct:>8.2f}%"
             )
 
         print("✅ 每日行业行情获取成功")
@@ -233,12 +211,6 @@ def test_industry_performance(
         level=2,
     )
 
-    run_industry_parent_test(
-        service,
-        parent_category="半导体",
-        level=3,
-    )
-
     # ---------------------------------------------------------
     # 每日行情
     # ---------------------------------------------------------
@@ -254,6 +226,7 @@ def test_industry_performance(
         performance_date=performance_date,
         level=2,
         method="equal",
+        category="半导体",
     )
 
     run_daily_performance_test(
@@ -261,6 +234,7 @@ def test_industry_performance(
         performance_date=performance_date,
         level=2,
         method="weighted",
+        category="半导体",
     )
 
     # ---------------------------------------------------------
@@ -291,21 +265,14 @@ def test_industry_performance(
 
 
 def main() -> None:
-    """测试入口。"""
-
     provider_name = "yinhe"
-
     manager = DataManager(provider_name)
-
     try:
         manager.start()
-
         print(f"【行业行情表现测试】{provider_name}")
-
         test_industry_performance(
             manager,
         )
-
     finally:
         try:
             manager.stop()

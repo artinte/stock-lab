@@ -122,15 +122,7 @@ class IndustryPerformanceService:
                         优先真实行情，失败后使用 Mock。
         """
 
-        # =====================================================
-        # DataManager / StockManager
-        # =====================================================
-
         self.data_manager = manager
-
-        # =====================================================
-        # 行情模式
-        # =====================================================
 
         mode = mode.strip().lower()
 
@@ -140,14 +132,11 @@ class IndustryPerformanceService:
             "auto",
         }:
             raise ValueError(
-                f"无效的行业行情模式: {mode!r}，" "支持：real / mock / auto"
+                f"无效的行业行情模式: {mode!r}，"
+                "支持：real / mock / auto"
             )
 
         self.mode = mode
-
-        # =====================================================
-        # Cache
-        # =====================================================
 
         self.cache_dir = Path(cache_dir)
 
@@ -164,9 +153,9 @@ class IndustryPerformanceService:
             exist_ok=True,
         )
 
-    # =========================================================
+    # ------------------------------------------------------------------
     # Industry
-    # =========================================================
+    # ------------------------------------------------------------------
 
     def get_industries(
         self,
@@ -201,14 +190,16 @@ class IndustryPerformanceService:
             level=level,
         )
 
-    # =========================================================
+    # ------------------------------------------------------------------
     # Daily
-    # =========================================================
+    # ------------------------------------------------------------------
+
     def get_daily_performance(
         self,
         date: str | None = None,
         level: int = 2,
         method: str = "weighted",
+        category: str | int | None = None,
         use_cached: bool = False,
     ) -> IndustryPerformanceDaily:
         """
@@ -216,40 +207,58 @@ class IndustryPerformanceService:
 
         参数：
             date:
-                日期，例如："2026-09-23"，不指定时使用今天。
+                日期，例如："2026-09-23"。
+                不指定时使用今天。
 
             level:
                 行业层级：1 - 2 - 3 - 4
 
             method:
                 计算方式：
-                    weighted 按总市值加权
-                    equal 等权平均
+
+                    weighted
+                        按总市值加权。
+
+                    equal
+                        等权平均。
+
+            category:
+                可选行业代码或行业名称。
+
+                None：
+                    计算当前层级全部行业。
+
+                例如：
+                    "半导体"
+
+                指定后只计算该行业，
+                可以减少真实行情接口的请求压力。
+
+            use_cached:
+                是否优先读取缓存。
 
         返回：
             IndustryPerformanceDaily
         """
 
         date = date or self._today()
+
         self._validate_method(method)
+
         cache_file = self._daily_cache_file(
             date=date,
             level=level,
             method=method,
+            category=category,
         )
 
-        # -----------------------------------------------------
-        # 优先读取缓存
-        # -----------------------------------------------------
         if use_cached and cache_file.exists():
             return self._load_daily(cache_file)
 
-        # -----------------------------------------------------
-        # 计算行业表现
-        # -----------------------------------------------------
         industries = self._calculate_daily(
             level=level,
             method=method,
+            category=category,
         )
 
         result = IndustryPerformanceDaily(
@@ -259,10 +268,6 @@ class IndustryPerformanceService:
             industries=industries,
         )
 
-        # -----------------------------------------------------
-        # 保存缓存
-        # -----------------------------------------------------
-
         self._save_json(
             cache_file,
             result.to_dict(),
@@ -270,52 +275,50 @@ class IndustryPerformanceService:
 
         return result
 
-    # =========================================================
+    # ------------------------------------------------------------------
     # Daily Calculation
-    # =========================================================
+    # ------------------------------------------------------------------
 
     def _calculate_daily(
         self,
         level: int,
         method: str,
+        category: str | int | None = None,
     ) -> list[IndustryPeriodPerformance]:
         """
         计算行业每日表现。
 
-        每个行业：
+        category 为 None 时：
+            计算指定层级全部行业。
 
-            1. 获取行业成分股
-            2. 获取股票行情
-            3. 提取股票涨跌幅
-            4. 根据 method 计算行业涨跌幅
+        category 不为 None 时：
+            只计算指定行业。
+
+        指定 category 后，会在获取成分股之前完成行业筛选，
+        从而避免无意义地请求其它行业的股票行情。
         """
-        industries = get_all_industries(level)
+
+        industries = self._resolve_industries(
+            level=level,
+            category=category,
+        )
 
         results: list[IndustryPeriodPerformance] = []
 
         for industry in industries:
 
-            # -------------------------------------------------
-            # 获取行业成分股
-            # -------------------------------------------------
             stocks = get_category_stocks(
                 industry.symbol,
                 level=level,
             )
+
             if not stocks:
                 continue
 
-            # -------------------------------------------------
-            # 获取股票行情
-            # -------------------------------------------------
-
             quotes = self._fetch_quotes(stocks)
+
             if not quotes:
                 continue
-
-            # -------------------------------------------------
-            # 计算行业涨跌幅
-            # -------------------------------------------------
 
             pct = self._calculate_industry_pct(
                 quotes=quotes,
@@ -325,10 +328,6 @@ class IndustryPerformanceService:
             if pct is None:
                 continue
 
-            # -------------------------------------------------
-            # 创建行业表现对象
-            # -------------------------------------------------
-
             results.append(
                 IndustryPeriodPerformance(
                     code=industry.symbol,
@@ -337,14 +336,59 @@ class IndustryPerformanceService:
                     pct=pct,
                     start_date=None,
                     end_date=None,
-                    parent_code=self._get_parent_code(
+                    parent_code=getattr(
                         industry,
-                        level,
+                        "parent_code",
+                        None,
                     ),
                 )
             )
 
         return results
+
+    @staticmethod
+    def _resolve_industries(
+        level: int,
+        category: str | int | None = None,
+    ) -> list[Any]:
+        """
+        获取需要计算的行业。
+
+        category 为 None：
+            返回当前层级全部行业。
+
+        category 为行业名称或行业代码：
+            只返回匹配的行业。
+
+        注意：
+
+            这里先筛选行业，再获取成分股。
+            这样指定 category 后不会遍历其它行业，
+            可以明显降低真实行情接口的请求压力。
+        """
+
+        industries = get_all_industries(level)
+
+        if category is None:
+            return industries
+
+        category_value = str(category).strip()
+
+        if not category_value:
+            return industries
+
+        return [
+            industry
+            for industry in industries
+            if (
+                str(industry.symbol) == category_value
+                or str(industry.name) == category_value
+            )
+        ]
+
+    # ------------------------------------------------------------------
+    # Quote
+    # ------------------------------------------------------------------
 
     def _fetch_quotes(
         self,
@@ -366,33 +410,31 @@ class IndustryPerformanceService:
         if not stocks:
             return []
 
-        # Mock
         if self.mode == "mock":
             return self._fetch_mock_quotes(stocks)
 
-        # Real
         if self.mode == "real":
             return self.data_manager.stock.get_quotes(stocks)
 
-        # Auto
         try:
             quotes = self.data_manager.stock.get_quotes(stocks)
 
             if quotes:
                 return quotes
 
-            print("[行业行情] 真实行情无数据，" "切换 Mock。")
+            print("[行业行情] 真实行情无数据，切换 Mock。")
 
-        except Exception as e:
-
-            print(f"[行业行情] 真实行情失败，" f"切换 Mock：{e}")
+        except Exception as exc:
+            print(
+                f"[行业行情] 真实行情失败，"
+                f"切换 Mock：{exc}"
+            )
 
         return self._fetch_mock_quotes(stocks)
 
-
-    # =========================================================
+    # ------------------------------------------------------------------
     # Mock Quote
-    # =========================================================
+    # ------------------------------------------------------------------
 
     @staticmethod
     def _fetch_mock_quotes(
@@ -416,20 +458,11 @@ class IndustryPerformanceService:
         quotes = []
 
         for symbol in stocks:
-            # -------------------------------------------------
-            # 模拟涨跌幅
-            # -------------------------------------------------
+
             pct = random.uniform(
                 -8.0,
                 8.0,
             )
-
-            # -------------------------------------------------
-            # 模拟总市值
-            #
-            # 不同股票使用不同市值，
-            # 让 weighted 模式产生实际权重差异。
-            # -------------------------------------------------
 
             market_cap = random.uniform(
                 5e9,
@@ -449,9 +482,9 @@ class IndustryPerformanceService:
 
         return quotes
 
-    # =========================================================
+    # ------------------------------------------------------------------
     # Industry Performance Calculation
-    # =========================================================
+    # ------------------------------------------------------------------
 
     @classmethod
     def _calculate_industry_pct(
@@ -485,6 +518,7 @@ class IndustryPerformanceService:
         valid_quotes: list[tuple[Any, float]] = []
 
         for quote in quotes:
+
             pct = cls._get_quote_pct(quote)
 
             if pct is None:
@@ -500,22 +534,17 @@ class IndustryPerformanceService:
         if not valid_quotes:
             return None
 
-        # =====================================================
-        # 等权平均
-        # =====================================================
-
         if method == "equal":
 
-            total = sum(pct for _, pct in valid_quotes)
+            total = sum(
+                pct
+                for _, pct in valid_quotes
+            )
 
             return round(
                 total / len(valid_quotes),
                 2,
             )
-
-        # =====================================================
-        # 市值加权
-        # =====================================================
 
         weighted_total = 0.0
         weight_total = 0.0
@@ -531,16 +560,14 @@ class IndustryPerformanceService:
                 continue
 
             weighted_total += pct * market_cap
-
             weight_total += market_cap
-
-        # -----------------------------------------------------
-        # 没有有效市值时回退等权
-        # -----------------------------------------------------
 
         if weight_total <= 0:
 
-            total = sum(pct for _, pct in valid_quotes)
+            total = sum(
+                pct
+                for _, pct in valid_quotes
+            )
 
             return round(
                 total / len(valid_quotes),
@@ -552,9 +579,9 @@ class IndustryPerformanceService:
             2,
         )
 
-    # =========================================================
+    # ------------------------------------------------------------------
     # Quote Helpers
-    # =========================================================
+    # ------------------------------------------------------------------
 
     @staticmethod
     def _get_quote_pct(
@@ -616,6 +643,7 @@ class IndustryPerformanceService:
         )
 
         for field in fields:
+
             value = getattr(
                 quote,
                 field,
@@ -636,50 +664,28 @@ class IndustryPerformanceService:
 
         return None
 
-    # =========================================================
-    # Parent Industry
-    # =========================================================
-
-    @staticmethod
-    def _get_parent_code(
-        industry: Any,
-        level: int,
-    ) -> str | None:
-        """
-        获取行业父级代码。
-
-        如果 Industry 模型已经提供 parent_code，
-        则直接使用。
-
-        当前 Industry 查询函数如果没有提供父级代码，
-        则返回 None。
-        """
-
-        parent_code = getattr(
-            industry,
-            "parent_code",
-            None,
-        )
-
-        if parent_code:
-            return parent_code
-
-        return None
-
-    # =========================================================
+    # ------------------------------------------------------------------
     # Period
-    # =========================================================
+    # ------------------------------------------------------------------
+
     def get_period_performance(
         self,
         start_date: str,
         end_date: str,
         level: int = 2,
         method: str = "weighted",
+        category: str | int | None = None,
     ) -> IndustryPerformancePeriod:
         """
         获取指定时间区间的行业表现。
 
         区间表现通过每日涨跌幅复合计算。
+
+        category 为 None：
+            计算当前层级全部行业。
+
+        category 不为 None：
+            只计算指定行业。
         """
 
         self._validate_method(method)
@@ -689,30 +695,19 @@ class IndustryPerformanceService:
             end_date=end_date,
             level=level,
             method=method,
+            category=category,
         )
 
-        # -----------------------------------------------------
-        # 优先读取缓存
-        # -----------------------------------------------------
-
         if cache_file.exists():
-
             return self._load_period(cache_file)
-
-        # -----------------------------------------------------
-        # 获取每日数据
-        # -----------------------------------------------------
 
         daily_results = self._get_daily_range(
             start_date=start_date,
             end_date=end_date,
             level=level,
             method=method,
+            category=category,
         )
-
-        # -----------------------------------------------------
-        # 计算区间表现
-        # -----------------------------------------------------
 
         industries = self._calculate_period(
             daily_results=daily_results,
@@ -728,10 +723,6 @@ class IndustryPerformanceService:
             industries=industries,
         )
 
-        # -----------------------------------------------------
-        # 保存缓存
-        # -----------------------------------------------------
-
         self._save_json(
             cache_file,
             result.to_dict(),
@@ -739,9 +730,9 @@ class IndustryPerformanceService:
 
         return result
 
-    # =========================================================
-    # Internal · Daily Range
-    # =========================================================
+    # ------------------------------------------------------------------
+    # Daily Range
+    # ------------------------------------------------------------------
 
     def _get_daily_range(
         self,
@@ -749,18 +740,22 @@ class IndustryPerformanceService:
         end_date: str,
         level: int,
         method: str,
+        category: str | int | None = None,
     ) -> list[IndustryPerformanceDaily]:
         """
         获取指定日期范围内的每日行业表现。
+
+        category 会继续传递给每日行情计算，
+        因此区间查询同样只计算指定行业。
         """
 
         start = date.fromisoformat(start_date)
-
         end = date.fromisoformat(end_date)
 
         if start > end:
-
-            raise ValueError("start_date 不能晚于 end_date")
+            raise ValueError(
+                "start_date 不能晚于 end_date"
+            )
 
         results: list[IndustryPerformanceDaily] = []
 
@@ -775,6 +770,7 @@ class IndustryPerformanceService:
                     date=current_date,
                     level=level,
                     method=method,
+                    category=category,
                 )
             )
 
@@ -782,9 +778,9 @@ class IndustryPerformanceService:
 
         return results
 
-    # =========================================================
-    # Internal · Period Calculation
-    # =========================================================
+    # ------------------------------------------------------------------
+    # Period Calculation
+    # ------------------------------------------------------------------
 
     @staticmethod
     def _calculate_period(
@@ -799,18 +795,10 @@ class IndustryPerformanceService:
         if not daily_results:
             return []
 
-        # -----------------------------------------------------
-        # code -> 每日涨跌幅
-        # -----------------------------------------------------
-
         history: dict[
             str,
             list[float],
         ] = {}
-
-        # -----------------------------------------------------
-        # code -> 行业元数据
-        # -----------------------------------------------------
 
         metadata: dict[
             str,
@@ -830,16 +818,11 @@ class IndustryPerformanceService:
 
         result: list[IndustryPeriodPerformance] = []
 
-        # -----------------------------------------------------
-        # 计算累计收益
-        # -----------------------------------------------------
-
         for code, values in history.items():
 
             total = 1.0
 
             for pct in values:
-
                 total *= 1 + pct / 100
 
             total_pct = round(
@@ -857,13 +840,13 @@ class IndustryPerformanceService:
                     pct=total_pct,
                     start_date=start_date,
                     end_date=end_date,
-                    parent_code=industry.parent_code,
+                    parent_code=getattr(
+                        industry,
+                        "parent_code",
+                        None,
+                    ),
                 )
             )
-
-        # -----------------------------------------------------
-        # 按涨跌幅排序
-        # -----------------------------------------------------
 
         result.sort(
             key=lambda item: item.pct,
@@ -872,18 +855,47 @@ class IndustryPerformanceService:
 
         return result
 
-    # =========================================================
+    # ------------------------------------------------------------------
     # Cache
-    # =========================================================
+    # ------------------------------------------------------------------
 
     def _daily_cache_file(
         self,
         date: str,
         level: int,
         method: str,
+        category: str | int | None = None,
     ) -> Path:
+        """
+        获取每日行情缓存文件。
 
-        return self.daily_dir / f"{date}_level{level}_{method}.json"
+        category 为 None：
+            使用 all。
+
+        category 指定行业：
+            使用指定行业作为缓存标识。
+
+        这样可以避免：
+
+            全量行业缓存
+
+        与：
+
+            单行业测试缓存
+
+        相互覆盖。
+        """
+
+        category_key = self._cache_category_key(
+            category
+        )
+
+        return self.daily_dir / (
+            f"{date}"
+            f"_level{level}"
+            f"_{method}"
+            f"_{category_key}.json"
+        )
 
     def _period_cache_file(
         self,
@@ -891,17 +903,67 @@ class IndustryPerformanceService:
         end_date: str,
         level: int,
         method: str,
+        category: str | int | None = None,
     ) -> Path:
+        """
+        获取区间行情缓存文件。
+        """
+
+        category_key = self._cache_category_key(
+            category
+        )
 
         return self.period_dir / (
-            f"{start_date}_{end_date}" f"_level{level}_{method}.json"
+            f"{start_date}_{end_date}"
+            f"_level{level}"
+            f"_{method}"
+            f"_{category_key}.json"
         )
+
+    @staticmethod
+    def _cache_category_key(
+        category: str | int | None,
+    ) -> str:
+        """
+        将行业类别转换为安全的缓存文件标识。
+        """
+
+        if category is None:
+            return "all"
+
+        value = str(category).strip()
+
+        if not value:
+            return "all"
+
+        safe_chars = []
+
+        for char in value:
+            if (
+                char.isalnum()
+                or char in {
+                    "-",
+                    "_",
+                }
+            ):
+                safe_chars.append(char)
+            else:
+                safe_chars.append("_")
+
+        return "".join(safe_chars)
 
     def _load_daily(
         self,
         path: Path,
     ) -> IndustryPerformanceDaily:
-        print(f"[行业行情] 加载每日缓存: {path}")
+        """
+        加载每日行业行情缓存。
+        """
+
+        print(
+            f"[行业行情] 加载每日缓存: {path}"
+        )
+
         with path.open(
             "r",
             encoding="utf-8",
@@ -909,12 +971,17 @@ class IndustryPerformanceService:
 
             data = json.load(file)
 
-        return IndustryPerformanceDaily.from_dict(data)
+        return IndustryPerformanceDaily.from_dict(
+            data
+        )
 
     def _load_period(
         self,
         path: Path,
     ) -> IndustryPerformancePeriod:
+        """
+        加载区间行业行情缓存。
+        """
 
         with path.open(
             "r",
@@ -924,7 +991,9 @@ class IndustryPerformanceService:
             data = json.load(file)
 
         industries = [
-            IndustryPeriodPerformance(**item)
+            IndustryPeriodPerformance(
+                **item
+            )
             for item in data.get(
                 "industries",
                 [],
@@ -944,6 +1013,9 @@ class IndustryPerformanceService:
         path: Path,
         data: dict,
     ) -> None:
+        """
+        保存 JSON 缓存。
+        """
 
         path.parent.mkdir(
             parents=True,
@@ -962,9 +1034,9 @@ class IndustryPerformanceService:
                 indent=2,
             )
 
-    # =========================================================
+    # ------------------------------------------------------------------
     # Validation
-    # =========================================================
+    # ------------------------------------------------------------------
 
     @staticmethod
     def _validate_method(
@@ -975,12 +1047,13 @@ class IndustryPerformanceService:
             "weighted",
             "equal",
         }:
+            raise ValueError(
+                "method 必须是 'weighted' 或 'equal'"
+            )
 
-            raise ValueError("method 必须是 'weighted' 或 'equal'")
-
-    # =========================================================
+    # ------------------------------------------------------------------
     # Utility
-    # =========================================================
+    # ------------------------------------------------------------------
 
     @staticmethod
     def _today() -> str:
