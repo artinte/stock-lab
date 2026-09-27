@@ -2,136 +2,26 @@
 <html lang="zh-CN">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>股票详情 - STOCK LAB</title>
 
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/stock_detail.css">
+    <link rel="stylesheet" href="../css/stock/stock_detail.css">
 
     <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
-
 </head>
 
-
 <body>
+    <!-- ========= 顶部导航 ========= -->
+    <div id="site-header"></div>
 
-
-    <!-- =========================================================
-     顶部导航
-========================================================= -->
-
-    <header class="topbar">
-
-        <div class="topbar-inner">
-
-            <div class="brand" onclick="goHome()">
-
-                <div class="brand-mark">
-                    S
-                </div>
-
-                <div class="brand-text">
-
-                    <div class="brand-name">
-                        STOCK LAB
-                    </div>
-
-                    <div class="brand-subtitle">
-                        股票研究中心
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <nav class="main-nav">
-
-                <button class="nav-item" onclick="goHome()">
-                    市场
-                </button>
-
-                <button class="nav-item active">
-                    股票
-                </button>
-
-                <button class="nav-item" onclick="navigatePage('news')">
-                    资讯
-                </button>
-
-                <button class="nav-item" onclick="navigatePage('research')">
-                    AI研究
-                </button>
-
-                <button class="nav-item" onclick="navigatePage('trade')">
-                    交易
-                </button>
-
-                <button class="nav-item" onclick="navigatePage('tools')">
-                    工具
-                </button>
-
-                <button class="nav-item" onclick="navigatePage('document')">
-                    学习文档
-                </button>
-
-            </nav>
-
-
-            <div class="header-right">
-
-                <button class="ai-top-button" onclick="navigatePage('research')">
-
-                    <span>✦</span>
-
-                    AI 投研助手
-
-                </button>
-
-
-                <div class="global-search">
-
-                    <span class="search-icon">
-                        ⌕
-                    </span>
-
-                    <input id="searchInput" autocomplete="off" placeholder="搜索股票 / 代码">
-
-                    <button id="searchBtn">
-                        查询
-                    </button>
-
-                    <div id="searchDropdown" class="search-dropdown">
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </header>
-
-
-
-    <!-- =========================================================
-     主体
-========================================================= -->
-
+    <!-- ========= 主体 ========= -->
     <main class="stock-detail-page">
-
-
-        <!-- =====================================================
-         返回
-    ====================================================== -->
-
         <div class="detail-back">
 
-            <button onclick="goBackStock()">
+            <button onclick="navigatePage('stock')">
                 ← 股票列表
             </button>
 
@@ -140,8 +30,6 @@
             <span>股票详情</span>
 
         </div>
-
-
 
         <!-- =====================================================
          股票头部
@@ -1740,25 +1628,17 @@
 
                 </div>
 
-
                 <button onclick="navigatePage('research')">
-
                     ✦ 开始 AI 深度研究
-
                 </button>
-
             </div>
-
         </section>
-
-
-
     </main>
 
 
 
     <script src="../js/navigation.js"></script>
-    <script src="../js/stock_detail.js"></script>
+    <script src="../js/stock/stock_detail.js"></script>
 
     <script>
 
@@ -1817,6 +1697,18 @@
 
         renderStockScore();
 
+    </script>
+
+    <script src="../js/navigation.js"></script>
+
+    <!-- 公共组件加载器 -->
+    <script src="../js/components.js"></script>
+
+    <!-- 加载公共 Header -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            loadComponent("#site-header", "../components/header.html", "stock");
+        });
     </script>
 
 

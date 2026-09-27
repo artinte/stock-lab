@@ -37,10 +37,10 @@ async def lifespan(app: FastAPI):
         # 股票 / Crypto 数据服务
         # ====================================================
 
-        app_state.data = DataManager("yinhe")
-        app_state.data.start()
+        app_state.data_manager = DataManager("yinhe")
+        app_state.data_manager.start()
 
-        app_state.financial_service = StockFinancialService(app_state.data)
+        app_state.financial_service = StockFinancialService(app_state.data_manager)
 
         print("✅ 股票 / Crypto 数据服务启动成功")
 
@@ -48,7 +48,7 @@ async def lifespan(app: FastAPI):
         # 行业行情服务
         # ====================================================
 
-        app_state.industry_performance_service = IndustryPerformanceService(app_state.data)
+        app_state.industry_performance_service = IndustryPerformanceService(app_state.data_manager)
 
         print("✅ 行业行情服务启动成功")
 
@@ -89,13 +89,13 @@ async def lifespan(app: FastAPI):
         # 数据服务
         # ====================================================
 
-        if app_state.data is not None:
+        if app_state.data_manager is not None:
             try:
-                app_state.data.stop()
+                app_state.data_manager.stop()
             except Exception as exc:
                 print(f"⚠️ 数据服务关闭失败：{exc}")
             finally:
-                app_state.data = None
+                app_state.data_manager = None
 
         app_state.financial_service = None
 

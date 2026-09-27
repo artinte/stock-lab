@@ -3,7 +3,7 @@ from __future__ import annotations
 from fastapi import APIRouter
 
 from infra.service.app_state import (
-    data,
+    data_manager,
     youtube_service,
 )
 
@@ -24,7 +24,7 @@ def health():
         "success": True,
         "status": "ok",
         "services": {
-            "data": data is not None,
+            "data": data_manager is not None,
             "youtube": youtube_service is not None,
         },
     }

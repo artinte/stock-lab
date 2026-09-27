@@ -7,7 +7,7 @@ from core.models.industry import Industry
 行业信息测试。
 
 运行：
-python -m tests.gateways.test_industry
+python -m tests.infra.gateways.stock.test_industry
 """
 
 
@@ -18,7 +18,7 @@ def run_industry_test(
     print(f"【行业信息】{symbol}")
 
     try:
-        industry: Industry | None = manager.get_industry_category(symbol)
+        industry: Industry | None = get_industry_category(symbol)
 
         if industry is None:
             print("❌ 未获取到行业信息")

@@ -11,7 +11,7 @@ from infra.service.youtube_service import YouTubeService
 # Runtime Services
 # ============================================================
 
-data: DataManager | None = None
+data_manager: DataManager | None = None
 
 financial_service: StockFinancialService | None = None
 
@@ -30,10 +30,10 @@ def require_data() -> DataManager:
     获取已经启动的数据服务。
     """
 
-    if data is None:
+    if data_manager is None:
         raise RuntimeError("数据源尚未启动")
 
-    return data
+    return data_manager
 
 
 def require_financial_service() -> StockFinancialService:

@@ -9,6 +9,7 @@ from infra.service.app_state import (
     require_data,
     require_financial_service,
 )
+from utils.stock_industry_classification import get_stock_industry_category
 
 
 router = APIRouter(
@@ -112,12 +113,9 @@ def get_stock(symbol: str):
 @router.get("/industry_category/{symbol}")
 def get_industry_category(symbol: str):
     """获取股票行业分类。"""
-
-    data = require_data()
-
     try:
-        result = data.stock.get_industry_category(symbol)
-
+        result = get_stock_industry_category(symbol)
+        print(result)
         if result is None:
             return failure(symbol)
 

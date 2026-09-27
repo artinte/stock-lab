@@ -152,10 +152,10 @@ async function loadIndustryCategory() {
         setText(
             "stockIndustry",
             [
-                industry.l1,
-                industry.l2,
-                industry.l3,
-                industry.l4
+                industry.level_1,
+                industry.level_2,
+                industry.level_3,
+                industry.level_4
             ]
                 .filter(Boolean)
                 .join(" - ") || "未知行业"
@@ -2918,3 +2918,4 @@ function scrollToAI() {
     }
 
 }
+
