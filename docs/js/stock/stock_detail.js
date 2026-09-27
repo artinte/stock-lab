@@ -527,7 +527,7 @@ async function loadKline(
         }
 
         const data =
-            result.data?.data ?? [];
+            result.data ?? [];
 
         if (!data.length) {
 

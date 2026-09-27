@@ -479,18 +479,13 @@ function searchSymbol() {
 ========================================================= */
 
 async function loadKline() {
-
     if (!symbol) {
-
         showStatus(
             "未指定股票代码"
         );
-
         hideLoading();
-
         return;
     }
-
 
     showLoading();
 
@@ -502,32 +497,14 @@ async function loadKline() {
     const params =
         new URLSearchParams();
 
+    params.set("interval", currentInterval);
+    params.set("limit", currentLimit);
 
-    /* interval */
-
-    params.set(
-        "interval",
-        currentInterval
-    );
-
-
-    /* limit */
-
-    params.set(
-        "limit",
-        currentLimit
-    );
-
-
-    /* start_time */
-
-    const startTime =
-        document
-            .getElementById("startTime")
-            .value;
+    const startTime = document
+        .getElementById("startTime")
+        .value;
 
     if (startTime) {
-
         params.set(
             "start_time",
             toISOStringWithoutTimezone(
@@ -537,16 +514,12 @@ async function loadKline() {
 
     }
 
-
-    /* end_time */
-
     const endTime =
         document
             .getElementById("endTime")
             .value;
 
     if (endTime) {
-
         params.set(
             "end_time",
             toISOStringWithoutTimezone(
@@ -556,11 +529,9 @@ async function loadKline() {
 
     }
 
-
     const url =
         `/api/kline/${encodeURIComponent(symbol)}` +
         `?${params.toString()}`;
-
 
     console.log(
         `📊 请求K线：${url}`
@@ -568,64 +539,29 @@ async function loadKline() {
 
 
     try {
-
-        const response =
-            await fetch(url);
-
-
+        const response = await fetch(url);
         if (!response.ok) {
-
             throw new Error(
                 `HTTP ${response.status}`
             );
-
         }
-
 
         const result =
             await response.json();
 
-
         if (!result.success) {
-
             throw new Error(
                 result.message ||
                 "K线获取失败"
             );
-
         }
 
-
-        /*
-         * API:
-         *
-         * {
-         *     success: true,
-         *     symbol: "...",
-         *     data: {
-         *         interval: "1d",
-         *         start_time: "...",
-         *         end_time: "...",
-         *         data: [...]
-         *     }
-         * }
-         */
-
-        const payload =
-            result.data || {};
-
-        const rows =
-            payload.data || [];
-
-
+        const rows = result.data || [];
         if (!rows.length) {
-
             throw new Error(
                 "暂无K线数据"
             );
-
         }
-
 
         klineData =
             normalizeKlineData(rows);

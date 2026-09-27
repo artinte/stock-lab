@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import date
 from typing import Optional
 
+from common.constants import Interval
 from common.enums.quote_level import QuoteLevel
 
 from core.models.equity_structure import EquityStructure
@@ -109,12 +110,15 @@ class StockManager:
     def get_kline(
         self,
         symbol: str,
-        interval,
+        interval: Interval = Interval.DAY_1,
         start_time=None,
         end_time=None,
         limit: int = 1000,
     ):
         """获取股票 K 线。"""
+
+        if isinstance(interval, str):
+            interval = Interval(interval)
 
         return self.gateway.fetch_kline(
             symbol=symbol,
@@ -127,12 +131,15 @@ class StockManager:
     def get_klines(
         self,
         symbols: list[str],
-        interval,
+        interval: Interval = Interval.DAY_1,
         start_time=None,
         end_time=None,
         limit: int = 1000,
     ):
         """批量获取股票 K 线。"""
+
+        if isinstance(interval, str):
+            interval = Interval(interval)
 
         return self.gateway.fetch_klines(
             symbols=symbols,
