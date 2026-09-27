@@ -49,14 +49,14 @@ class StockManager:
         symbol: str,
     ) -> BasicInfo:
         """获取股票基础信息。"""
-        return self.gateway.fetch_stock(symbol)
+        return self.gateway.fetch_basic_info(symbol)
 
     def get_basic_infos(
         self,
         symbols: list[str],
     ) -> list[BasicInfo]:
         """批量获取股票基础信息。"""
-        return self.gateway.fetch_stocks(symbols)
+        return self.gateway.fetch_basic_infos(symbols)
 
     def get_equity_structure(
         self,
@@ -134,26 +134,8 @@ class StockManager:
     ):
         """批量获取股票 K 线。"""
 
-        return self.gateway.fetch_kline(
+        return self.gateway.fetch_klines(
             symbols=symbols,
-            interval=interval,
-            start_time=start_time,
-            end_time=end_time,
-            limit=limit,
-        )
-
-    def get_klines(
-        self,
-        symbols: list[str],
-        interval,
-        start_time=None,
-        end_time=None,
-        limit: int = 1000,
-    ):
-        """批量获取股票 K 线。"""
-
-        return self.gateway.fetch_kline(
-            symbol=symbols,
             interval=interval,
             start_time=start_time,
             end_time=end_time,

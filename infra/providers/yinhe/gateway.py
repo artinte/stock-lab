@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import datetime
+import linecache
 import os
 import traceback
 from typing import Any, Optional
@@ -12,13 +13,14 @@ import tgw
 
 from common.enums.quote_level import QuoteLevel
 from core.models.stock.basic_info import BasicInfo
+from infra.cache.kline_cache import KlineCache
 from infra.gateways.stock_data import StockDataGateway
 from common.constants import Interval, TEN_THOUSAND
 from core.models.financial.financial import IncomeStatement
 from core.models.financial.financial import CashFlow
 from core.models.financial.financial import BalanceSheet
 from core.models.financial.financial import Financial
-from core.models.kline import Kline
+from core.models.stock.kline import Kline
 from core.models.valuation import Valuation
 from core.models.quote import Quote
 from infra.providers.yinhe.equity_structure import YinheEquityStructure
@@ -159,10 +161,11 @@ class YinheGateway(StockDataGateway):
         # 这些组件并不是独立的数据源，
         # 而是 YinheGateway 内部针对不同业务能力的拆分。
         # ==========================================================
+        self.cache = KlineCache("data/kline")
 
         self.stock = YinheStock(self)
 
-        self.kline = YinheKline(self)
+        self.kline = YinheKline(self, self.cache)
 
         self.equity_structure = YinheEquityStructure(self)
 
@@ -282,7 +285,7 @@ class YinheGateway(StockDataGateway):
         """
         return self._started
 
-    def fetch_stock(
+    def fetch_basic_info(
         self,
         symbol: str,
     ) -> BasicInfo:
@@ -296,16 +299,16 @@ class YinheGateway(StockDataGateway):
                 "name": "..."
             }
         """
-        return self.stock.fetch_stock(symbol)
+        return self.stock.fetch_basic_info(symbol)
 
-    def fetch_stocks(
+    def fetch_basic_infos(
         self,
         symbols: list[str],
     ) -> list[BasicInfo]:
         """
         批量获取股票基础信息。
         """
-        return self.stock.fetch_stocks(symbols)
+        return self.stock.fetch_basic_infos(symbols)
 
     def fetch_kline(
         self,
@@ -328,13 +331,90 @@ class YinheGateway(StockDataGateway):
             end_time = datetime.datetime.now()
 
         if start_time is None:
-            if interval == "1d":
-                start_time = end_time - datetime.timedelta(days=limit * 2)
-            elif interval == "1w":
-                start_time = end_time - datetime.timedelta(weeks=limit * 2)
-            elif interval == "1M":
-                start_time = end_time - datetime.timedelta(days=limit * 31 * 2)
-        return self.kline.fetch_kline(symbol, interval, start_time, end_time, limit)
+            start_time = self._get_default_start_time(
+                interval=interval,
+                end_time=end_time,
+                limit=limit,
+            )
+
+        return self.kline.fetch_kline(
+            symbol=symbol,
+            interval=interval,
+            start_time=start_time,
+            end_time=end_time,
+            limit=limit,
+        )
+
+    def fetch_klines(
+        self,
+        symbols: list[str],
+        interval: Interval = Interval.DAY_1,
+        start_time: Optional[datetime.datetime] = None,
+        end_time: Optional[datetime.datetime] = None,
+        limit: int = 1000,
+    ) -> dict[str, list[Kline]]:
+        """
+        批量获取历史 K 线。
+
+        返回：
+            {
+                "600519.SH": [Kline, Kline, ...],
+                "000001.SZ": [Kline, Kline, ...],
+            }
+        """
+        if end_time is None:
+            end_time = datetime.datetime.now()
+
+        if start_time is None:
+            start_time = self._get_default_start_time(
+                interval=interval,
+                end_time=end_time,
+                limit=limit,
+            )
+
+        return self.kline.fetch_klines(
+            symbols=symbols,
+            interval=interval,
+            start_time=start_time,
+            end_time=end_time,
+            limit=limit,
+        )
+
+    def _get_default_start_time(
+        self,
+        interval: Interval,
+        end_time: datetime.datetime,
+        limit: int,
+    ) -> datetime.datetime:
+        """
+        根据 K 线周期计算默认开始时间。
+        """
+
+        if interval == Interval.DAY_1:
+            return end_time - datetime.timedelta(days=limit * 2)
+
+        if interval == Interval.WEEK_1:
+            return end_time - datetime.timedelta(weeks=limit * 2)
+
+        if interval == Interval.MONTH_1:
+            return end_time - datetime.timedelta(days=limit * 31 * 2)
+
+        if interval == Interval.MINUTE_1:
+            return end_time - datetime.timedelta(days=limit)
+
+        if interval == Interval.MINUTE_5:
+            return end_time - datetime.timedelta(days=limit)
+
+        if interval == Interval.MINUTE_15:
+            return end_time - datetime.timedelta(days=limit)
+
+        if interval == Interval.MINUTE_30:
+            return end_time - datetime.timedelta(days=limit)
+
+        if interval == Interval.MINUTE_60:
+            return end_time - datetime.timedelta(days=limit)
+
+        raise ValueError(f"不支持的 K 线周期：{interval}")
 
     def fetch_equity_structure(
         self,

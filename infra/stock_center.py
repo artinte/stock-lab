@@ -15,7 +15,7 @@ from core.models.announcement import Announcement
 from core.models.event import Event
 
 from core.models.quote import Quote
-from core.models.kline import Kline
+from core.models.stock.kline import Kline
 from core.models.valuation import Valuation
 from core.models.financial.financial import Financial
 

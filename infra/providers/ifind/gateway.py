@@ -20,7 +20,7 @@ from core.models.financial.balance_sheet import BalanceSheet
 from core.models.financial.cash_flow import CashFlow
 from core.models.financial.financial import Financial
 from core.models.financial.income_statement import IncomeStatement
-from core.models.kline import Kline
+from core.models.stock.kline import Kline
 from core.models.quote import Quote
 from core.models.stock.basic_info import BasicInfo
 from infra.base import StockDataGateway

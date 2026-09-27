@@ -7,7 +7,7 @@ import requests
 
 from infra.gateways.stock_data import StockDataGateway
 from common.constants import Interval
-from core.models.kline import Kline
+from core.models.stock.kline import Kline
 from core.models.quote import Quote
 from core.models.valuation import Valuation
 
@@ -203,7 +203,7 @@ class TencentGateway(StockDataGateway):
     # 股票基础信息
     # ==========================================================
 
-    def fetch_stock(
+    def fetch_basic_info(
         self,
         symbol: str,
     ):
@@ -1540,7 +1540,7 @@ def main() -> None:
         print()
         print(f"[3/6] 股票基础信息：{symbol}")
 
-        stock = gateway.fetch_stock(symbol)
+        stock = gateway.fetch_basic_info(symbol)
 
         print(stock)
 

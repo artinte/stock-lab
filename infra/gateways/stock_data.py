@@ -13,7 +13,7 @@ from core.models.financial.balance_sheet import BalanceSheet
 from core.models.financial.cash_flow import CashFlow
 from core.models.financial.financial import Financial
 from core.models.financial.income_statement import IncomeStatement
-from core.models.kline import Kline
+from core.models.stock.kline import Kline
 from core.models.quote import Quote
 from core.models.stock.basic_info import BasicInfo
 
@@ -52,14 +52,14 @@ class StockDataGateway(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def fetch_stock(
+    def fetch_basic_info(
         self,
         symbol: str,
     ) -> BasicInfo:
         raise NotImplementedError
 
     @abstractmethod
-    def fetch_stocks(
+    def fetch_basic_infos(
         self,
         symbols: list[str],
     ) -> list[BasicInfo]:
@@ -73,7 +73,18 @@ class StockDataGateway(ABC):
         start_time: Optional[datetime] = None,
         end_time: Optional[datetime] = None,
         limit: int = 1000,
-    ) -> Kline:
+    ) -> list[Kline]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def fetch_klines(
+        self,
+        symbols: list[str],
+        interval: Interval = Interval.DAY_1,
+        start_time: Optional[datetime] = None,
+        end_time: Optional[datetime] = None,
+        limit: int = 1000,
+    ) -> dict[str, list[Kline]]:
         raise NotImplementedError
 
     @abstractmethod

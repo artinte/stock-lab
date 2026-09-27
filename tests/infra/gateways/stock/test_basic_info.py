@@ -19,13 +19,10 @@ def run_stock_test(
 
     try:
         stock: BasicInfo | None = manager.stock.get_basic_info(symbol)
-
         if stock is None:
             print("❌ 未获取到股票信息")
             return
-
         stock.display()
-
     except NotImplementedError:
         print("⚠️ 当前数据源暂未实现股票基础信息")
     except Exception as exc:
@@ -37,17 +34,13 @@ def run_stocks_test(
     symbols: list[str],
 ) -> None:
     print(f"【批量股票基础信息】{symbols}")
-
     try:
         stocks: list[BasicInfo] = manager.stock.get_basic_infos(symbols)
-
         if not stocks:
             print("❌ 未获取到股票信息")
             return
-
         for stock in stocks:
             stock.display()
-
     except NotImplementedError:
         print("⚠️ 当前数据源暂未实现批量股票基础信息")
     except Exception as exc:
@@ -56,9 +49,7 @@ def run_stocks_test(
 
 def main() -> None:
     provider_name = "yinhe"
-
     manager = DataManager(provider_name)
-
     try:
         manager.start()
 

@@ -29,17 +29,17 @@ class YinheStock:
             deserializer=BasicInfo.from_dict,
         )
 
-    def fetch_stock(
+    def fetch_basic_info(
         self,
         symbol: str,
     ) -> Optional[BasicInfo]:
         """
         获取单只股票基础信息。
         """
-        stocks = self.fetch_stocks([symbol])
+        stocks = self.fetch_basic_infos([symbol])
         return stocks[0] if stocks else None
 
-    def fetch_stocks(
+    def fetch_basic_infos(
         self,
         symbols: list[str],
     ) -> list[BasicInfo]:

@@ -9,7 +9,7 @@ from common.constants import Interval
 from infra.gateways.stock_data import StockDataGateway
 from infra.registry import GatewayRegistry
 from core.models.financial.financial import Financial
-from core.models.kline import Kline
+from core.models.stock.kline import Kline
 from core.models.quote import Quote
 from core.models.stock.basic_info import BasicInfo
 from core.models.valuation import Valuation
@@ -96,7 +96,7 @@ class AkShareGateway(StockDataGateway):
     # 股票基础信息
     # ==========================================================
 
-    def fetch_stock(
+    def fetch_basic_info(
         self,
         symbol: str,
     ) -> Optional[BasicInfo]:
@@ -901,7 +901,7 @@ def main() -> None:
         print()
         print(f"[3] 股票信息: {symbol}")
 
-        stock = gateway.fetch_stock(symbol)
+        stock = gateway.fetch_basic_info(symbol)
 
         print(stock)
 
