@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
-
 """
 行业行情表现服务测试。
 
 测试内容：
     - 行业成分股
+    - 
     - 每日行业行情
     - 等权行业行情
     - 市值加权行业行情
@@ -18,9 +17,7 @@
 """
 
 from __future__ import annotations
-
 from datetime import date, timedelta
-
 from infra.data_manager import DataManager
 from infra.service.industry_performance import IndustryPerformanceService
 
@@ -51,6 +48,35 @@ def run_industry_stocks_test(
 
     except Exception as exc:
         print(f"❌ 获取行业成分股失败：{exc}")
+
+
+def run_industry_parent_test(
+    service: IndustryPerformanceService,
+    parent_category: str,
+    child_level: int,
+) -> None:
+    """测试父行业与子行业关系。"""
+
+    print(f"【行业父子关系】" f"{parent_category} " f"→ level={child_level}")
+
+    try:
+
+        stocks = service.get_industry_stocks(
+            parent_category,
+            level=child_level - 1,
+        )
+
+        print(f"父行业成分股数量: {len(stocks)}")
+
+        if not stocks:
+            print("❌ 未获取到父行业成分股")
+            return
+
+        print("✅ 父行业成分股获取成功")
+
+    except Exception as exc:
+
+        print(f"❌ 父行业测试失败：{exc}")
 
 
 def run_daily_performance_test(
@@ -205,6 +231,12 @@ def test_industry_performance(
         service,
         category="半导体",
         level=2,
+    )
+
+    run_industry_parent_test(
+        service,
+        parent_category="半导体",
+        level=3,
     )
 
     # ---------------------------------------------------------

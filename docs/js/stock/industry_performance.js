@@ -704,16 +704,8 @@ function renderError(message) {
 /* ===============================================================
    Filter Data
    =============================================================== */
-
 function getFilteredData() {
-
-    let list =
-        state.data.industries
-            .filter(
-                item =>
-                    item.level ===
-                    Number(state.level)
-            );
+    let list = state.data.industries.filter(item => item.level === Number(state.level));
 
 
     /*
@@ -808,53 +800,36 @@ function getFilteredData() {
    =============================================================== */
 
 function renderParentOptions() {
-
-    const targetLevel =
-        Number(state.level);
-
-
-    /*
-     * 一级行业没有父行业。
-     */
-
+    const targetLevel = Number(state.level);
+    // 一级行业没有父行业。
     if (
         targetLevel <= 1
     ) {
-
         parentSelect.innerHTML = `
-
             <option value="all">
                 全部行业
             </option>
 
         `;
 
-
         parentSelect.disabled =
             true;
-
 
         state.parent =
             "all";
 
-
         return;
-
     }
 
 
     parentSelect.disabled =
         true;
 
-
     parentSelect.innerHTML = `
-
         <option value="all">
             加载中...
         </option>
-
     `;
-
 
     const parentLevel =
         targetLevel - 1;
@@ -905,31 +880,19 @@ function renderParentOptions() {
                     `;
 
 
-                    parentSelect.value =
-                        "all";
-
-
-                    state.parent =
-                        "all";
-
-
+                    parentSelect.value = "all";
+                    state.parent = "all";
                     return;
-
                 }
 
 
-                /*
-                 * 生成父级行业选项。
-                 */
-
+                // 生成父级行业选项。
                 parentSelect.innerHTML = `
-
                     <option value="all">
                         全部行业
                     </option>
 
                     ${parents.map(item => `
-
                         <option
                             value="${escapeHtml(item.code)}"
                         >
@@ -937,43 +900,27 @@ function renderParentOptions() {
                         </option>
 
                     `).join("")}
-
                 `;
 
+                // 默认选择信息技术。
+                // 如果用户已经选择了其他行业，则保留原来的选择。
+                const bank = parents.find(
+                    item => item.name === "信息技术"
+                );
 
-                /*
-                 * 恢复之前选择的父级行业。
-                 */
-
-                const exists =
-                    [...parentSelect.options]
-                        .some(
-                            option =>
-                                option.value ===
-                                state.parent
-                        );
-
-
+                const exists = [...parentSelect.options]
+                    .some(option => option.value === state.parent);
                 if (exists) {
-
-                    parentSelect.value =
-                        state.parent;
-
+                    parentSelect.value = state.parent;
+                } else if (bank) {
+                    parentSelect.value = bank.code
+                    state.parent = bank.code
                 } else {
-
-                    parentSelect.value =
-                        "all";
-
-
-                    state.parent =
-                        "all";
-
+                    parentSelect.value = "all";
+                    state.parent = "all";
                 }
-
             }
-        )
-
-        .catch(
+        ).catch(
             error => {
 
                 console.error(
