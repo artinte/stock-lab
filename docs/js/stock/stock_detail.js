@@ -1313,27 +1313,21 @@ function renderFinancial(data) {
 ========================================================= */
 
 async function loadValuation() {
-
     try {
-
         const result = await requestAPI(
             `/api/valuation/${encodeURIComponent(currentSymbol)}`
         );
 
-
         if (!result || result.success === false) {
-
             throw new Error(
                 result?.message || "估值数据不可用"
             );
-
         }
-
+        console.log("估值数据:", result);
 
         const data =
             result.data ??
             result;
-
 
         renderValuation(data);
 
@@ -1360,14 +1354,20 @@ function renderValuation(data) {
     if (!data) {
         return;
     }
+
+
+    // ============================================================
+    // 核心估值指标
+    // ============================================================
+
     setText(
         "peTtm",
-        formatNumber(data.peTtm)
+        formatNumber(data.pe_ttm)
     );
 
     setText(
         "summaryPE",
-        formatMultiple(data.peTtm)
+        formatMultiple(data.pe_ttm)
     );
 
     setText(
@@ -1381,9 +1381,13 @@ function renderValuation(data) {
     );
 
 
+    // ============================================================
+    // 估值详情
+    // ============================================================
+
     setText(
         "valuationPE",
-        formatMultiple(data.peTtm)
+        formatMultiple(data.pe_ttm)
     );
 
     setText(
@@ -1393,7 +1397,7 @@ function renderValuation(data) {
 
     setText(
         "valuationPS",
-        formatMultiple(data.ps)
+        formatMultiple(data.ps_ttm)
     );
 
     setText(
@@ -1401,6 +1405,10 @@ function renderValuation(data) {
         formatPercent(data.dividend_yield)
     );
 
+
+    // ============================================================
+    // 估值说明
+    // ============================================================
 
     setText(
         "valuationPEDesc",
@@ -1434,6 +1442,10 @@ function renderValuation(data) {
     );
 
 
+    // ============================================================
+    // 历史估值区间
+    // ============================================================
+
     setText(
         "valuationLow",
         formatMultiple(data.historical_low)
@@ -1455,14 +1467,15 @@ function renderValuation(data) {
     );
 
 
+    // ============================================================
+    // 估值说明
+    // ============================================================
+
     setText(
         "valuationNote",
-        data.description ||
-        "暂无估值分析。"
+        data.description || "暂无估值分析。"
     );
-
 }
-
 
 
 /* =========================================================

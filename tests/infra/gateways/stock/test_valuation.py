@@ -12,7 +12,7 @@ python -m tests.analysis.test_valuation
 
 
 def run_valuation_test(
-    data: DataManager,
+    manager: DataManager,
     symbol: str,
 ) -> None:
     """使用已有 DataManager 获取原始数据，并测试估值分析。"""
@@ -20,12 +20,10 @@ def run_valuation_test(
     print(f"【股票估值分析】{symbol}")
 
     try:
-        valuation = data.get_valuation(symbol)
-
+        valuation = manager.stock.get_valuation(symbol)
         if valuation is None:
             print("❌ 未生成估值数据")
             return
-
         print("✅ 估值分析完成")
 
         valuation.display()
