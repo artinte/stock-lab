@@ -2962,7 +2962,7 @@ function updateKlineDetailLink() {
     }
 
     link.href =
-        `/stock/kline.html?symbol=${encodeURIComponent(
+        `kline.html?symbol=${encodeURIComponent(
             currentSymbol
         )}`;
 }
