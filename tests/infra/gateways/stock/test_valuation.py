@@ -7,7 +7,7 @@ from infra.data_manager import DataManager
 股票估值分析测试。
 
 运行：
-python -m tests.analysis.test_valuation
+python -m tests.infra.gateways.stock.test_valuation
 """
 
 

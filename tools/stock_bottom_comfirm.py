@@ -1,16 +1,12 @@
-import random
-import pandas
-
-from matplotlib import pyplot as plt
 from datetime import datetime, timedelta
-from dotenv import dotenv_values
 
+import pandas
+from matplotlib import pyplot as plt
+from common.constants import Interval
 from infra.data_manager import DataManager
-from infra.pe_type import PEType
-from models.constants import Interval
-from tools.watchlists import Watchlists
-from utils.download_csindex import get_csindex_industry_data
-
+from tools import watchlists
+from tools.watchlists import WATCHLISTS
+from utils.stock_industry_classification import get_stock_industry_category
 
 """
 底部确认：从“接飞刀”到“顺风车”的逻辑重构
@@ -114,138 +110,82 @@ def plot_stock_analysis(df, title_suffix=""):
 
 
 if __name__ == "__main__":
-    config = dotenv_values("private_config.txt")
-    dm = DataManager(provider_name="yinhe")
-    
-    # 加载行业
-    df_industry = get_csindex_industry_data()
+    provider_name = "yinhe"
+    manager = DataManager(provider_name)
+    try:
+        manager.start()
 
-    items = list(Watchlists.items())
-    # random.shuffle(items)
-    # items = list({"中联重科": "000157"}.items())
+        for code in watchlists.all_symbols():
+            basic_info = manager.stock.get_basic_info(code)
+            print(f"正在分析 {code} ({basic_info.name}) 的数据...")
+            # 1. 获取 K 线数据
+            klines = manager.stock.get_kline(
+                code,
+                Interval.DAY_1,
+                datetime.now() - timedelta(days=180),
+                datetime.now(),
+            )
 
-    if dm.start(config):
+            # 2. 特征工程 & 查杀 NaN
+            df = pandas.DataFrame(
+                [
+                    {"o": k.open, "h": k.high, "l": k.low, "c": k.close, "v": k.volume}
+                    for k in klines
+                ]
+            )
+
+            # 【新增】本地快速检索行业
+            industry_info = "未知行业"
+            ic = get_stock_industry_category(code)
+            industry_info = f"{ic.level_1} > {ic.level_2} > {ic.level_3} > {ic.level_4}"
+
+            df["rsi"] = calculate_rsi(df["c"], 14)
+            df["ma20"] = df["c"].rolling(window=20).mean()
+
+            # 1. 跌幅背景：半年内（120天）最高点到最低点跌幅 > 30%
+            # 计算滚动最高价
+            df["h_6m"] = df["c"].rolling(window=120, min_periods=1).max()
+            # 计算相对于最高点的跌幅 (最高 - 当前) / 当前 >= 30%
+            df["max_drawdown_check"] = (df["h_6m"] - df["c"]) / df["c"] >= 0.30
+            # 状态记忆：过去 60 天内只要达标过一次 30% 跌幅，背景就成立
+            df["had_deep_drop"] = (
+                df["max_drawdown_check"].rolling(window=60).max().astype(bool)
+            )
+
+            # 2. 探底素材：今天是否跌破 40
+            df["today_is_below_40"] = df["rsi"] < 40
+
+            # 3. 状态延伸：过去 30 天内，是否有任何一天跌破过 40
+            df["in_bottom_area"] = (
+                df["today_is_below_40"].rolling(window=30).max().astype(bool)
+            )
+
+            # 4. 顺风车条件：当前站上 20 日均线
+            df["is_above_ma20"] = df["c"] > df["ma20"]
+
+            # 5. 最终组合逻辑 (严格执行你的 RSI < 50 要求)
+            df["buy_signal"] = (
+                df["had_deep_drop"]  # 条件 A: 半年内跌得够深 (30%)
+                & df["in_bottom_area"]  # 条件 B: 近期 RSI 探过底
+                & df["is_above_ma20"]  # 条件 C: 今天站上 20 日线
+                & (df["rsi"] < 50)  # 条件 D: 动能还未过热 (重点！)
+                & (df["rsi"] > 40)  # 条件 E: 动能已在回暖
+            )
+
+            # 6. 获取 PE 数据
+            valuation = manager.stock.get_valuation(code)
+            if valuation and valuation.pe_ttm:
+                print(
+                    f"{code} ({basic_info.name}) 的当前 PE (TTM) 为: {valuation.pe_ttm}"
+                )
+
+                if  valuation.pe_ttm < 50:
+                    plot_stock_analysis(df, f"{basic_info.name} ({industry_info})")
+            else:
+                print("未获取到 Valuation 数据")
+    finally:
         try:
-            for _, code in items:
-                # 1. 获取 10 年数据
-                klines = dm.get_kline(
-                    code,
-                    Interval.DAY_1,
-                    datetime.now() - timedelta(days=180),
-                    datetime.now(),
-                )
-
-                # 2. 特征工程 & 查杀 NaN
-                df = pandas.DataFrame(
-                    [
-                        {"o": k.open, "h": k.high, "l": k.low, "c": k.close, "v": k.volume}
-                        for k in klines
-                    ]
-                )
-                
-                security_name = dm.get_stock_name(code)
-                print(f"正在分析 {code} ({security_name}) 的数据...")
-                
-                # 【新增】本地快速检索行业
-                short_code = code.split(".")[0].zfill(6)
-                match = df_industry[df_industry["证券代码"].astype(str) == short_code]
-                industry_info = "未知行业"
-                if not match.empty:
-                    # 组合二、三、四级分类，用“ > ”连接
-                    i2 = match["中证二级行业分类简称"].values[0]
-                    i3 = match["中证三级行业分类简称"].values[0]
-                    i4 = match["中证四级行业分类简称"].values[0]
-                    industry_info = f"{i2} > {i3} > {i4}"
-
-                print(df["c"].to_list())
-
-                df["rsi"] = calculate_rsi(df["c"], 14)
-                df["ma20"] = df["c"].rolling(window=20).mean()
-
-                # 1. 跌幅背景：半年内（120天）最高点到最低点跌幅 > 30%
-                # 计算滚动最高价
-                df["h_6m"] = df["c"].rolling(window=120, min_periods=1).max()
-                # 计算相对于最高点的跌幅 (最高 - 当前) / 当前 >= 30%
-                df["max_drawdown_check"] = (df["h_6m"] - df["c"]) / df["c"] >= 0.30
-                # 状态记忆：过去 60 天内只要达标过一次 30% 跌幅，背景就成立
-                df["had_deep_drop"] = (
-                    df["max_drawdown_check"].rolling(window=60).max().astype(bool)
-                )
-
-                # 2. 探底素材：今天是否跌破 40
-                df["today_is_below_40"] = df["rsi"] < 40
-
-                # 3. 状态延伸：过去 30 天内，是否有任何一天跌破过 40
-                df["in_bottom_area"] = (
-                    df["today_is_below_40"].rolling(window=30).max().astype(bool)
-                )
-
-                # 4. 顺风车条件：当前站上 20 日均线
-                df["is_above_ma20"] = df["c"] > df["ma20"]
-
-                # 5. 最终组合逻辑 (严格执行你的 RSI < 50 要求)
-                df["buy_signal"] = (
-                    df["had_deep_drop"]  # 条件 A: 半年内跌得够深 (30%)
-                    & df["in_bottom_area"]  # 条件 B: 近期 RSI 探过底
-                    & df["is_above_ma20"]  # 条件 C: 今天站上 20 日线
-                    & (df["rsi"] < 50)  # 条件 D: 动能还未过热 (重点！)
-                    & (df["rsi"] > 40)  # 条件 E: 动能已在回暖
-                )
-
-                # 6. 获取 PE 数据
-                pe_value = dm.get_pe(code, pe_type=PEType.TTM)
-                print(f"{code} ({security_name}) 的当前 PE (TTM) 为: {pe_value}")
-                
-                if pe_value < 50:
-                    plot_stock_analysis(df, f"{security_name} ({industry_info})")
-        finally:
-            dm.stop()
-    else:
-        # 如果没有登录成功，就用假数据演示一下
-        print("登录失败，使用假数据演示。")
-        # 60 天的数据
-        close_prices = [
-            29.64,
-            29.48,
-            29.58,
-            29.82,
-            28.89,
-            28.93,
-            29.45,
-            30.67,
-            30.59,
-            30.51,
-            31.53,
-            31.15,
-            31.66,
-            30.68,
-            32.02,
-            34.0,
-            33.55,
-            33.39,
-            30.69,
-            31.0,
-            30.4,
-            31.12,
-            30.18,
-            31.63,
-            31.02,
-            30.56,
-            32.27,
-            31.76,
-            32.02,
-            32.49,
-            32.55,
-            32.19,
-            31.13,
-            28.73,
-            28.43,
-            28.93,
-            28.88,
-        ]
-
-        dates = pandas.date_range(end=datetime.now(), periods=len(close_prices))
-        df = pandas.DataFrame({"c": close_prices}, index=dates)
-        df["rsi"] = calculate_rsi(df["c"], 14)
-        print(df[["c", "rsi"]].to_string())
-        plot_df = df.dropna(subset=["rsi"])
+            manager.stop()
+            print("✅ 数据源已关闭")
+        except Exception as exc:
+            print(f"⚠️ 关闭数据源失败：{exc}")

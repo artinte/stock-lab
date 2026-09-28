@@ -9,6 +9,7 @@ from common.enums.quote_level import QuoteLevel
 from core.models.equity_structure import EquityStructure
 from core.models.financial.income_statement import IncomeStatement
 from core.models.financial.financial import Financial
+from core.models.stock.kline import Kline
 from core.models.valuation import Valuation
 from core.models.stock.basic_info import BasicInfo
 from core.models.quote import Quote
@@ -114,7 +115,7 @@ class StockManager:
         start_time=None,
         end_time=None,
         limit: int = 1000,
-    ):
+    ) -> list[Kline]:
         """获取股票 K 线。"""
 
         if isinstance(interval, str):
@@ -225,10 +226,7 @@ class StockManager:
             end_quarter,
         )
 
-    # --------------------------------------------------
     # 估值
-    # --------------------------------------------------
-
     def get_valuation(
         self,
         symbol: str,
