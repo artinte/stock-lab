@@ -418,13 +418,13 @@ class YinheGateway(StockDataGateway):
 
     def fetch_equity_structure(
         self,
-        symbol,
+        symbol: str,
     ):
         return self.equity_structure.fetch_equity_structure(symbol)
 
     def fetch_equity_structures(
         self,
-        symbols,
+        symbols: list[str],
     ):
         return self.equity_structure.fetch_equity_structures(symbols)
 

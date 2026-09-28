@@ -271,9 +271,8 @@ class YinheEquityStructure:
                 equity_structure = self.gateway.info_data.get_equity_structure(
                     missing_symbols,
                     local_path=self.gateway.local_path,
-                    is_local=True,
+                    is_local=False,
                 )
-
             except Exception as exc:
                 print(f"[银河网关] 获取股票股本结构失败 " f"{missing_symbols}: {exc}")
                 equity_structure = None

@@ -106,10 +106,6 @@ class YinheQuote:
         if not symbols:
             return []
 
-        # =====================================================
-        # 1. 标准化股票代码
-        # =====================================================
-
         normalized_symbols = []
 
         for symbol in symbols:
@@ -124,17 +120,8 @@ class YinheQuote:
         if not normalized_symbols:
             return []
 
-        # =====================================================
-        # 2. 获取当前时间
-        # =====================================================
-
         now = datetime.datetime.now()
-
         start_time = now - pandas.Timedelta(days=30)
-
-        # =====================================================
-        # 3. 一次性批量获取 K 线
-        # =====================================================
 
         try:
             klines = self.gateway.kline.fetch_klines(
@@ -192,13 +179,13 @@ class YinheQuote:
             symbol_klines = kline_map.get(symbol)
 
             if not symbol_klines:
-                # print(f"[银河行情] 无 K 线数据：{symbol}")
+                print(f"[银河行情] 无 K 线数据：{symbol}")
                 continue
 
             equity = equity_map.get(symbol)
             
             if not equity:
-                # print(f"[银河行情] 无股本数据：{symbol}")
+                print(f"[银河行情] 无股本数据：{symbol}")
                 continue
 
             try:
