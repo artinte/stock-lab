@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="../css/global.css">
 
-    <link rel="stylesheet" href="../css/news.css">
+    <link rel="stylesheet" href="../css/news/news.css">
 
     <script src="../js/navigation.js"></script>
 
@@ -20,7 +20,6 @@
 <body>
     <!-- ============= 顶部导航 ============ -->
     <div id="site-header"></div>
-
 
     <!-- =========================================================
      新闻主页面
@@ -313,120 +312,6 @@
 
         </section>
 
-        <!-- =====================================================
-         新闻搜索
-    ====================================================== -->
-
-        <section class="news-search-section">
-
-
-            <div class="section-eyebrow">
-                NEWS SEARCH
-            </div>
-
-
-            <h2>
-                搜索资讯
-            </h2>
-
-
-            <p>
-                搜索新闻标题、正文、公司名称、股票代码或主题关键词。
-            </p>
-
-
-            <div class="news-search-box">
-
-                <span>
-                    ⌕
-                </span>
-
-
-                <input id="newsSearch" type="text" autocomplete="off" placeholder="搜索新闻，例如：半导体、英伟达、贵州茅台、降息、机器人...">
-
-
-                <button id="clearNewsSearch" type="button">
-
-                    清除
-
-                </button>
-
-            </div>
-
-        </section>
-
-
-
-        <!-- =====================================================
-         新闻分类
-    ====================================================== -->
-
-        <section class="news-category-section">
-
-
-            <button class="news-category active" data-category="all">
-
-                全部
-
-            </button>
-
-
-            <button class="news-category" data-category="market">
-
-                市场
-
-            </button>
-
-
-            <button class="news-category" data-category="company">
-
-                公司
-
-            </button>
-
-
-            <button class="news-category" data-category="industry">
-
-                行业
-
-            </button>
-
-
-            <button class="news-category" data-category="policy">
-
-                政策
-
-            </button>
-
-
-            <button class="news-category" data-category="announcement">
-
-                公告
-
-            </button>
-
-
-            <button class="news-category" data-category="global">
-
-                海外
-
-            </button>
-
-
-            <button class="news-category" data-category="technology">
-
-                科技
-
-            </button>
-
-
-            <button class="news-category" data-category="macro">
-
-                宏观
-
-            </button>
-
-        </section>
 
 
 
@@ -434,262 +319,127 @@
          主内容
     ====================================================== -->
 
+
         <section class="news-content">
 
+            <main class="news-main-column">
 
-            <!-- =================================================
-             左侧新闻流
-        ================================================== -->
-
-            <div class="news-main-column">
-
-
-                <div class="news-section-header">
-
-
-                    <div>
-
-                        <div class="section-eyebrow">
-                            LATEST NEWS
-                        </div>
-
-                        <h2>
-                            最新资讯
-                        </h2>
-
-                        <p>
-                            来自多个数据源的实时资讯。
-                        </p>
-
+                <header class="news-page-header">
+                    <div class="news-page-title">
+                        <div class="section-eyebrow">STOCK LAB · NEWS CENTER</div>
+                        <h1>财经资讯</h1>
+                        <p>汇集市场动态、公司公告、行业新闻与全球财经信息。</p>
                     </div>
+                    <div class="news-page-stats">
+                        <span class="news-live-indicator"></span>
+                        <span>资讯聚合</span>
+                    </div>
+                </header>
 
+                <nav class="news-category-nav" id="newsCategoryNav" aria-label="新闻分类">
+                    <button class="news-category-button active" data-category="all" type="button">全部资讯</button>
+                    <button class="news-category-button" data-category="macro" type="button">宏观经济</button>
+                    <button class="news-category-button" data-category="market" type="button">市场行情</button>
+                    <button class="news-category-button" data-category="company" type="button">公司公告</button>
+                    <button class="news-category-button" data-category="industry" type="button">行业动态</button>
+                    <button class="news-category-button" data-category="ai" type="button">AI 与科技</button>
+                    <button class="news-category-button" data-category="global" type="button">全球市场</button>
+                    <button class="news-category-button" data-category="media" type="button">财经媒体</button>
+                </nav>
 
-                    <span id="newsResultCount">
-                        0 条资讯
-                    </span>
-
+                <div class="news-filter-toolbar">
+                    <div class="news-filter-left">
+                        <label class="news-filter-item">
+                            <span>来源</span>
+                            <select id="newsSourceFilter">
+                                <option value="all">全部来源</option>
+                            </select>
+                        </label>
+                        <label class="news-filter-item">
+                            <span>时间</span>
+                            <select id="newsTimeFilter">
+                                <option value="all">全部时间</option>
+                                <option value="1h">最近 1 小时</option>
+                                <option value="24h">最近 24 小时</option>
+                                <option value="3d">最近 3 天</option>
+                                <option value="7d">最近 7 天</option>
+                            </select>
+                        </label>
+                        <label class="news-filter-item">
+                            <span>排序</span>
+                            <select id="newsSortFilter">
+                                <option value="latest">最新发布</option>
+                                <option value="important">重要资讯优先</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="news-filter-right">
+                        <span id="newsResultCount">0 条资讯</span>
+                    </div>
                 </div>
 
+                <section class="news-feed-section" aria-label="新闻列表">
+                    <div id="newsList" class="news-list">
+                        <!-- 新闻由 news.js 动态渲染 -->
+                    </div>
+                    <button id="loadMoreButton" class="load-more-button" type="button" onclick="loadMoreNews()">
+                        加载更多资讯
+                    </button>
+                </section>
 
-
-                <!-- 新闻列表 -->
-
-                <div id="newsList" class="news-list">
-
-                </div>
-
-
-                <!-- 加载更多 -->
-
-                <button id="loadMoreButton" class="load-more-button" onclick="loadMoreNews()">
-
-                    加载更多资讯
-
-                </button>
-
-            </div>
-
-
-
-            <!-- =================================================
-             右侧
-        ================================================== -->
+            </main>
 
             <aside class="news-sidebar">
 
-
-                <!-- =================================================
-                 重要消息
-            ================================================== -->
-
                 <section class="news-side-panel">
-
-
                     <div class="news-side-header">
-
                         <div>
-
-                            <div class="section-eyebrow">
-                                IMPORTANT
-                            </div>
-
-                            <h3>
-                                重要消息
-                            </h3>
-
+                            <div class="section-eyebrow">TOP STORIES</div>
+                            <h3>重要资讯</h3>
                         </div>
-
-
-                        <span class="notification-badge">
-                            18
-                        </span>
-
+                        <span class="notification-badge" id="importantNewsCount">0</span>
                     </div>
-
-
                     <div id="importantNewsList" class="important-news-list">
-
+                        <!-- 重要资讯由 news.js 动态渲染 -->
                     </div>
-
                 </section>
 
-
-
-                <!-- =================================================
-                 我的关注
-            ================================================== -->
-
                 <section class="news-side-panel">
-
-
                     <div class="news-side-header">
-
                         <div>
-
-                            <div class="section-eyebrow">
-                                WATCHLIST
-                            </div>
-
-                            <h3>
-                                关注股票消息
-                            </h3>
-
+                            <div class="section-eyebrow">WATCHLIST</div>
+                            <h3>关注股票</h3>
                         </div>
-
                     </div>
-
-
-                    <div class="watchlist-news-item">
-
-                        <div>
-
-                            <strong>
-                                600519
-                            </strong>
-
-                            <span>
-                                贵州茅台
-                            </span>
-
-                        </div>
-
-                        <b>
-                            3
-                        </b>
-
+                    <div id="watchlistNewsList" class="watchlist-news-list">
+                        <!-- 关注股票消息由 news.js 动态渲染 -->
                     </div>
-
-
-                    <div class="watchlist-news-item">
-
-                        <div>
-
-                            <strong>
-                                688981
-                            </strong>
-
-                            <span>
-                                中芯国际
-                            </span>
-
-                        </div>
-
-                        <b>
-                            5
-                        </b>
-
-                    </div>
-
-
-                    <div class="watchlist-news-item">
-
-                        <div>
-
-                            <strong>
-                                002594
-                            </strong>
-
-                            <span>
-                                比亚迪
-                            </span>
-
-                        </div>
-
-                        <b>
-                            2
-                        </b>
-
-                    </div>
-
-
                 </section>
 
-
-
-                <!-- =================================================
-                 热门主题
-            ================================================== -->
-
                 <section class="news-side-panel">
-
-
                     <div class="news-side-header">
-
                         <div>
-
-                            <div class="section-eyebrow">
-                                HOT TOPICS
-                            </div>
-
-                            <h3>
-                                热门主题
-                            </h3>
-
+                            <div class="section-eyebrow">TRENDING TOPICS</div>
+                            <h3>热门主题</h3>
                         </div>
-
                     </div>
-
-
-                    <div class="topic-list">
-
-                        <button>
-                            半导体
-                            <span>42</span>
-                        </button>
-
-                        <button>
-                            人工智能
-                            <span>38</span>
-                        </button>
-
-                        <button>
-                            商业航天
-                            <span>31</span>
-                        </button>
-
-                        <button>
-                            机器人
-                            <span>27</span>
-                        </button>
-
-                        <button>
-                            新能源
-                            <span>21</span>
-                        </button>
-
-                        <button>
-                            券商
-                            <span>18</span>
-                        </button>
-
+                    <div id="newsTopicList" class="topic-list">
+                        <button type="button" data-topic="半导体"><span>半导体</span><span
+                                class="topic-count">0</span></button>
+                        <button type="button" data-topic="人工智能"><span>人工智能</span><span
+                                class="topic-count">0</span></button>
+                        <button type="button" data-topic="商业航天"><span>商业航天</span><span
+                                class="topic-count">0</span></button>
+                        <button type="button" data-topic="机器人"><span>机器人</span><span
+                                class="topic-count">0</span></button>
+                        <button type="button" data-topic="新能源"><span>新能源</span><span
+                                class="topic-count">0</span></button>
+                        <button type="button" data-topic="券商"><span>券商</span><span class="topic-count">0</span></button>
                     </div>
-
                 </section>
 
             </aside>
-
         </section>
-
 
 
         <!-- =====================================================
