@@ -2692,3 +2692,211 @@
     }
 
 }
+
+
+/* =========================================================
+   STOCK SEARCH · 搜索结果
+========================================================= */
+
+.stock-search-section {
+    position: relative;
+}
+
+
+/* =========================================================
+   搜索结果容器
+========================================================= */
+
+.stock-search-results {
+    position: absolute;
+
+    top: calc(100% - 0px);
+    left: 0;
+    right: 0;
+
+    z-index: 1000;
+
+    display: none;
+
+    max-height: 360px;
+
+    overflow-y: auto;
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+
+    box-shadow:
+        0 10px 30px rgba(15, 23, 42, 0.10);
+}
+
+
+/* 显示搜索结果 */
+
+.stock-search-results.show {
+    display: block;
+}
+
+
+/* =========================================================
+   单条搜索结果
+========================================================= */
+
+.stock-search-result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    padding: 14px 18px;
+
+    border: none;
+    border-bottom: 1px solid #f3f4f6;
+
+    background: #ffffff;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease;
+}
+
+
+.stock-search-result:last-child {
+    border-bottom: none;
+}
+
+
+/* 鼠标悬停与键盘选中 */
+
+.stock-search-result:hover,
+.stock-search-result.active {
+    background: #f3f7ff;
+}
+
+
+/* =========================================================
+   股票名称与代码
+========================================================= */
+
+.stock-search-result-main {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+}
+
+
+.stock-search-result-name {
+    color: #111827;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.stock-search-result-symbol {
+    color: #9ca3af;
+
+    font-size: 12px;
+    font-family: monospace;
+}
+
+
+/* =========================================================
+   搜索结果右侧
+========================================================= */
+
+.stock-search-result-action {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    flex-shrink: 0;
+
+    color: #9ca3af;
+
+    font-size: 13px;
+}
+
+
+.stock-search-result-arrow {
+    color: #9ca3af;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   空结果提示
+========================================================= */
+
+.search-empty {
+    padding: 24px 18px;
+
+    text-align: center;
+
+    color: #6b7280;
+}
+
+
+.search-empty strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #374151;
+
+    font-size: 14px;
+}
+
+
+.search-empty p {
+    margin: 0;
+
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   加载提示
+========================================================= */
+
+.search-loading {
+    padding: 18px;
+
+    text-align: center;
+
+    color: #9ca3af;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   搜索结果滚动条
+========================================================= */
+
+.stock-search-results::-webkit-scrollbar {
+    width: 5px;
+}
+
+
+.stock-search-results::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+
+    border-radius: 10px;
+}
+
+
+.stock-search-results::-webkit-scrollbar-track {
+    background: transparent;
+}

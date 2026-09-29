@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>股票研究中心 - STOCK LAB</title>
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/stock.css">
+    <link rel="stylesheet" href="../css/stock/stock.css">
 </head>
 
 <body>
@@ -20,39 +20,58 @@
     ====================================================== -->
 
         <section class="stock-search-section">
+
             <div class="stock-section-header">
+
                 <div>
+
                     <div class="section-eyebrow">
                         STOCK SEARCH
                     </div>
+
                     <h2>
                         找到你想研究的股票
                     </h2>
+
                     <p>
                         输入股票名称、股票代码或关键词。
                     </p>
+
                 </div>
 
                 <span class="stock-section-count">
                     SEARCH
                 </span>
 
-
             </div>
 
 
+            <!-- =====================================================
+         搜索输入框
+    ====================================================== -->
 
             <div class="stock-search-box">
+
                 <span class="stock-search-icon">
                     ⌕
                 </span>
-                <input id="stockSearch" type="text" autocomplete="off" placeholder="例如：贵州茅台、600519、半导体、人工智能">
+
+                <input id="stockSearch" type="text" autocomplete="off" placeholder="例如：贵州茅台、600519、半导体、人工智能"
+                    aria-label="搜索股票" aria-controls="stockSearchResults" aria-expanded="false">
+
                 <button id="stockSearchButton" type="button" onclick="searchStockPage()">
                     查询
                 </button>
+
             </div>
-            <div id="stockSearchResults" class="stock-search-results">
-            </div>
+
+
+            <!-- =====================================================
+         搜索联想结果
+    ====================================================== -->
+
+            <div id="stockSearchResults" class="stock-search-results" role="listbox"></div>
+
         </section>
 
 
@@ -2595,7 +2614,7 @@
         });
     </script>
 
-
+    <script src="../js/stock/stock_search.js"></script>
 </body>
 
 </html>

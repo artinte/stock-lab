@@ -210,6 +210,15 @@ app.mount(
     name="components",
 )
 
+app.mount(
+    "/data",
+    StaticFiles(
+        directory="data",
+        html=True,
+    ),
+    name="data",
+)
+
 
 # ============================================================
 # Root
