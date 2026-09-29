@@ -133,24 +133,11 @@ class Quote:
     # 涨跌
     # ==========================================================
 
+    # 涨跌额。通常：最新价 - 昨收价
     change: Optional[float] = None
-    """
-    涨跌额。
 
-    通常：
-
-        最新价 - 昨收价
-    """
-
+    # 涨跌幅，单位：%
     change_percent: Optional[float] = None
-    """
-    涨跌幅，单位：%。
-
-    例如：
-
-        2.35
-        -0.81
-    """
 
     amplitude: Optional[float] = None
     """
@@ -165,24 +152,15 @@ class Quote:
     # 成交
     # ==========================================================
 
+    # 成交量
     volume: Optional[float] = None
-    """
-    成交量。
 
-    A 股通常为股。
-    """
-
+    # 成交额
     amount: Optional[float] = None
-    """
-    成交额。
 
-    单位：元。
-    """
-
+    # 成交均价
     average_price: Optional[float] = None
-    """
-    成交均价。
-    """
+
 
     """
     换手率，单位：%。

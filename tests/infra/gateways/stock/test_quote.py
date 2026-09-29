@@ -30,7 +30,7 @@ from infra.data_manager import DataManager
 不是单独测试 Quote 模型。
 
 运行：
-python -m tests.infra.gateways.test_quote
+python -m tests.infra.gateways.stock.test_quote
 """
 
 
@@ -65,7 +65,7 @@ def test_quotes(
     print(f"【多只股票行情测试】共 {len(symbols)} 只")
 
     try:
-        quotes:  list[Quote] = manager.stock.get_quotes(symbols)
+        quotes: list[Quote] = manager.stock.get_quotes(symbols)
 
         if not quotes:
             print("❌ 未获取到行情数据")
@@ -91,14 +91,14 @@ def main() -> None:
     try:
         data.start()
 
+        print("=" * 60)
         # 测试单只股票
         test_quote(
             manager=data,
             symbol="600519.SH",
         )
 
-        print("\n" + "=" * 60 + "\n")
-
+        print("=" * 60 )
         # 测试多只股票
         test_quotes(
             manager=data,
@@ -109,6 +109,7 @@ def main() -> None:
                 "300750.SZ",  # 宁德时代
             ],
         )
+        print("=" * 60)
 
     finally:
         data.stop()
