@@ -2278,3 +2278,181 @@ body {
     }
 
 }
+
+
+/* =========================================================
+   行情数据：右侧布局
+========================================================= */
+
+.quote-side-column {
+    display: grid;
+
+    grid-template-rows:
+        1fr auto;
+
+    gap: 14px;
+}
+
+
+/* =========================================================
+   分时成交量
+========================================================= */
+
+.intraday-volume-panel {
+    min-height: 220px;
+}
+
+
+.panel-title-row {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+
+.panel-title-row h3 {
+    margin: 0;
+}
+
+
+.volume-total {
+    color: var(--stock-text);
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   分时成交量图表
+========================================================= */
+
+.intraday-volume-chart {
+    height: 135px;
+
+    margin-top: 18px;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    border-bottom:
+        1px solid var(--stock-border);
+}
+
+
+.volume-bars {
+    display: flex;
+
+    align-items: flex-end;
+
+    width: 100%;
+
+    height: 100%;
+
+    gap: 2px;
+}
+
+
+.volume-bar {
+    flex: 1;
+
+    min-width: 2px;
+
+    height: 30%;
+
+    background: #d1d5db;
+
+    border-radius:
+        2px 2px 0 0;
+
+    transition:
+        height .2s ease,
+        opacity .2s ease;
+}
+
+
+.volume-bar:hover {
+    opacity: .7;
+}
+
+
+/* =========================================================
+   分时成交量时间轴
+========================================================= */
+
+.intraday-volume-axis {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 7px;
+
+    color: #9ca3af;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   52 周区间
+========================================================= */
+
+.quote-range-panel {
+    padding-bottom: 16px;
+}
+
+
+.quote-range-panel .range-values {
+    margin-top: 14px;
+}
+
+
+.range-labels {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-top: 6px;
+
+    color: #9ca3af;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   响应式
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .quote-side-column {
+        grid-template-columns:
+            1fr 1fr;
+
+        grid-template-rows: auto;
+
+        gap: 14px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .quote-side-column {
+        grid-template-columns: 1fr;
+    }
+
+}

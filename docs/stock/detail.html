@@ -717,11 +717,8 @@
             <div class="section-heading">
 
                 <div>
-
                     <span>MARKET</span>
-
                     <h2>行情数据</h2>
-
                 </div>
 
             </div>
@@ -730,11 +727,13 @@
             <div class="quote-detail-grid">
 
 
+                <!-- =====================================================
+             实时行情
+        ====================================================== -->
+
                 <div class="panel">
 
-                    <h3>
-                        实时行情
-                    </h3>
+                    <h3>实时行情</h3>
 
 
                     <div class="data-list">
@@ -769,19 +768,87 @@
                             <strong id="detailTurnover">—</strong>
                         </div>
 
+                        <div>
+                            <span>量比</span>
+                            <strong id="detailVolumeRatio">—</strong>
+                        </div>
+
+                        <div>
+                            <span>振幅</span>
+                            <strong id="detailAmplitude">—</strong>
+                        </div>
+
                     </div>
 
                 </div>
 
 
-                <div class="panel">
+                <!-- =====================================================
+             右侧信息
+        ====================================================== -->
 
-                    <h3>
-                        52周区间
-                    </h3>
+                <div class="quote-side-column">
 
 
-                    <div class="range-box">
+                    <!-- =================================================
+                 分时成交量
+            ================================================== -->
+
+                    <div class="panel intraday-volume-panel">
+
+                        <div class="panel-title-row">
+
+                            <h3>
+                                分时成交量
+                            </h3>
+
+                            <span class="volume-total" id="intradayVolume">
+                                —
+                            </span>
+
+                        </div>
+
+
+                        <div class="intraday-volume-chart">
+
+                            <div class="volume-bars" id="intradayVolumeBars"></div>
+
+                        </div>
+
+
+                        <div class="intraday-volume-axis">
+
+                            <span>09:30</span>
+
+                            <span>11:30</span>
+
+                            <span>13:00</span>
+
+                            <span>15:00</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                 52 周区间
+            ================================================== -->
+
+                    <div class="panel quote-range-panel">
+
+                        <div class="panel-title-row">
+
+                            <h3>
+                                52周区间
+                            </h3>
+
+                            <span class="panel-hint">
+                                价格位置
+                            </span>
+
+                        </div>
+
 
                         <div class="range-values">
 
@@ -807,9 +874,17 @@
                         </div>
 
 
-                        <small id="yearRangeDescription">
-                            暂无52周数据
-                        </small>
+                        <div class="range-labels">
+
+                            <span>
+                                52周低
+                            </span>
+
+                            <span>
+                                52周高
+                            </span>
+
+                        </div>
 
                     </div>
 

@@ -429,6 +429,16 @@ async function loadQuote() {
             formatPercent(quote.turnover)
         );
 
+        setText(
+            "detailVolumeRatio",
+            formatNumber(quote.volume_ratio)
+        )
+
+        setText(
+            "detailAmplitude",
+            formatPercent(quote.amplitude)
+        )
+
 
         // ============================================================
         // 数据时间
@@ -2965,4 +2975,292 @@ function updateKlineDetailLink() {
         `kline.html?symbol=${encodeURIComponent(
             currentSymbol
         )}`;
+}
+
+/* =========================================================
+   分时成交量
+========================================================= */
+
+/**
+ * 格式化成交量。
+ *
+ * @param {number} value
+ * @returns {string}
+ */
+function formatVolume(value) {
+
+    value = Number(value) || 0;
+
+
+    if (value >= 100000000) {
+
+        return (
+            value / 100000000
+        ).toFixed(2) + "亿";
+
+    }
+
+
+    if (value >= 10000) {
+
+        return (
+            value / 10000
+        ).toFixed(2) + "万";
+
+    }
+
+
+    return Math.round(
+        value
+    ).toLocaleString();
+
+}
+
+
+/**
+ * 渲染分时成交量。
+ *
+ * 数据格式：
+ *
+ * [
+ *     {
+ *         time: "09:31",
+ *         volume: 125800
+ *     },
+ *     {
+ *         time: "09:32",
+ *         volume: 182600
+ *     }
+ * ]
+ *
+ * @param {Array} data
+ */
+function renderIntradayVolume(data) {
+
+    const container =
+        document.getElementById(
+            "intradayVolumeBars"
+        );
+
+
+    const totalElement =
+        document.getElementById(
+            "intradayVolume"
+        );
+
+
+    if (!container) {
+        return;
+    }
+
+
+    container.innerHTML = "";
+
+
+    /*
+     * 没有分时数据。
+     */
+
+    if (
+        !Array.isArray(data) ||
+        data.length === 0
+    ) {
+
+        if (totalElement) {
+
+            totalElement.textContent =
+                "—";
+
+        }
+
+        return;
+    }
+
+
+    /*
+     * 提取成交量。
+     */
+
+    const volumes =
+        data.map(item =>
+            Number(item.volume) || 0
+        );
+
+
+    /*
+     * 找到最高成交量。
+     */
+
+    const maxVolume =
+        Math.max(...volumes);
+
+
+    /*
+     * 计算累计成交量。
+     */
+
+    const totalVolume =
+        volumes.reduce(
+            (sum, value) =>
+                sum + value,
+            0
+        );
+
+
+    if (totalElement) {
+
+        totalElement.textContent =
+            formatVolume(
+                totalVolume
+            );
+
+    }
+
+
+    /*
+     * 创建成交量柱。
+     */
+
+    data.forEach(item => {
+
+        const volume =
+            Number(item.volume) || 0;
+
+
+        const bar =
+            document.createElement(
+                "i"
+            );
+
+
+        bar.className =
+            "volume-bar";
+
+
+        /*
+         * 根据成交量计算柱高。
+         *
+         * 最低保持 4%，避免极小成交量
+         * 完全看不见。
+         */
+
+        const height =
+            maxVolume > 0
+                ? Math.max(
+                    4,
+                    volume / maxVolume * 100
+                )
+                : 4;
+
+
+        bar.style.height =
+            `${height}%`;
+
+
+        /*
+         * 鼠标悬停显示时间和成交量。
+         */
+
+        const time =
+            item.time || "";
+
+
+        bar.title =
+            `${time}  ${formatVolume(volume)}`;
+
+
+        container.appendChild(
+            bar
+        );
+
+    });
+
+}
+
+
+/* =========================================================
+   K 线数据 → 分时成交量
+========================================================= */
+
+/**
+ * 从分钟 K 线数据生成分时成交量。
+ *
+ * 支持：
+ *
+ * item.datetime
+ * item.time
+ *
+ * @param {Array} klines
+ */
+function renderIntradayVolumeFromKlines(
+    klines
+) {
+
+    if (
+        !Array.isArray(klines) ||
+        klines.length === 0
+    ) {
+
+        renderIntradayVolume([]);
+
+        return;
+    }
+
+
+    const data =
+        klines.map(item => {
+
+            const datetime =
+                item.datetime ||
+                item.time;
+
+
+            let time = "";
+
+
+            if (datetime) {
+
+                const date =
+                    new Date(datetime);
+
+
+                if (
+                    !Number.isNaN(
+                        date.getTime()
+                    )
+                ) {
+
+                    time =
+                        date.toLocaleTimeString(
+                            "zh-CN",
+                            {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: false
+                            }
+                        );
+
+                }
+
+            }
+
+
+            return {
+
+                time,
+
+                volume:
+                    Number(
+                        item.volume
+                    ) || 0
+
+            };
+
+        });
+
+
+    renderIntradayVolume(
+        data
+    );
+
 }
